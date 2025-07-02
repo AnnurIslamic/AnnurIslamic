@@ -22,6 +22,15 @@
       --tap-area-bg: #e9eef2;
     }
 
+.app-footer {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+
     body.dark-mode {
       --primary-bg: #121212;
       --header-bg: #1a1a2e;
@@ -84,13 +93,6 @@
     #prayer-times-view .prayer-time-action { display: flex; align-items: center; gap: 0.75rem; margin-left: 0.5rem; }
     #prayer-times-view .prayer-time { font-size: 1.1rem; font-weight: 600; }
     #prayer-times-view .prayer-action { font-size: 1.25rem; color: #aaa; }
-    .app-credit {
-        text-align: center;
-        margin-top: 1.5rem;
-        color: var(--text-light);
-        font-size: 0.9rem;
-        font-weight: 500;
-    }
 
     /* --- GENERIC LIST VIEW STYLES (DOA & QURAN) --- */
     .generic-list-view { padding-top: 1.5rem; padding-bottom: 2rem; }
@@ -233,6 +235,8 @@
           <div class="calendar-view" id="calendar-view-container"></div>
         </section>
         <main class="prayer-list-section" id="prayer-list-container"></main>
+        <footer class="app-footer">Annur Islamic</footer> </div>
+
     </div>
 
     <div id="doa-view" class="main-view generic-list-view" style="display: none;">
@@ -582,10 +586,6 @@
                       prayerHtml += `<div class="prayer-item"><span class="icon-status">${iconToShow}</span><div class="prayer-details"><div class="prayer-name">${translations[currentLanguage][key] || key}</div><div class="prayer-desc">${translations[currentLanguage][`${key}_desc`] || key}</div></div><div class="prayer-time-action"><div class="prayer-time">${prayerTimes[key]}</div><div class="prayer-action">🔊</div></div></div>`;
                   }
               });
-              
-              // Menambahkan nama "Annur Islamic" di bawah tabel
-              prayerHtml += `<p class="app-credit">Annur Islamic</p>`;
-
               prayerListContainerEl.innerHTML = prayerHtml;
           }
 
@@ -645,8 +645,7 @@
               const localeMap = { id: 'id-ID', en: 'en-US', ar: 'ar-SA', tr: 'tr-TR', fr: 'fr-FR', es: 'es-ES', de: 'de-DE', ru: 'ru-RU', ur: 'ur-PK', bn: 'bn-BD' };
               const locale = localeMap[currentLanguage] || 'en-US';
               document.getElementById('gregorian-date-display').textContent = now.toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-              const hijriFmt = new Intl.DateTimeFormat('en-TN-u-ca-islamic', { day: 'numeric', month: 'long', year: 'numeric' });
-              document.getElementById('hijri-date-display').textContent = hijriFmt.format(now);
+              // ** [REMOVED] Hijri date logic is now handled by the API response. **
           }
 
           function fetchCityName(lat, lon) {
@@ -667,6 +666,11 @@
                       window.latestPrayerTimes = adjustedTimings;
                       renderPrayerTimes(adjustedTimings);
                       startCountdown(adjustedTimings);
+
+                      // ** [ADDED] Update Hijri date from API response for better accuracy **
+                      const hijri = j.data.date.hijri;
+                      const hijriDateString = `${hijri.day} ${hijri.month.en} ${hijri.year} H`;
+                      document.getElementById('hijri-date-display').textContent = hijriDateString;
                   }
               }).catch(console.error);
           }
