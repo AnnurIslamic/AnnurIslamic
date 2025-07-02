@@ -84,6 +84,13 @@
     #prayer-times-view .prayer-time-action { display: flex; align-items: center; gap: 0.75rem; margin-left: 0.5rem; }
     #prayer-times-view .prayer-time { font-size: 1.1rem; font-weight: 600; }
     #prayer-times-view .prayer-action { font-size: 1.25rem; color: #aaa; }
+    .app-credit {
+        text-align: center;
+        margin-top: 1.5rem;
+        color: var(--text-light);
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
 
     /* --- GENERIC LIST VIEW STYLES (DOA & QURAN) --- */
     .generic-list-view { padding-top: 1.5rem; padding-bottom: 2rem; }
@@ -575,6 +582,10 @@
                       prayerHtml += `<div class="prayer-item"><span class="icon-status">${iconToShow}</span><div class="prayer-details"><div class="prayer-name">${translations[currentLanguage][key] || key}</div><div class="prayer-desc">${translations[currentLanguage][`${key}_desc`] || key}</div></div><div class="prayer-time-action"><div class="prayer-time">${prayerTimes[key]}</div><div class="prayer-action">🔊</div></div></div>`;
                   }
               });
+              
+              // Menambahkan nama "Annur Islamic" di bawah tabel
+              prayerHtml += `<p class="app-credit">Annur Islamic</p>`;
+
               prayerListContainerEl.innerHTML = prayerHtml;
           }
 
