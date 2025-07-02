@@ -175,6 +175,12 @@
     .surah-detail-header h2 { font-size: 1.8rem; font-weight: 600; color: var(--header-bg); margin-bottom: 0.25rem; }
     .surah-detail-header p { font-size: 1rem; color: var(--text-color); margin-bottom: 0.5rem; }
     .surah-detail-header .meta { font-size: 0.8rem; color: var(--text-light); text-transform: uppercase; }
+    
+    .basmala { text-align: center; padding-bottom: 1.5rem; margin-bottom: 1rem; border-bottom: 1px solid #eee; }
+    body.dark-mode .basmala { border-bottom-color: #444; }
+    .basmala .basmala-arabic { font-size: 1.8rem; direction: rtl; margin: 0; padding: 0; }
+    .basmala .basmala-translation { font-size: 0.9rem; font-style: italic; color: var(--text-light); margin-top: 0.5rem; }
+    
     .ayah-item { padding: 1.2rem 0; border-bottom: 1px solid #eee; }
     body.dark-mode .ayah-item { border-bottom-color: #333; }
     .ayah-item:last-child { border-bottom: none; }
@@ -338,7 +344,6 @@
     const dzikirData = [
       { id: 'dzikir_1', title: 'سبحان الله وبحمده، سبحان الله العظيم', target: 100 }, { id: 'dzikir_2', title: 'بسم الله الرحمن الرحيم', target: 33 }, { id: 'dzikir_3', title: 'Salawat', target: 33 }, { id: 'dzikir_4', title: 'Allahu Akbar', target: 33 }, { id: 'dzikir_5', title: 'La ilaha illallah', target: 33 }, { id: 'dzikir_6', title: 'Alhamdulillah', target: 33 }, { id: 'dzikir_7', title: 'Astaghfirullah', target: 33 },
     ];
-    // --- FULL DOA DATA RESTORED ---
     const doaHarianData = [
         { id: 1, title: "Doa Bangun Tidur", subtitle: "Adab memulai hari", arabic: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ", arti: "Segala puji bagi Allah yang telah menghidupkan kami setelah mematikan kami, dan kepada-Nya lah kami akan dibangkitkan." },
         { id: 2, title: "Doa Masuk Toilet", subtitle: "Memohon perlindungan", arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ", arti: "Ya Allah, sesungguhnya aku berlindung kepada-Mu dari setan laki-laki dan setan perempuan." },
@@ -679,13 +684,10 @@
             const lastReadSurahCardText = lastReadSurahCard.querySelector('p');
 
             // View Elements
-            const surahView = document.getElementById('surah-view');
             const surahViewTitle = document.getElementById('surah-view-title');
             const surahViewBookmarkBtn = document.getElementById('surah-view-bookmark-btn');
             const surahViewBody = document.getElementById('surah-view-body');
             const surahViewBackBtn = document.getElementById('surah-view-back-btn');
-            
-            const juzDetailView = document.getElementById('juz-detail-view');
             const juzDetailTitle = document.getElementById('juz-detail-title');
             const juzSurahListContainer = document.getElementById('juz-surah-list-container');
 
@@ -774,6 +776,15 @@
                             <p>${surah.name.translation.id}</p>
                             <div class="meta">${surah.revelation.id} • ${surah.numberOfVerses} AYAT</div>
                         </div>`;
+                    
+                    // --- LOGIKA PENAMBAHAN BASMALAH DENGAN ARTINYA ---
+                    if (surah.number !== 1 && surah.number !== 9) {
+                        contentHtml += `
+                            <div class="basmala">
+                                <p class="basmala-arabic">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
+                                <p class="basmala-translation">Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang</p>
+                            </div>`;
+                    }
 
                     surah.verses.forEach(ayah => {
                         contentHtml += `
@@ -907,7 +918,6 @@
                 document.querySelectorAll('[data-key]').forEach(el => {
                     if (translations[lang] && translations[lang][el.dataset.key]) { el.textContent = translations[lang][el.dataset.key]; }
                 });
-                // Re-render components that depend on language
                 setupPrayerTimes();
             };
             langSelect.addEventListener('change', () => { const lang = langSelect.value; localStorage.setItem('language', lang); setLanguage(lang); });
