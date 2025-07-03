@@ -177,8 +177,11 @@
     #enable-notifications-btn:disabled { cursor: not-allowed; opacity: 0.6; }
     body.dark-mode .language-select, body.dark-mode #enable-notifications-btn { border-color: #555; }
     .single-doa-arabic { font-size: 2rem; line-height: 3rem; text-align: right; direction: rtl; margin-bottom: 1.5rem; }
-    .single-doa-arti { font-size: 0.9rem; font-style: italic; color: #666; line-height: 1.5rem; }
+    .single-doa-latin { font-size: 1rem; font-style: italic; color: #666; line-height: 1.6rem; margin-bottom: 1rem; }
+    .single-doa-arti { font-size: 0.9rem; color: #666; line-height: 1.5rem; }
+    body.dark-mode .single-doa-latin { color: #ccc; }
     body.dark-mode .single-doa-arti { color: #ccc; }
+
 
     /* --- SURAH VIEW STYLES --- */
     #surah-view, #juz-detail-view { padding-top: 1.5rem; padding-bottom: 2rem; }
@@ -200,8 +203,11 @@
     .ayah-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
     .ayah-number { font-weight: 600; background: var(--tap-area-bg); color: var(--text-light); padding: 0.2rem 0.6rem; border-radius: 8px; font-size: 0.9rem; }
     .ayah-arabic { font-size: 1.8rem; text-align: right; direction: rtl; line-height: 2.8rem; margin-bottom: 1rem; }
-    .ayah-translation { font-size: 0.9rem; font-style: italic; color: #555; line-height: 1.5rem; }
+    .ayah-latin { font-size: 0.95rem; font-style: italic; color: #555; line-height: 1.6rem; margin-bottom: 1rem; }
+    .ayah-translation { font-size: 0.9rem; line-height: 1.5rem; }
+    body.dark-mode .ayah-latin { color: #ddd; }
     body.dark-mode .ayah-translation { color: #ccc; }
+
 
   </style>
 </head>
@@ -241,60 +247,60 @@
 
     <div id="doa-view" class="main-view generic-list-view" style="display: none;">
       <div class="view-header">
-          <span class="back-button" data-target-view="prayer-times-view">‹</span>
-          <h2>Doa Harian</h2>
+        <span class="back-button" data-target-view="prayer-times-view">‹</span>
+        <h2>Doa Harian</h2>
       </div>
       <div class="last-read-card" id="last-read-doa-card">
-          <h3 data-key="last_read">TERAKHIR DIBACA</h3>
-          <p data-key="no_last_read">Belum ada doa yang dibaca</p>
+        <h3 data-key="last_read">TERAKHIR DIBACA</h3>
+        <p data-key="no_last_read">Belum ada doa yang dibaca</p>
       </div>
       <div class="tabs-container">
-          <div class="tab-item active" data-tab="all" data-key="all_doa">Semua Doa</div>
-          <div class="tab-item" data-tab="bookmarked" data-key="bookmarked">Ditandai</div>
+        <div class="tab-item active" data-tab="all" data-key="all_doa">Semua Doa</div>
+        <div class="tab-item" data-tab="bookmarked" data-key="bookmarked">Ditandai</div>
       </div>
       <div class="list-container" id="doa-list-container-view"></div>
     </div>
 
     <div id="quran-view" class="main-view generic-list-view" style="display: none;">
       <div class="view-header">
-          <span class="back-button" data-target-view="prayer-times-view">‹</span>
-          <h2>Al-Qur'an</h2>
+        <span class="back-button" data-target-view="prayer-times-view">‹</span>
+        <h2>Al-Qur'an</h2>
       </div>
       <div class="last-read-card" id="last-read-surah-card">
-          <h3>TERAKHIR DIBACA</h3>
-          <p>Belum ada surah yang dibaca</p>
+        <h3>TERAKHIR DIBACA</h3>
+        <p>Belum ada surah yang dibaca</p>
       </div>
       <div class="tabs-container" id="quran-tabs">
-          <div class="tab-item active" data-tab="surah">Surah</div>
-          <div class="tab-item" data-tab="juz">Juz</div>
-          <div class="tab-item" data-tab="bookmarked">Ditandai</div>
+        <div class="tab-item active" data-tab="surah">Surah</div>
+        <div class="tab-item" data-tab="juz">Juz</div>
+        <div class="tab-item" data-tab="bookmarked">Ditandai</div>
       </div>
       <div class="list-container" id="quran-list-container"></div>
     </div>
     
     <div id="juz-detail-view" class="main-view" style="display: none;">
       <div class="view-header">
-          <span class="back-button" data-target-view="quran-view">‹</span>
-          <h2 id="juz-detail-title">Daftar Surah</h2>
+        <span class="back-button" data-target-view="quran-view">‹</span>
+        <h2 id="juz-detail-title">Daftar Surah</h2>
       </div>
       <div class="list-container" id="juz-surah-list-container"></div>
     </div>
 
     <div id="surah-view" class="main-view" style="display: none;">
       <div class="view-header">
-          <span class="back-button" id="surah-view-back-btn">‹</span>
-          <h2 id="surah-view-title">Nama Surah</h2>
-          <span class="action-icon" id="surah-view-bookmark-btn">⭐</span>
+        <span class="back-button" id="surah-view-back-btn">‹</span>
+        <h2 id="surah-view-title">Nama Surah</h2>
+        <span class="action-icon" id="surah-view-bookmark-btn">⭐</span>
       </div>
       <div id="surah-view-body">
-          </div>
+        </div>
     </div>
 
 
     <div id="dzikir-view" class="main-view" style="display: none;">
       <div class="view-header">
-          <span class="back-button" data-target-view="prayer-times-view">‹</span>
-          <h2>Tasbih Digital</h2>
+        <span class="back-button" data-target-view="prayer-times-view">‹</span>
+        <h2>Tasbih Digital</h2>
       </div>
       <div class="dzikir-list-container" id="dzikir-list-container"></div>
     </div>
@@ -302,8 +308,8 @@
 
   <div id="tasbih-view" class="main-view">
       <div class="view-header">
-          <span class="back-button" data-target-view="dzikir-view">‹</span>
-          <h2 id="tasbih-title">Nama Dzikir</h2>
+        <span class="back-button" data-target-view="dzikir-view">‹</span>
+        <h2 id="tasbih-title">Nama Dzikir</h2>
       </div>
       <div class="tasbih-main">
           <div id="tasbih-counter-display">
@@ -372,60 +378,60 @@
     { id: 'dzikir_1', title: 'سبحان الله وبحمده، سبحان الله العظيم', target: 100 }, { id: 'dzikir_2', title: 'بسم الله الرحمن الرحيم', target: 33 }, { id: 'dzikir_3', title: 'Salawat', target: 33 }, { id: 'dzikir_4', title: 'Allahu Akbar', target: 33 }, { id: 'dzikir_5', title: 'La ilaha illallah', target: 33 }, { id: 'dzikir_6', title: 'Alhamdulillah', target: 33 }, { id: 'dzikir_7', title: 'Astaghfirullah', target: 33 },
   ];
   const doaHarianData = [
-      { id: 1, title: "Doa Bangun Tidur", subtitle: "Adab memulai hari", arabic: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ", arti: "Segala puji bagi Allah yang telah menghidupkan kami setelah mematikan kami, dan kepada-Nya lah kami akan dibangkitkan." },
-      { id: 2, title: "Doa Masuk Toilet", subtitle: "Memohon perlindungan", arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ", arti: "Ya Allah, sesungguhnya aku berlindung kepada-Mu dari setan laki-laki dan setan perempuan." },
-      { id: 3, title: "Doa Keluar Toilet", subtitle: "Memohon ampunan", arabic: "غُفْرَانَكَ", arti: "Aku memohon ampunan-Mu." },
-      { id: 4, title: "Doa Sebelum Wudhu", subtitle: "Niat bersuci", arabic: "بِسْمِ اللَّهِ", arti: "Dengan menyebut nama Allah." },
-      { id: 5, title: "Doa Setelah Wudhu", subtitle: "Menyempurnakan wudhu", arabic: "أَشْهَدُ أَنْ لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ", arti: "Aku bersaksi bahwa tiada Tuhan selain Allah semata, tiada sekutu bagi-Nya, dan aku bersaksi bahwa Muhammad adalah hamba dan utusan-Nya." },
-      { id: 6, title: "Doa Mengenakan Pakaian", subtitle: "Mensyukuri nikmat", arabic: "الْحَمْدُ لِلَّهِ الَّذِي كَسَانِي هَذَا وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلاَ قُوَّةٍ", arti: "Segala puji bagi Allah yang telah memberiku pakaian ini dan menganugerahkannya kepadaku tanpa daya dan kekuatan dariku." },
-      { id: 7, title: "Doa Melepas Pakaian", subtitle: "Adab melepas pakaian", arabic: "بِسْمِ اللَّهِ", arti: "Dengan menyebut nama Allah." },
-      { id: 8, title: "Doa Keluar Rumah", subtitle: "Memohon perlindungan", arabic: "بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ لاَ حَوْلَ وَلاَ قُوَّةَ إِلاَّ بِاللَّهِ", arti: "Dengan nama Allah, aku bertawakal kepada Allah, tiada daya dan kekuatan kecuali dengan pertolongan Allah." },
-      { id: 9, title: "Doa Masuk Rumah", subtitle: "Memohon kebaikan", arabic: "بِسْمِ اللَّهِ وَلَجْنَا وَبِسْمِ اللَّهِ خَرَجْنَا وَعَلَى رَبِّنَا تَوَكَّلْنَا", arti: "Dengan nama Allah kami masuk, dan dengan nama Allah kami keluar, dan kepada Tuhan kami, kami bertawakal." },
-      { id: 10, title: "Doa Pergi ke Masjid", subtitle: "Langkah menuju kebaikan", arabic: "اللَّهُمَّ اجْعَلْ فِي قَلْبِي نُورًا وَفِي لِسَانِي نُورًا...", arti: "Ya Allah, jadikanlah cahaya di hatiku, cahaya di lidahku..." },
-      { id: 11, title: "Doa Masuk Masjid", subtitle: "Memohon rahmat", arabic: "اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ", arti: "Ya Allah, bukakanlah untukku pintu-pintu rahmat-Mu." },
-      { id: 12, title: "Doa Keluar Masjid", subtitle: "Memohon karunia", arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ", arti: "Ya Allah, sesungguhnya aku memohon kepada-Mu dari karunia-Mu." },
-      { id: 13, title: "Doa Sebelum Makan", subtitle: "Agar makanan berkah", arabic: "بِسْمِ اللَّهِ", arti: "Dengan menyebut nama Allah." },
-      { id: 14, title: "Doa Sesudah Makan", subtitle: "Tanda bersyukur", arabic: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنِي هَذَا وَرَZَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلاَ قُوَّةٍ", arti: "Segala puji bagi Allah yang telah memberiku makanan ini dan menganugerahkannya kepadaku tanpa daya dan kekuatan dariku." },
-      { id: 15, title: "Doa Ketika Lupa Basmalah", subtitle: "Jika lupa di awal", arabic: "بِسْمِ اللَّهِ أَوَّلَهُ وَآخِرَهُ", arti: "Dengan nama Allah di awal dan di akhirnya." },
-      { id: 16, title: "Doa Minum Air Zamzam", subtitle: "Memohon kebaikan", arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا وَرِزْقًا وَاسِعًا وَشِفَاءً مِنْ كُلِّ دَاءٍ", arti: "Ya Allah, aku memohon kepada-Mu ilmu yang bermanfaat, rezeki yang luas, dan kesembuhan dari segala penyakit." },
-      { id: 17, title: "Doa Berbuka Puasa", subtitle: "Saat berbuka puasa", arabic: "ذَهَبَ الظَّمَأُ وَابْتَلَّتِ الْعُرُوقُ وَثَبَتَ الأَجْرُ إِنْ شَاءَ اللَّهُ", arti: "Telah hilang dahaga, telah basah urat-urat, dan telah tetap pahala, insya Allah." },
-      { id: 18, title: "Doa Sebelum Tidur", subtitle: "Adab mengakhiri hari", arabic: "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا", arti: "Dengan nama-Mu ya Allah aku mati dan aku hidup." },
-      { id: 19, title: "Doa Ketika Mimpi Buruk", subtitle: "Memohon perlindungan", arabic: "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ غَضَبِهِ وَعِقَابِهِ وَشَرِّ عِبَادِهِ...", arti: "Aku berlindung dengan kalimat-kalimat Allah yang sempurna dari kemurkaan-Nya, siksa-Nya, dan kejahatan hamba-hamba-Nya..." },
-      { id: 20, title: "Doa Naik Kendaraan", subtitle: "Memohon keselamatan", arabic: "سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ", arti: "Maha Suci Dzat yang telah menundukkan semua ini bagi kami padahal kami sebelumnya tidak mampu menguasainya." },
-      { id: 21, title: "Doa Safar (Bepergian)", subtitle: "Memohon kemudahan", arabic: "اللَّهُمَّ هَوِّنْ عَلَيْنَا سَفَرَنَا هَذَا وَاطْوِ عَنَّا بُعْدَهُ", arti: "Ya Allah, mudahkanlah perjalanan kami ini, dan dekatkanlah jaraknya bagi kami." },
-      { id: 22, title: "Doa Tiba di Tujuan", subtitle: "Rasa syukur", arabic: "الْحَمْدُ لِلَّهِ الَّذِي سَلَّمَنِي", arti: "Segala puji bagi Allah yang telah menyelamatkanku." },
-      { id: 23, title: "Doa Menjenguk Orang Sakit", subtitle: "Mendoakan kesembuhan", arabic: "لاَ بَأْسَ طَهُورٌ إِنْ شَاءَ اللَّهُ", arti: "Tidak mengapa, semoga menjadi pembersih (dosa), insya Allah." },
-      { id: 24, title: "Doa Ketika Hujan Turun", subtitle: "Memohon hujan bermanfaat", arabic: "اللَّهُمَّ صَيِّبًا نَافِعًا", arti: "Ya Allah, (jadikanlah hujan ini) hujan yang bermanfaat." },
-      { id: 25, title: "Doa Setelah Hujan", subtitle: "Rahmat dari Allah", arabic: "مُطِرْنَا بِفَضْلِ اللَّهِ وَرَحْمَتِهِ", arti: "Kita diberi hujan karena karunia dan rahmat Allah." },
-      { id: 26, title: "Doa Melihat Petir", subtitle: "Tanda kebesaran Allah", arabic: "سُبْحَانَ الَّذِي يُسَبِّحُ الرَّعْدُ بِحَمْدِهِ وَالْمَلاَئِكَةُ مِنْ خِيفَتِهِ", arti: "Maha Suci Dzat yang petir bertasbih dengan memuji-Nya, dan para malaikat pun (bertasbih) karena takut kepada-Nya." },
-      { id: 27, title: "Doa Ketika Angin Kencang", subtitle: "Memohon kebaikan", arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَهَا وَأَعُوذُ بِكَ مِنْ شَرِّهَا", arti: "Ya Allah, aku memohon kepada-Mu kebaikannya dan aku berlindung kepada-Mu dari keburukannya." },
-      { id: 28, title: "Doa Bercermin", subtitle: "Agar akhlak baik", arabic: "اللَّهُمَّ كَمَا حَسَّنْتَ خَلْقِي فَحَسِّنْ خُلُقِي", arti: "Ya Allah, sebagaimana Engkau telah memperindah rupaku, maka perindahlah akhlakku." },
-      { id: 29, title: "Doa untuk Kedua Orang Tua", subtitle: "Tanda bakti", arabic: "رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا", arti: "Wahai Tuhanku, ampunilah aku dan kedua orang tuaku, dan sayangilah mereka sebagaimana mereka telah menyayangiku di waktu kecil." },
-      { id: 30, title: "Doa Kebaikan Dunia Akhirat", subtitle: "Doa sapu jagat", arabic: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ", arti: "Ya Tuhan kami, berilah kami kebaikan di dunia dan kebaikan di akhirat, dan peliharalah kami dari siksa neraka." },
-      { id: 31, title: "Doa Sebelum Belajar", subtitle: "Memohon ilmu", arabic: "رَبِّ زِدْنِي عِلْمًا", arti: "Wahai Tuhanku, tambahkanlah ilmu kepadaku." },
-      { id: 32, title: "Doa Sesudah Belajar", subtitle: "Agar ilmu bermanfaat", arabic: "اللَّهُمَّ انْفَعْنِي بِمَا عَلَّمْتَنِي وَعَلِّمْنِي مَا يَنْفَعُنِي وَزِدْنِي عِلْمًا", arti: "Ya Allah, berilah manfaat atas apa yang telah Engkau ajarkan kepadaku, ajarilah aku apa yang bermanfaat bagiku, dan tambahkanlah ilmu kepadaku." },
-      { id: 33, title: "Doa Penutup Majelis", subtitle: "Kaffaratul Majlis", arabic: "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ أَشْهَدُ أَنْ لاَ إِلَهَ إِلاَّ أَنْتَ أَسْتَغْفِرُكَ وَأَتُوبُ إِلَيْكَ", arti: "Maha Suci Engkau ya Allah, dan dengan memuji-Mu, aku bersaksi bahwa tiada Tuhan selain Engkau, aku memohon ampun dan bertaubat kepada-Mu." },
-      { id: 34, title: "Doa Ketika Bersin", subtitle: "Mengucap syukur", arabic: "الْحَمْدُ لِلَّهِ", arti: "Segala puji bagi Allah." },
-      { id: 35, title: "Jawaban Ketika Orang Bersin", subtitle: "Mendoakan saudara", arabic: "يَرْحَمُكَ اللَّهُ", arti: "Semoga Allah merahmatimu." },
-      { id: 36, title: "Doa Ketika Marah", subtitle: "Meredam amarah", arabic: "أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ", arti: "Aku berlindung kepada Allah dari setan yang terkutuk." },
-      { id: 37, title: "Doa Masuk Pasar", subtitle: "Memohon kebaikan pasar", arabic: "لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ...", arti: "Tiada Tuhan selain Allah semata, tiada sekutu bagi-Nya..." },
-      { id: 38, title: "Doa Ketika Tertimpa Musibah", subtitle: "Kalimat istirja'", arabic: "إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ", arti: "Sesungguhnya kami milik Allah dan kepada-Nya lah kami akan kembali." },
-      { id: 39, title: "Doa untuk Pengantin Baru", subtitle: "Mendoakan keberkahan", arabic: "بَارَكَ اللَّهُ لَكَ وَبَارَكَ عَلَيْكَ وَجَمَعَ بَيْنَكُمَا فِي خَيْرٍ", arti: "Semoga Allah memberkahimu, dan memberkahi atasmu, dan mengumpulkan kalian berdua dalam kebaikan." },
-      { id: 40, title: "Doa Ziarah Kubur", subtitle: "Salam kepada ahli kubur", arabic: "السَّلاَمُ عَلَى أَهْلِ الدِّيَارِ مِنَ الْمُؤْمِنِينَ وَالْمُسْلِمِينَ...", arti: "Keselamatan atas penghuni kubur dari kaum mukminin dan muslimin..." },
-      { id: 41, title: "Doa Melihat Hilal", subtitle: "Menyambut bulan baru", arabic: "اللَّهُ أَكْبَرُ، اللَّهُمَّ أَهِلَّهُ عَلَيْنَا بِالْيُمْنِ وَالإِيمَانِ وَالسَّلاَمَةِ وَالإِسْلاَمِ", arti: "Allah Maha Besar, ya Allah, tampakkanlah bulan itu kepada kami dengan membawa keberkahan dan keimanan, keselamatan dan Islam." },
-      { id: 42, title: "Doa Agar Diberi Kesabaran", subtitle: "Memohon keteguhan", arabic: "رَبَّنَا أَفْرِغْ عَلَيْنَا صَبْرًا وَثَبِّتْ أَقْدَامَنَا", arti: "Ya Tuhan kami, limpahkanlah kesabaran kepada kami dan kukuhkanlah pendirian kami." },
-      { id: 43, title: "Doa Mohon Petunjuk", subtitle: "Meminta bimbingan", arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْهُدَى وَالتُّقَى وَالْعَفَافَ وَالْغِنَى", arti: "Ya Allah, aku memohon kepada-Mu petunjuk, ketakwaan, kesucian diri, dan kecukupan." },
-      { id: 44, title: "Doa Terhindar dari Sifat Malas", subtitle: "Memohon semangat", arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْعَجْزِ وَالْكَسَلِ", arti: "Ya Allah, aku berlindung kepada-Mu dari kelemahan dan kemalasan." },
-      { id: 45, title: "Doa Agar Diteguhkan Hati", subtitle: "Istiqamah dalam iman", arabic: "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ", arti: "Wahai Dzat yang membolak-balikkan hati, teguhkanlah hatiku di atas agama-Mu." },
-      { id: 46, title: "Doa Memohon Ampunan & Rahmat", subtitle: "Permohonan ampunan", arabic: "رَبَّنَا ظَلَمْنَا أَنْفُسَنَا وَإِنْ لَمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ", arti: "Ya Tuhan kami, kami telah menzalimi diri kami sendiri, dan jika Engkau tidak mengampuni kami dan memberi rahmat kepada kami, niscaya kami termasuk orang-orang yang rugi." },
-      { id: 47, title: "Doa Saat Sulit Tidur", subtitle: "Agar tidur nyenyak", arabic: "اللَّهُمَّ غَارَتِ النُّجُومُ وَهَدَأَتِ الْعُيُونُ...", arti: "Ya Allah, bintang-bintang telah terbenam, mata-mata telah terpejam..." },
-      { id: 48, title: "Doa Ketika Memulai Pekerjaan", subtitle: "Memohon kelancaran", arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ خَيْرِ هَذَا الْعَمَلِ وَخَيْرِ مَا فِيهِ", arti: "Ya Allah, aku memohon kepada-Mu kebaikan pekerjaan ini dan kebaikan yang ada di dalamnya." },
-      { id: 49, title: "Doa Setelah Selesai Bekerja", subtitle: "Rasa syukur", arabic: "الْحَمْدُ لِلَّهِ الَّذِي بِنِعْمَتِهِ تَتِمُّ الصَّالِحَاتُ", arti: "Segala puji bagi Allah yang dengan nikmat-Nya sempurnalah segala kebaikan." },
-      { id: 50, title: "Doa Ketika Mendengar Kabar Baik", subtitle: "Ekspresi kebahagiaan", arabic: "الْحَمْدُ لِلَّهِ الَّذِي بِنِعْمَتِهِ تَتِمُّ الصَّالِحَاتُ", arti: "Segala puji bagi Allah yang dengan nikmat-Nya sempurnalah segala kebaikan." },
-      { id: 51, title: "Doa Ketika Mendengar Kabar Buruk", subtitle: "Menjaga kesabaran", arabic: "الْحَمْدُ لِلَّهِ عَلَى كُلِّ حَالٍ", arti: "Segala puji bagi Allah atas segala keadaan." },
-      { id: 52, "title": "Doa Memohon Jodoh Terbaik", "subtitle": "Bagi yang belum menikah", "arabic": "رَبِّ لاَ تَذَرْنِي فَرْدًا وَأَنْتَ خَيْرُ الْوَارِثِينَ", "arti": "Ya Tuhanku, janganlah Engkau biarkan aku hidup seorang diri, dan Engkaulah pewaris yang paling baik." },
-      { id: 53, "title": "Doa Mohon Keturunan yang Baik", "subtitle": "Doa Nabi Zakaria", "arabic": "رَبِّ هَبْ لِي مِنْ لَدُنْكَ ذُرِّيَّةً طَيِّبَةً إِنَّكَ سَمِيعُ الدُّعَاءِ", "arti": "Ya Tuhanku, berilah aku dari sisi-Mu seorang anak yang baik. Sesungguhnya Engkau Maha Pendengar doa." },
-      { id: 54, "title": "Doa Agar Terhindar dari Utang", "subtitle": "Memohon kecukupan", "arabic": "اللَّهُمَّ اكْفِنِي بِحَلاَلِكَ عَنْ حَرَامِكَ وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ", "arti": "Ya Allah, cukupkanlah aku dengan yang halal dan jauhkanlah aku dari yang haram, dan cukupkanlah aku dengan karunia-Mu dari bergantung pada selain-Mu." }
+      { id: 1, title: "Doa Bangun Tidur", subtitle: "Adab memulai hari", arabic: "الْحَمْدُ لِلَّهِ الَّذِي أَحْyَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ", latin: "Alhamdulillahilladzi ahyaanaa ba'da maa amaatanaa wa ilaihin nusyuur", arti: "Segala puji bagi Allah yang telah menghidupkan kami setelah mematikan kami, dan kepada-Nya lah kami akan dibangkitkan." },
+      { id: 2, title: "Doa Masuk Toilet", subtitle: "Memohon perlindungan", arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ", latin: "Allahumma innii a'uudzubika minal khubutsi wal khabaaitsi", arti: "Ya Allah, sesungguhnya aku berlindung kepada-Mu dari setan laki-laki dan setan perempuan." },
+      { id: 3, title: "Doa Keluar Toilet", subtitle: "Memohon ampunan", arabic: "غُفْرَانَكَ", latin: "Ghufraanaka", arti: "Aku memohon ampunan-Mu." },
+      { id: 4, title: "Doa Sebelum Wudhu", subtitle: "Niat bersuci", arabic: "بِسْمِ اللَّهِ", latin: "Bismillah", arti: "Dengan menyebut nama Allah." },
+      { id: 5, title: "Doa Setelah Wudhu", subtitle: "Menyempurnakan wudhu", arabic: "أَشْهَدُ أَنْ لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ", latin: "Asyhadu an laa ilaaha illallaah wahdahu laa syariika lah, wa asyhadu anna muhammadan 'abduhu wa rasuuluh", arti: "Aku bersaksi bahwa tiada Tuhan selain Allah semata, tiada sekutu bagi-Nya, dan aku bersaksi bahwa Muhammad adalah hamba dan utusan-Nya." },
+      { id: 6, title: "Doa Mengenakan Pakaian", subtitle: "Mensyukuri nikmat", arabic: "الْحَمْدُ لِلَّهِ الَّذِي كَسَانِي هَذَا وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلاَ قُوَّةٍ", latin: "Alhamdulillahilladzi kasaanii hadzaa wa razaqaniihi min ghairi haulin minnii wa laa quwwatin", arti: "Segala puji bagi Allah yang telah memberiku pakaian ini dan menganugerahkannya kepadaku tanpa daya dan kekuatan dariku." },
+      { id: 7, title: "Doa Melepas Pakaian", subtitle: "Adab melepas pakaian", arabic: "بِسْمِ اللَّهِ", latin: "Bismillah", arti: "Dengan menyebut nama Allah." },
+      { id: 8, title: "Doa Keluar Rumah", subtitle: "Memohon perlindungan", arabic: "بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ لاَ حَوْلَ وَلاَ قُوَّةَ إِلاَّ بِاللَّهِ", latin: "Bismillahi tawakkaltu 'alallah, laa haula wa laa quwwata illaa billaah", arti: "Dengan nama Allah, aku bertawakal kepada Allah, tiada daya dan kekuatan kecuali dengan pertolongan Allah." },
+      { id: 9, title: "Doa Masuk Rumah", subtitle: "Memohon kebaikan", arabic: "بِسْمِ اللَّهِ وَلَجْنَا وَبِسْمِ اللَّهِ خَرَجْنَا وَعَلَى رَبِّنَا تَوَكَّلْنَا", latin: "Bismillahi walajnaa wa bismillahi kharajnaa wa 'alaa rabbinaa tawakkalnaa", arti: "Dengan nama Allah kami masuk, dan dengan nama Allah kami keluar, dan kepada Tuhan kami, kami bertawakal." },
+      { id: 10, title: "Doa Pergi ke Masjid", subtitle: "Langkah menuju kebaikan", arabic: "اللَّهُمَّ اجْعَلْ فِي قَلْبِي نُورًا وَفِي لِسَانِي نُورًا...", latin: "Allahummaj 'al fii qalbii nuuran wa fii lisaanii nuuran...", arti: "Ya Allah, jadikanlah cahaya di hatiku, cahaya di lidahku..." },
+      { id: 11, title: "Doa Masuk Masjid", subtitle: "Memohon rahmat", arabic: "اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ", latin: "Allahummaftah lii abwaaba rahmatika", arti: "Ya Allah, bukakanlah untukku pintu-pintu rahmat-Mu." },
+      { id: 12, title: "Doa Keluar Masjid", subtitle: "Memohon karunia", arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ", latin: "Allahumma innii as'aluka min fadhlik", arti: "Ya Allah, sesungguhnya aku memohon kepada-Mu dari karunia-Mu." },
+      { id: 13, title: "Doa Sebelum Makan", subtitle: "Agar makanan berkah", arabic: "بِسْمِ اللَّهِ", latin: "Bismillah", arti: "Dengan menyebut nama Allah." },
+      { id: 14, title: "Doa Sesudah Makan", subtitle: "Tanda bersyukur", arabic: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنِي هَذَا وَرَZَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلاَ قُوَّةٍ", latin: "Alhamdulillahilladzi ath'amanii hadzaa wa razaqaniihi min ghairi haulin minnii wa laa quwwatin", arti: "Segala puji bagi Allah yang telah memberiku makanan ini dan menganugerahkannya kepadaku tanpa daya dan kekuatan dariku." },
+      { id: 15, title: "Doa Ketika Lupa Basmalah", subtitle: "Jika lupa di awal", arabic: "بِسْمِ اللَّهِ أَوَّلَهُ وَآخِرَهُ", latin: "Bismillahi awwalahu wa aakhirahu", arti: "Dengan nama Allah di awal dan di akhirnya." },
+      { id: 16, title: "Doa Minum Air Zamzam", subtitle: "Memohon kebaikan", arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا وَرِزْقًا وَاسِعًا وَشِفَاءً مِنْ كُلِّ دَاءٍ", latin: "Allahumma innii as'aluka 'ilman naafi'an, wa rizqan waasi'an, wasyifaa'an min kulli daa'in", arti: "Ya Allah, aku memohon kepada-Mu ilmu yang bermanfaat, rezeki yang luas, dan kesembuhan dari segala penyakit." },
+      { id: 17, title: "Doa Berbuka Puasa", subtitle: "Saat berbuka puasa", arabic: "ذَهَبَ الظَّمَأُ وَابْتَلَّتِ الْعُرُوقُ وَثَبَتَ الأَجْرُ إِنْ شَاءَ اللَّهُ", latin: "Dzahabazh zhoma'u wabtallatil 'uruuqu wa tsabatal ajru insyaallah", arti: "Telah hilang dahaga, telah basah urat-urat, dan telah tetap pahala, insya Allah." },
+      { id: 18, title: "Doa Sebelum Tidur", subtitle: "Adab mengakhiri hari", arabic: "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا", latin: "Bismikallahumma amuutu wa ahyaa", arti: "Dengan nama-Mu ya Allah aku mati dan aku hidup." },
+      { id: 19, title: "Doa Ketika Mimpi Buruk", subtitle: "Memohon perlindungan", arabic: "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ غَضَبِهِ وَعِقَابِهِ وَشَرِّ عِبَادِهِ...", latin: "A'uudzu bikalimaatillaahit taammaati min ghadhabihi wa 'iqaabihi wa syarri 'ibaadihi...", arti: "Aku berlindung dengan kalimat-kalimat Allah yang sempurna dari kemurkaan-Nya, siksa-Nya, dan kejahatan hamba-hamba-Nya..." },
+      { id: 20, title: "Doa Naik Kendaraan", subtitle: "Memohon keselamatan", arabic: "سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ", latin: "Subhaanalladzii sakhkhara lanaa hadzaa wa maa kunnaa lahu muqriniin", arti: "Maha Suci Dzat yang telah menundukkan semua ini bagi kami padahal kami sebelumnya tidak mampu menguasainya." },
+      { id: 21, title: "Doa Safar (Bepergian)", subtitle: "Memohon kemudahan", arabic: "اللَّهُمَّ هَوِّنْ عَلَيْنَا سَفَرَنَا هَذَا وَاطْوِ عَنَّا بُعْدَهُ", latin: "Allahumma hawwin 'alainaa safaranaa hadzaa waathwi 'annaa bu'dahu", arti: "Ya Allah, mudahkanlah perjalanan kami ini, dan dekatkanlah jaraknya bagi kami." },
+      { id: 22, title: "Doa Tiba di Tujuan", subtitle: "Rasa syukur", arabic: "الْحَمْدُ لِلَّهِ الَّذِي سَلَّمَنِي", latin: "Alhamdulillahilladzi sallamanii", arti: "Segala puji bagi Allah yang telah menyelamatkanku." },
+      { id: 23, title: "Doa Menjenguk Orang Sakit", subtitle: "Mendoakan kesembuhan", arabic: "لاَ بَأْسَ طَهُورٌ إِنْ شَاءَ اللَّهُ", latin: "Laa ba'sa thahuurun insyaallah", arti: "Tidak mengapa, semoga menjadi pembersih (dosa), insya Allah." },
+      { id: 24, title: "Doa Ketika Hujan Turun", subtitle: "Memohon hujan bermanfaat", arabic: "اللَّهُمَّ صَيِّبًا نَافِعًا", latin: "Allahumma shayyiban naafi'an", arti: "Ya Allah, (jadikanlah hujan ini) hujan yang bermanfaat." },
+      { id: 25, title: "Doa Setelah Hujan", subtitle: "Rahmat dari Allah", arabic: "مُطِرْنَا بِفَضْلِ اللَّهِ وَرَحْمَتِهِ", latin: "Muthirnaa bifadhlillahi wa rahmatihi", arti: "Kita diberi hujan karena karunia dan rahmat Allah." },
+      { id: 26, title: "Doa Melihat Petir", subtitle: "Tanda kebesaran Allah", arabic: "سُبْحَانَ الَّذِي يُسَبِّحُ الرَّعْدُ بِحَمْدِهِ وَالْمَلاَئِكَةُ مِنْ خِيفَتِهِ", latin: "Subhaanalladzii yusabbihur ra'du bihamdihi wal malaa-ikatu min khiifatihi", arti: "Maha Suci Dzat yang petir bertasbih dengan memuji-Nya, dan para malaikat pun (bertasbih) karena takut kepada-Nya." },
+      { id: 27, title: "Doa Ketika Angin Kencang", subtitle: "Memohon kebaikan", arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَهَا وَأَعُوذُ بِكَ مِنْ شَرِّهَا", latin: "Allahumma innii as'aluka khairahaa wa a'uudzu bika min syarrihaa", arti: "Ya Allah, aku memohon kepada-Mu kebaikannya dan aku berlindung kepada-Mu dari keburukannya." },
+      { id: 28, title: "Doa Bercermin", subtitle: "Agar akhlak baik", arabic: "اللَّهُمَّ كَمَا حَسَّنْتَ خَلْقِي فَحَسِّنْ خُلُقِي", latin: "Allahumma kamaa hassanta khalqii fahassin khuluqii", arti: "Ya Allah, sebagaimana Engkau telah memperindah rupaku, maka perindahlah akhlakku." },
+      { id: 29, title: "Doa untuk Kedua Orang Tua", subtitle: "Tanda bakti", arabic: "رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا", latin: "Rabbighfirlii wa liwaalidayya warhamhumaa kamaa rabbayaanii shaghiiran", arti: "Wahai Tuhanku, ampunilah aku dan kedua orang tuaku, dan sayangilah mereka sebagaimana mereka telah menyayangiku di waktu kecil." },
+      { id: 30, title: "Doa Kebaikan Dunia Akhirat", subtitle: "Doa sapu jagat", arabic: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ", latin: "Rabbanaa aatinaa fiddunyaa hasanatan wa fil aakhirati hasanatan wa qinaa 'adzaabannaar", arti: "Ya Tuhan kami, berilah kami kebaikan di dunia dan kebaikan di akhirat, dan peliharalah kami dari siksa neraka." },
+      { id: 31, title: "Doa Sebelum Belajar", subtitle: "Memohon ilmu", arabic: "رَبِّ زِدْنِي عِلْمًا", latin: "Rabbi zidnii 'ilman", arti: "Wahai Tuhanku, tambahkanlah ilmu kepadaku." },
+      { id: 32, title: "Doa Sesudah Belajar", subtitle: "Agar ilmu bermanfaat", arabic: "اللَّهُمَّ انْفَعْنِي بِمَا عَلَّمْتَنِي وَعَلِّمْنِي مَا يَنْفَعُنِي وَزِدْنِي عِلْمًا", latin: "Allahummanfa'nii bimaa 'allamtanii wa 'allimnii maa yanfa'unii wa zidnii 'ilman", arti: "Ya Allah, berilah manfaat atas apa yang telah Engkau ajarkan kepadaku, ajarilah aku apa yang bermanfaat bagiku, dan tambahkanlah ilmu kepadaku." },
+      { id: 33, title: "Doa Penutup Majelis", subtitle: "Kaffaratul Majlis", arabic: "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ أَشْهَدُ أَنْ لاَ إِلَهَ إِلاَّ أَنْتَ أَسْتَغْفِرُكَ وَأَتُوبُ إِلَيْكَ", latin: "Subhaanakallahumma wa bihamdika, asyhadu an laa ilaaha illaa anta, astaghfiruka wa atuubu ilaika", arti: "Maha Suci Engkau ya Allah, dan dengan memuji-Mu, aku bersaksi bahwa tiada Tuhan selain Engkau, aku memohon ampun dan bertaubat kepada-Mu." },
+      { id: 34, title: "Doa Ketika Bersin", subtitle: "Mengucap syukur", arabic: "الْحَمْدُ لِلَّهِ", latin: "Alhamdulillah", arti: "Segala puji bagi Allah." },
+      { id: 35, title: "Jawaban Ketika Orang Bersin", subtitle: "Mendoakan saudara", arabic: "يَرْحَمُكَ اللَّهُ", latin: "Yarhamukallah", arti: "Semoga Allah merahmatimu." },
+      { id: 36, title: "Doa Ketika Marah", subtitle: "Meredam amarah", arabic: "أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ", latin: "A'uudzubillaahi minasy syaithaanir rajiim", arti: "Aku berlindung kepada Allah dari setan yang terkutuk." },
+      { id: 37, title: "Doa Masuk Pasar", subtitle: "Memohon kebaikan pasar", arabic: "لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ...", latin: "Laa ilaaha illallaah wahdahu laa syariika lah...", arti: "Tiada Tuhan selain Allah semata, tiada sekutu bagi-Nya..." },
+      { id: 38, title: "Doa Ketika Tertimpa Musibah", subtitle: "Kalimat istirja'", arabic: "إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ", latin: "Innaa lillaahi wa innaa ilaihi raaji'uun", arti: "Sesungguhnya kami milik Allah dan kepada-Nya lah kami akan kembali." },
+      { id: 39, title: "Doa untuk Pengantin Baru", subtitle: "Mendoakan keberkahan", arabic: "بَارَكَ اللَّهُ لَكَ وَبَارَكَ عَلَيْكَ وَجَمَعَ بَيْنَكُمَا فِي خَيْرٍ", latin: "Baarakallahu laka wa baaraka 'alaika wa jama'a bainakumaa fii khairin", arti: "Semoga Allah memberkahimu, dan memberkahi atasmu, dan mengumpulkan kalian berdua dalam kebaikan." },
+      { id: 40, title: "Doa Ziarah Kubur", subtitle: "Salam kepada ahli kubur", arabic: "السَّلاَمُ عَلَى أَهْلِ الدِّيَارِ مِنَ الْمُؤْمِنِينَ وَالْمُسْلِمِينَ...", latin: "Assalaamu 'ala ahlid diyaari minal mu'miniina wal muslimiin...", arti: "Keselamatan atas penghuni kubur dari kaum mukminin dan muslimin..." },
+      { id: 41, title: "Doa Melihat Hilal", subtitle: "Menyambut bulan baru", arabic: "اللَّهُ أَكْبَرُ، اللَّهُمَّ أَهِلَّهُ عَلَيْنَا بِالْيُمْنِ وَالإِيمَانِ وَالسَّلاَمَةِ وَالإِسْلاَمِ", latin: "Allahu Akbar, Allahumma ahillahu 'alainaa bil yumni wal iimaani wassalaamati wal islaam", arti: "Allah Maha Besar, ya Allah, tampakkanlah bulan itu kepada kami dengan membawa keberkahan dan keimanan, keselamatan dan Islam." },
+      { id: 42, title: "Doa Agar Diberi Kesabaran", subtitle: "Memohon keteguhan", arabic: "رَبَّنَا أَفْرِغْ عَلَيْنَا صَبْرًا وَثَبِّتْ أَقْدَامَنَا", latin: "Rabbanaa afrigh 'alainaa shabran wa tsabbit aqdaamanaa", arti: "Ya Tuhan kami, limpahkanlah kesabaran kepada kami dan kukuhkanlah pendirian kami." },
+      { id: 43, title: "Doa Mohon Petunjuk", subtitle: "Meminta bimbingan", arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْهُدَى وَالتُّقَى وَالْعَفَافَ وَالْغِنَى", latin: "Allahumma innii as'alukal hudaa wattuqaa wal 'afaafa wal ghinaa", arti: "Ya Allah, aku memohon kepada-Mu petunjuk, ketakwaan, kesucian diri, dan kecukupan." },
+      { id: 44, title: "Doa Terhindar dari Sifat Malas", subtitle: "Memohon semangat", arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْعَجْزِ وَالْكَسَلِ", latin: "Allahumma innii a'uudzubika minal 'ajzi wal kasali", arti: "Ya Allah, aku berlindung kepada-Mu dari kelemahan dan kemalasan." },
+      { id: 45, title: "Doa Agar Diteguhkan Hati", subtitle: "Istiqamah dalam iman", arabic: "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ", latin: "Yaa muqallibal quluub, tsabbit qalbii 'alaa diinik", arti: "Wahai Dzat yang membolak-balikkan hati, teguhkanlah hatiku di atas agama-Mu." },
+      { id: 46, title: "Doa Memohon Ampunan & Rahmat", subtitle: "Permohonan ampunan", arabic: "رَبَّنَا ظَلَمْنَا أَنْفُسَنَا وَإِنْ لَمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ", latin: "Rabbanaa zhalamnaa anfusanaa wa illam taghfirlanaa wa tarhamnaa lanakuunanna minal khaasiriin", arti: "Ya Tuhan kami, kami telah menzalimi diri kami sendiri, dan jika Engkau tidak mengampuni kami dan memberi rahmat kepada kami, niscaya kami termasuk orang-orang yang rugi." },
+      { id: 47, title: "Doa Saat Sulit Tidur", subtitle: "Agar tidur nyenyak", arabic: "اللَّهُمَّ غَارَتِ النُّجُومُ وَهَدَأَتِ الْعُيُونُ...", latin: "Allahumma ghaaratinnujuumu wa hada'atil 'uyuun...", arti: "Ya Allah, bintang-bintang telah terbenam, mata-mata telah terpejam..." },
+      { id: 48, title: "Doa Ketika Memulai Pekerjaan", subtitle: "Memohon kelancaran", arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ خَيْرِ هَذَا الْعَمَلِ وَخَيْرِ مَا فِيهِ", latin: "Allahumma innii as'aluka min khairi hadzal 'amali wa khairi maa fiihi", arti: "Ya Allah, aku memohon kepada-Mu kebaikan pekerjaan ini dan kebaikan yang ada di dalamnya." },
+      { id: 49, title: "Doa Setelah Selesai Bekerja", subtitle: "Rasa syukur", arabic: "الْحَمْدُ لِلَّهِ الَّذِي بِنِعْمَتِهِ تَتِمُّ الصَّالِحَاتُ", latin: "Alhamdulillahilladzi bini'matihi tatimmush shaalihaat", arti: "Segala puji bagi Allah yang dengan nikmat-Nya sempurnalah segala kebaikan." },
+      { id: 50, title: "Doa Ketika Mendengar Kabar Baik", subtitle: "Ekspresi kebahagiaan", arabic: "الْحَمْدُ لِلَّهِ الَّذِي بِنِعْمَتِهِ تَتِمُّ الصَّالِحَاتُ", latin: "Alhamdulillahilladzi bini'matihi tatimmush shaalihaat", arti: "Segala puji bagi Allah yang dengan nikmat-Nya sempurnalah segala kebaikan." },
+      { id: 51, title: "Doa Ketika Mendengar Kabar Buruk", subtitle: "Menjaga kesabaran", arabic: "الْحَمْدُ لِلَّهِ عَلَى كُلِّ حَالٍ", latin: "Alhamdulillahi 'alaa kulli haal", arti: "Segala puji bagi Allah atas segala keadaan." },
+      { id: 52, "title": "Doa Memohon Jodoh Terbaik", "subtitle": "Bagi yang belum menikah", "arabic": "رَبِّ لاَ تَذَرْنِي فَرْدًا وَأَنْتَ خَيْرُ الْوَارِثِينَ", "latin": "Rabbi laa tadzarnii fardan wa anta khairul waaritsiin", "arti": "Ya Tuhanku, janganlah Engkau biarkan aku hidup seorang diri, dan Engkaulah pewaris yang paling baik." },
+      { id: 53, "title": "Doa Mohon Keturunan yang Baik", "subtitle": "Doa Nabi Zakaria", "arabic": "رَبِّ هَبْ لِي مِنْ لَدُنْكَ ذُرِّيَّةً طَيِّبَةً إِنَّكَ سَمِيعُ الدُّعَاءِ", "latin": "Rabbi hablii min ladunka dzurriyyatan thayyibatan innaka samii'ud du'aa", "arti": "Ya Tuhanku, berilah aku dari sisi-Mu seorang anak yang baik. Sesungguhnya Engkau Maha Pendengar doa." },
+      { id: 54, "title": "Doa Agar Terhindar dari Utang", "subtitle": "Memohon kecukupan", "arabic": "اللَّهُمَّ اكْفِنِي بِحَلاَلِكَ عَنْ حَرَامِكَ وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ", "latin": "Allahummak finii bihalaalika 'an haraamika wa aghninii bifadhlika 'amman siwaak", "arti": "Ya Allah, cukupkanlah aku dengan yang halal dan jauhkanlah aku dari yang haram, dan cukupkanlah aku dengan karunia-Mu dari bergantung pada selain-Mu." }
   ];
   const translations = {
       'id': { 'nav_title': 'Menu Navigasi', 'nav_doa': '🤲 Doa Harian', 'nav_quran': '📖 Al-Qur\'an', 'nav_dzikir': '📿 Dzikir', 'nav_kiblat': '🧭 Kiblat', 'nav_settings': '⚙️ Pengaturan', 'remaining_time': 'Waktu Tersisa', 'settings_title': 'Pengaturan', 'settings_dark_mode': 'Mode Malam', 'settings_notifications': 'Aktifkan Notifikasi', 'settings_language': 'Bahasa', 'settings_about': 'Tentang Aplikasi', 'last_read': 'TERAKHIR DIBACA', 'no_last_read': 'Belum ada doa yang dibaca', 'all_doa': 'Semua Doa', 'bookmarked': 'Ditandai', 'Imsak': 'Imsak', 'Fajr': 'Subuh', 'Sunrise': 'Terbit', 'Dhuhr': 'Zuhur', 'Asr': 'Asar', 'Maghrib': 'Magrib', 'Isha': 'Isya\'', 'Imsak_desc': 'Notifikasi & Tanpa Suara Azan', 'Fajr_desc': 'Makkah #1 (Fajr)', 'Sunrise_desc': 'Notifikasi & Tanpa Suara Azan', 'Dhuhr_desc': 'Mishary Rashid', 'Asr_desc': 'Mishary Rashid', 'Maghrib_desc': 'Mishary Rashid', 'Isha_desc': 'Mishary Rashid' },
@@ -728,7 +734,11 @@
               const doa = doaHarianData.find(d => d.id === id); if (!doa) return;
               currentOpenDoaId = id;
               singleDoaModal.querySelector('#single-doa-modal-title').textContent = doa.title;
-              singleDoaModal.querySelector('#single-doa-modal-body').innerHTML = `<p class="single-doa-arabic">${doa.arabic}</p><p class="single-doa-arti"><b>Artinya:</b> ${doa.arti}</p>`;
+              singleDoaModal.querySelector('#single-doa-modal-body').innerHTML = `
+                  <p class="single-doa-arabic">${doa.arabic}</p>
+                  <p class="single-doa-latin">${doa.latin}</p>
+                  <hr style="margin: 1.5rem 0; border-color: #eee;">
+                  <p class="single-doa-arti"><b>Artinya:</b> ${doa.arti}</p>`;
               updateBookmarkIcon(); singleDoaModal.style.display = 'flex';
               localStorage.setItem('last_read_doa_id', id); lastReadDoaId = id; renderLastRead();
           }
@@ -796,12 +806,12 @@
                   const item = document.createElement('div');
                   item.className = 'list-item';
                   item.innerHTML = `
-                      <span class="num">${surah.number}</span>
-                      <div class="details">
-                          <div class="title">${surah.name.transliteration.id}</div>
-                          <div class="subtitle">${surah.name.translation.id} (${surah.numberOfVerses} verses)</div>
-                      </div>
-                      <span class="arabic">${surah.name.short}</span>`;
+                          <span class="num">${surah.number}</span>
+                          <div class="details">
+                              <div class="title">${surah.name.transliteration.id}</div>
+                              <div class="subtitle">${surah.name.translation.id} (${surah.numberOfVerses} verses)</div>
+                          </div>
+                          <span class="arabic">${surah.name.short}</span>`;
                   item.addEventListener('click', () => showSurahDetail(surah.number, backTarget));
                   container.appendChild(item);
               });
@@ -813,9 +823,9 @@
                    const item = document.createElement('div');
                    item.className = 'list-item';
                    item.innerHTML = `
-                       <span class="num">${i}</span>
-                       <div class="details"><div class="title">Juz ${i}</div></div>
-                       <span class="arabic">الجزء ${i}</span>`;
+                           <span class="num">${i}</span>
+                           <div class="details"><div class="title">Juz ${i}</div></div>
+                           <span class="arabic">الجزء ${i}</span>`;
                    item.addEventListener('click', () => showSurahsInJuz(i));
                    quranListContainer.appendChild(item);
                }
@@ -849,28 +859,29 @@
                   surahViewTitle.textContent = `${surah.name.transliteration.id}`;
                   
                   let contentHtml = `
-                      <div class="surah-detail-header">
-                          <h2>${surah.name.long}</h2>
-                          <p>${surah.name.translation.id}</p>
-                          <div class="meta">${surah.revelation.id} • ${surah.numberOfVerses} VERSES</div>
-                      </div>`;
+                          <div class="surah-detail-header">
+                              <h2>${surah.name.long}</h2>
+                              <p>${surah.name.translation.id}</p>
+                              <div class="meta">${surah.revelation.id} • ${surah.numberOfVerses} VERSES</div>
+                          </div>`;
                   
                   // --- LOGIKA PENAMBAHAN BASMALAH DENGAN ARTINYA ---
                   if (surah.number !== 1 && surah.number !== 9) {
                       contentHtml += `
-                          <div class="basmala">
-                              <p class="basmala-arabic">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
-                              <p class="basmala-Artinya">Dengan menyebut nama Allah Yang Maha Pengasih, lagi Maha Penyayang</p>
-                          </div>`;
+                              <div class="basmala">
+                                  <p class="basmala-arabic">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
+                                  <p class="basmala-translation">Dengan menyebut nama Allah Yang Maha Pengasih, lagi Maha Penyayang</p>
+                              </div>`;
                   }
 
                   surah.verses.forEach(ayah => {
                       contentHtml += `
-                          <div class="ayah-item">
-                              <div class="ayah-header"><span class="ayah-number">${surah.number}:${ayah.number.inSurah}</span></div>
-                              <p class="ayah-arabic">${ayah.text.arab}</p>
-                              <p class="ayah-translation"><b>Artinya:</b> ${ayah.translation.id}</p>
-                          </div>`;
+                              <div class="ayah-item">
+                                  <div class="ayah-header"><span class="ayah-number">${surah.number}:${ayah.number.inSurah}</span></div>
+                                  <p class="ayah-arabic">${ayah.text.arab}</p>
+                                  <p class="ayah-latin">${ayah.text.transliteration.en}</p>
+                                  <p class="ayah-translation"><b>Artinya:</b> ${ayah.translation.id}</p>
+                              </div>`;
                   });
                   surahViewBody.innerHTML = contentHtml;
 
@@ -993,25 +1004,25 @@
           applyTheme(localStorage.getItem('theme') || 'light');
 
           function updateNotificationButtonState() {
-                if (!("Notification" in window)) {
-                    enableNotificationsBtn.textContent = 'Not Supported';
-                    enableNotificationsBtn.disabled = true;
-                    return;
-                }
-                switch(Notification.permission) {
-                    case 'granted':
-                        enableNotificationsBtn.textContent = 'Enabled';
-                        enableNotificationsBtn.disabled = true;
-                        break;
-                    case 'denied':
-                        enableNotificationsBtn.textContent = 'Blocked';
-                        enableNotificationsBtn.disabled = true;
-                        break;
-                    default:
-                        enableNotificationsBtn.textContent = 'Enable';
-                        enableNotificationsBtn.disabled = false;
-                }
-            }
+               if (!("Notification" in window)) {
+                   enableNotificationsBtn.textContent = 'Not Supported';
+                   enableNotificationsBtn.disabled = true;
+                   return;
+               }
+               switch(Notification.permission) {
+                   case 'granted':
+                       enableNotificationsBtn.textContent = 'Enabled';
+                       enableNotificationsBtn.disabled = true;
+                       break;
+                   case 'denied':
+                       enableNotificationsBtn.textContent = 'Blocked';
+                       enableNotificationsBtn.disabled = true;
+                       break;
+                   default:
+                       enableNotificationsBtn.textContent = 'Enable';
+                       enableNotificationsBtn.disabled = false;
+               }
+           }
 
           function requestNotificationPermission() {
               if (!("Notification" in window)) {
