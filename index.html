@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -869,7 +870,7 @@
                           <div class="ayah-item">
                               <div class="ayah-header"><span class="ayah-number">${surah.number}:${ayah.number.inSurah}</span></div>
                               <p class="ayah-arabic">${ayah.text.arab}</p>
-                              <p class="ayah-translation"><b>Translation:</b> ${ayah.translation.id}</p>
+                              <p class="ayah-translation"><b>Artinya:</b> ${ayah.translation.id}</p>
                           </div>`;
                   });
                   surahViewBody.innerHTML = contentHtml;
@@ -880,7 +881,7 @@
                   surahViewBookmarkBtn.classList.toggle('bookmarked', bookmarkedSurahs.includes(surah.number));
 
               } catch (error) {
-                  surahViewBody.innerHTML = `<div class="loading-indicator">Failed to load surah. Please try again.</div>`;
+                  surahViewBody.innerHTML = `<div class="loading-indicator">Gagal memuat surah. Silahkan coba lagi.</div>`;
                   console.error("Error fetching surah detail:", error);
               }
           }
@@ -889,7 +890,7 @@
               if (lastReadSurah) {
                   lastReadSurahCardText.textContent = `Surah ${lastReadSurah.name} (No. ${lastReadSurah.number})`;
               } else {
-                  lastReadSurahCardText.textContent = "No surah has been read yet";
+                  lastReadSurahCardText.textContent = "Belum ada  surah yang dibaca";
               }
           }
 
@@ -929,7 +930,7 @@
               } else if (tab === 'bookmarked') {
                   const bookmarkedList = surahs.filter(s => bookmarkedSurahs.includes(s.number));
                   if (bookmarkedList.length === 0) {
-                      quranListContainer.innerHTML = `<div class="loading-indicator">No bookmarked surahs.</div>`;
+                      quranListContainer.innerHTML = `<div class="loading-indicator">Tidak ada surah yang ditandai.</div>`;
                   } else {
                       renderSurahList(bookmarkedList, quranListContainer, 'quran-view');
                   }
