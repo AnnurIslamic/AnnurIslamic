@@ -579,14 +579,14 @@
         
         // --- PRAYER TIMES FEATURE ---
         function showPrayerNotification(prayerName) {
-          if (Notification.permission !== 'granted') return;
-          const notificationTitle = `Waktunya Sholat ${prayerName}`;
-          const notificationOptions = {
-              body: `Sekarang telah masuk waktu sholat ${prayerName}.`,
-              icon: 'https://cdn-icons-png.flaticon.com/512/30/30709.png'
-          };
-          const notification = new Notification(notificationTitle, notificationOptions);
-          setTimeout(() => notification.close(), 15000);
+         if (Notification.permission !== 'granted') return;
+         const notificationTitle = `Waktunya Sholat ${prayerName}`;
+         const notificationOptions = {
+             body: `Sekarang telah masuk waktu sholat ${prayerName}.`,
+             icon: 'https://cdn-icons-png.flaticon.com/512/30/30709.png'
+         };
+         const notification = new Notification(notificationTitle, notificationOptions);
+         setTimeout(() => notification.close(), 15000);
         }
         
         function renderPrayerTimes(prayerTimes) {
@@ -806,10 +806,10 @@
                 currentOpenDoaId = id;
                 singleDoaModal.querySelector('#single-doa-modal-title').textContent = doa.title;
                 singleDoaModal.querySelector('#single-doa-modal-body').innerHTML = `
-                                <p class="single-item-arabic">${doa.arabic}</p>
-                                <p class="single-item-latin">${doa.latin}</p>
-                                <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
-                                <p class="single-item-arti"><b>Artinya:</b> ${doa.arti}</p>`;
+                                        <p class="single-item-arabic">${doa.arabic}</p>
+                                        <p class="single-item-latin">${doa.latin}</p>
+                                        <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
+                                        <p class="single-item-arti"><b>Artinya:</b> ${doa.arti}</p>`;
                 updateBookmarkIcon(); singleDoaModal.style.display = 'flex';
                 localStorage.setItem('last_read_doa_id', id); lastReadDoaId = id; renderLastRead();
             }
@@ -1222,6 +1222,16 @@
         
         showView('prayer-times-view');
       });
+  </script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => console.log('Service Worker: Terdaftar.', reg))
+          .catch(err => console.error('Service Worker: Pendaftaran gagal.', err));
+      });
+    }
   </script>
 </body>
 </html>
