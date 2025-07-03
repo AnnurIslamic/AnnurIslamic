@@ -1,18 +1,15 @@
-// PENTING: Ubah versi cache agar browser menginstal ulang service worker
-const CACHE_NAME = 'annur-islamic-cache-v2';
+// PENTING: Versi cache dinaikkan menjadi v3 untuk memaksa update!
+const CACHE_NAME = 'annur-islamic-cache-v3';
 
-// Daftar aset penting yang akan disimpan saat instalasi (kerangka aplikasi).
+// Daftar aset "kerangka" aplikasi yang akan disimpan di awal.
 const URLS_TO_PRECACHE = [
   '/',
   'index.html',
   'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap',
   'https://cdn-icons-png.flaticon.com/512/30/30709.png'
-  // Kita tidak memasukkan API di sini agar ditangani oleh event 'fetch'
 ];
 
-/**
- * Event 'install': Tetap sama, menyimpan kerangka aplikasi.
- */
+// Event 'install': Menyimpan kerangka aplikasi.
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -23,9 +20,7 @@ self.addEventListener('install', event => {
   );
 });
 
-/**
- * Event 'activate': Tetap sama, membersihkan cache lama.
- */
+// Event 'activate': Membersihkan cache lama.
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
@@ -42,29 +37,34 @@ self.addEventListener('activate', event => {
   return self.clients.claim();
 });
 
-/**
- * Event 'fetch': INI BAGIAN YANG DIUBAH TOTAL.
- * Menerapkan strategi "Network-First, falling back to Cache".
- */
+// Event 'fetch': Strategi Network-First yang disempurnakan.
 self.addEventListener('fetch', event => {
-  event.respondWith(
-    // 1. Coba ambil dari network terlebih dahulu
-    fetch(event.request)
-      .then(networkResponse => {
-        // 2. Jika berhasil, simpan salinannya ke cache untuk nanti
-        return caches.open(CACHE_NAME).then(cache => {
-          // Pastikan hanya request GET yang valid yang di-cache
-          if (event.request.method === 'GET') {
-            cache.put(event.request, networkResponse.clone());
+  // Kita hanya terapkan strategi ini untuk request navigasi dan API
+  if (event.request.mode === 'navigate' || event.request.url.includes('api.')) {
+    event.respondWith(
+      fetch(event.request)
+        .then(networkResponse => {
+          // Periksa apakah response dari network valid sebelum di-cache
+          if (networkResponse.ok) {
+            const responseToCache = networkResponse.clone();
+            caches.open(CACHE_NAME).then(cache => {
+              cache.put(event.request, responseToCache);
+            });
           }
-          // Dan kembalikan response dari network
           return networkResponse;
-        });
+        })
+        .catch(() => {
+          // Jika network gagal, baru ambil dari cache
+          console.log('Service Worker: Network gagal, mengambil dari cache untuk:', event.request.url);
+          return caches.match(event.request);
+        })
+    );
+  } else {
+    // Untuk aset lain (seperti font), gunakan strategi Cache-First
+    event.respondWith(
+      caches.match(event.request).then(response => {
+        return response || fetch(event.request);
       })
-      .catch(() => {
-        // 3. Jika network gagal (offline), coba ambil dari cache
-        console.log('Service Worker: Network gagal, mencoba mengambil dari cache untuk:', event.request.url);
-        return caches.match(event.request);
-      })
-  );
+    );
+  }
 });
