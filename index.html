@@ -717,7 +717,7 @@
           window.renderDoaListView = function(filter) {
               doaListContainer.innerHTML = '';
               let data = (filter === 'bookmarked') ? doaHarianData.filter(d => bookmarkedDoas.includes(d.id)) : doaHarianData;
-              if (data.length === 0) { doaListContainer.innerHTML = `<p class="loading-indicator">No bookmarked prayers found.</p>`; return; }
+              if (data.length === 0) { doaListContainer.innerHTML = `<p class="loading-indicator">Tidak ditemukan doa yang ditandai.</p>`; return; }
               data.forEach(d => {
                   const item = document.createElement('div'); item.className = 'list-item';
                   item.innerHTML = `<span class="num">${d.id}</span><div class="details"><div class="title">${d.title}</div><div class="subtitle">${d.subtitle}</div></div><span class="arabic">${d.arabic.split(' ')[0]}...</span>`;
@@ -729,14 +729,14 @@
               const doa = doaHarianData.find(d => d.id === id); if (!doa) return;
               currentOpenDoaId = id;
               singleDoaModal.querySelector('#single-doa-modal-title').textContent = doa.title;
-              singleDoaModal.querySelector('#single-doa-modal-body').innerHTML = `<p class="single-doa-arabic">${doa.arabic}</p><p class="single-doa-arti"><b>Translation:</b> ${doa.arti}</p>`;
+              singleDoaModal.querySelector('#single-doa-modal-body').innerHTML = `<p class="single-doa-arabic">${doa.arabic}</p><p class="single-doa-arti"><b>Artinya:</b> ${doa.arti}</p>`;
               updateBookmarkIcon(); singleDoaModal.style.display = 'flex';
               localStorage.setItem('last_read_doa_id', id); lastReadDoaId = id; renderLastRead();
           }
           function renderLastRead() {
               const p = lastReadCardText;
-              if (lastReadDoaId) { const doa = doaHarianData.find(d => d.id == lastReadDoaId); p.textContent = doa ? doa.title : 'No prayer read yet'; } 
-              else { p.textContent = 'No prayer read yet'; }
+              if (lastReadDoaId) { const doa = doaHarianData.find(d => d.id == lastReadDoaId); p.textContent = doa ? doa.title : 'Belum ada doa yang dibaca'; } 
+              else { p.textContent = 'Belum ada doa yang dibaca'; }
           }
           function updateBookmarkIcon() { singleDoaModal.querySelector('#bookmark-doa-btn').classList.toggle('bookmarked', bookmarkedDoas.includes(currentOpenDoaId)); }
           
@@ -782,7 +782,7 @@
                   }
               } catch (error) { 
                   console.error("Error fetching surah list:", error);
-                  quranListContainer.innerHTML = `<div class="loading-indicator">Failed to load. Check connection.</div>`;
+                  quranListContainer.innerHTML = `<div class="loading-indicator">Gagal dimuat. Periksa koneksi.</div>`;
               }
               return [];
           }
