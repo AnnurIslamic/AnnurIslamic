@@ -419,819 +419,848 @@
 
 
   <script>
-      // --- DATA (Dzikir, Doa, Translations) ---
-      const dzikirData = [
-        { id: 'dzikir_1', title: 'Tasbih', subtitle: 'Menyucikan Allah', arabic: 'سُبْحَانَ اللَّهِ', latin: 'Subhanallah', arti: 'Maha Suci Allah', target: 33 },
-        { id: 'dzikir_2', title: 'Tahmid', subtitle: 'Memuji Allah', arabic: 'الْحَمْدُ لِلَّهِ', latin: 'Alhamdulillah', arti: 'Segala Puji Bagi Allah', target: 33 },
-        { id: 'dzikir_3', title: 'Takbir', subtitle: 'Mengagungkan Allah', arabic: 'اللَّهُ أَكْبَرُ', latin: 'Allahu Akbar', arti: 'Allah Maha Besar', target: 33 },
-        { id: 'dzikir_4', title: 'Tahlil', subtitle: 'Kalimat Tauhid', arabic: 'لَا إِلَهَ إِلَّا اللَّهُ', latin: 'La ilaha illallah', arti: 'Tiada Tuhan selain Allah', target: 33 },
-        { id: 'dzikir_5', title: 'Istighfar', subtitle: 'Memohon Ampunan', arabic: 'أَسْتَغْفِرُ اللَّهَ', latin: 'Astaghfirullah', arti: 'Aku memohon ampun kepada Allah', target: 33 },
-        { id: 'dzikir_6', title: 'Salawat Nabi', subtitle: 'Untuk Nabi Muhammad SAW', arabic: 'اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ', latin: 'Allahumma salli \'ala Muhammad wa \'ala ali Muhammad', arti: 'Ya Allah, berikanlah rahmat kepada Nabi Muhammad dan keluarga Nabi Muhammad.', target: 33 },
-        { id: 'dzikir_7', title: 'Hauqalah', subtitle: 'Pengakuan Kekuatan Allah', arabic: 'لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللهِ', latin: 'La hawla wa la quwwata illa billah', arti: 'Tiada daya dan upaya kecuali dengan kekuatan Allah.', target: 33 }
-      ];
-      const doaHarianData = [
-          { id: 1, title: "Doa Bangun Tidur", subtitle: "Adab memulai hari", arabic: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ", latin: "Alhamdulillahilladzi ahyaanaa ba'da maa amaatanaa wa ilaihin nusyuur", arti: "Segala puji bagi Allah yang telah menghidupkan kami setelah mematikan kami, dan kepada-Nya lah kami akan dibangkitkan." },
-          { id: 2, title: "Doa Masuk Toilet", subtitle: "Memohon perlindungan", arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ", latin: "Allahumma innii a'uudzubika minal khubutsi wal khabaaitsi", arti: "Ya Allah, sesungguhnya aku berlindung kepada-Mu dari setan laki-laki dan setan perempuan." },
-          { id: 3, title: "Doa Keluar Toilet", subtitle: "Memohon ampunan", arabic: "غُفْرَانَكَ", latin: "Ghufraanaka", arti: "Aku memohon ampunan-Mu." },
-          { id: 4, title: "Doa Sebelum Wudhu", subtitle: "Niat bersuci", arabic: "بِسْمِ اللَّهِ", latin: "Bismillah", arti: "Dengan menyebut nama Allah." },
-          { id: 5, title: "Doa Setelah Wudhu", subtitle: "Menyempurnakan wudhu", arabic: "أَشْهَدُ أَنْ لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ", latin: "Asyhadu an laa ilaaha illallaah wahdahu laa syariika lah, wa asyhadu anna muhammadan 'abduhu wa rasuuluh", arti: "Aku bersaksi bahwa tiada Tuhan selain Allah semata, tiada sekutu bagi-Nya, dan aku bersaksi bahwa Muhammad adalah hamba dan utusan-Nya." },
-          { id: 6, title: "Doa Mengenakan Pakaian", subtitle: "Mensyukuri nikmat", arabic: "الْحَمْدُ لِلَّهِ الَّذِي كَسَانِي هَذَا وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلاَ قُوَّةٍ", latin: "Alhamdulillahilladzi kasaanii hadzaa wa razaqaniihi min ghairi haulin minnii wa laa quwwatin", arti: "Segala puji bagi Allah yang telah memberiku pakaian ini dan menganugerahkannya kepadaku tanpa daya dan kekuatan dariku." },
-          { id: 7, title: "Doa Melepas Pakaian", subtitle: "Adab melepas pakaian", arabic: "بِسْمِ اللَّهِ", latin: "Bismillah", arti: "Dengan menyebut nama Allah." },
-          { id: 8, title: "Doa Keluar Rumah", subtitle: "Memohon perlindungan", arabic: "بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ لاَ حَوْلَ وَلاَ قُوَّةَ إِلاَّ بِاللَّهِ", latin: "Bismillahi tawakkaltu 'alallah, laa haula wa laa quwwata illaa billaah", arti: "Dengan nama Allah, aku bertawakal kepada Allah, tiada daya dan kekuatan kecuali dengan pertolongan Allah." },
-          { id: 9, title: "Doa Masuk Rumah", subtitle: "Memohon kebaikan", arabic: "بِسْمِ اللَّهِ وَلَجْنَا وَبِسْمِ اللَّهِ خَرَجْنَا وَعَلَى رَبِّنَا تَوَكَّلْنَا", latin: "Bismillahi walajnaa wa bismillahi kharajnaa wa 'alaa rabbinaa tawakkalnaa", arti: "Dengan nama Allah kami masuk, dan dengan nama Allah kami keluar, dan kepada Tuhan kami, kami bertawakal." },
-          { id: 10, title: "Doa Pergi ke Masjid", subtitle: "Langkah menuju kebaikan", arabic: "اللَّهُمَّ اجْعَلْ فِي قَلْبِي نُورًا وَفِي لِسَانِي نُورًا...", latin: "Allahummaj 'al fii qalbii nuuran wa fii lisaanii nuuran...", arti: "Ya Allah, jadikanlah cahaya di hatiku, cahaya di lidahku..." },
-          { id: 11, title: "Doa Masuk Masjid", subtitle: "Memohon rahmat", arabic: "اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ", latin: "Allahummaftah lii abwaaba rahmatika", arti: "Ya Allah, bukakanlah untukku pintu-pintu rahmat-Mu." },
-          { id: 12, title: "Doa Keluar Masjid", subtitle: "Memohon karunia", arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ", latin: "Allahumma innii as'aluka min fadhlik", arti: "Ya Allah, sesungguhnya aku memohon kepada-Mu dari karunia-Mu." },
-          { id: 13, title: "Doa Sebelum Makan", subtitle: "Agar makanan berkah", arabic: "بِسْمِ اللَّهِ", latin: "Bismillah", arti: "Dengan menyebut nama Allah." },
-          { id: 14, title: "Doa Sesudah Makan", subtitle: "Tanda bersyukur", arabic: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنِي هَذَا وَرَZَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلاَ قُوَّةٍ", latin: "Alhamdulillahilladzi ath'amanii hadzaa wa razaqaniihi min ghairi haulin minnii wa laa quwwatin", arti: "Segala puji bagi Allah yang telah memberiku makanan ini dan menganugerahkannya kepadaku tanpa daya dan kekuatan dariku." },
-          { id: 15, title: "Doa Ketika Lupa Basmalah", subtitle: "Jika lupa di awal", arabic: "بِسْمِ اللَّهِ أَوَّلَهُ وَآخِرَهُ", latin: "Bismillahi awwalahu wa aakhirahu", arti: "Dengan nama Allah di awal dan di akhirnya." },
-          { id: 16, title: "Doa Minum Air Zamzam", subtitle: "Memohon kebaikan", arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا وَرِزْقًا وَاسِعًا وَشِفَاءً مِنْ كُلِّ دَاءٍ", latin: "Allahumma innii as'aluka 'ilman naafi'an, wa rizqan waasi'an, wasyifaa'an min kulli daa'in", arti: "Ya Allah, aku memohon kepada-Mu ilmu yang bermanfaat, rezeki yang luas, dan kesembuhan dari segala penyakit." },
-          { id: 17, title: "Doa Berbuka Puasa", subtitle: "Saat berbuka puasa", arabic: "ذَهَبَ الظَّمَأُ وَابْتَلَّتِ الْعُرُوقُ وَثَبَتَ الأَجْرُ إِنْ شَاءَ اللَّهُ", latin: "Dzahabazh zhoma'u wabtallatil 'uruuqu wa tsabatal ajru insyaallah", arti: "Telah hilang dahaga, telah basah urat-urat, dan telah tetap pahala, insya Allah." },
-          { id: 18, title: "Doa Sebelum Tidur", subtitle: "Adab mengakhiri hari", arabic: "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا", latin: "Bismikallahumma amuutu wa ahyaa", arti: "Dengan nama-Mu ya Allah aku mati dan aku hidup." },
-          { id: 19, title: "Doa Ketika Mimpi Buruk", subtitle: "Memohon perlindungan", arabic: "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ غَضَبِهِ وَعِقَابِهِ وَشَرِّ عِبَادِهِ...", latin: "A'uudzu bikalimaatillaahit taammaati min ghadhabihi wa 'iqaabihi wa syarri 'ibaadihi...", arti: "Aku berlindung dengan kalimat-kalimat Allah yang sempurna dari kemurkaan-Nya, siksa-Nya, dan kejahatan hamba-hamba-Nya..." },
-          { id: 20, title: "Doa Naik Kendaraan", subtitle: "Memohon keselamatan", arabic: "سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ", latin: "Subhaanalladzii sakhkhara lanaa hadzaa wa maa kunnaa lahu muqriniin", arti: "Maha Suci Dzat yang telah menundukkan semua ini bagi kami padahal kami sebelumnya tidak mampu menguasainya." },
-          { id: 21, title: "Doa Safar (Bepergian)", subtitle: "Memohon kemudahan", arabic: "اللَّهُمَّ هَوِّنْ عَلَيْنَا سَفَرَنَا هَذَا وَاطْوِ عَنَّا بُعْدَهُ", latin: "Allahumma hawwin 'alainaa safaranaa hadzaa waathwi 'annaa bu'dahu", arti: "Ya Allah, mudahkanlah perjalanan kami ini, dan dekatkanlah jaraknya bagi kami." },
-          { id: 22, title: "Doa Tiba di Tujuan", subtitle: "Rasa syukur", arabic: "الْحَمْدُ لِلَّهِ الَّذِي سَلَّمَنِي", latin: "Alhamdulillahilladzi sallamanii", arti: "Segala puji bagi Allah yang telah menyelamatkanku." },
-          { id: 23, title: "Doa Menjenguk Orang Sakit", subtitle: "Mendoakan kesembuhan", arabic: "لاَ بَأْسَ طَهُورٌ إِنْ شَاءَ اللَّهُ", latin: "Laa ba'sa thahuurun insyaallah", arti: "Tidak mengapa, semoga menjadi pembersih (dosa), insya Allah." },
-          { id: 24, title: "Doa Ketika Hujan Turun", subtitle: "Memohon hujan bermanfaat", arabic: "اللَّهُمَّ صَيِّبًا نَافِعًا", latin: "Allahumma shayyiban naafi'an", arti: "Ya Allah, (jadikanlah hujan ini) hujan yang bermanfaat." },
-          { id: 25, title: "Doa Setelah Hujan", subtitle: "Rahmat dari Allah", arabic: "مُطِرْنَا بِفَضْلِ اللَّهِ وَرَحْمَتِهِ", latin: "Muthirnaa bifadhlillahi wa rahmatihi", arti: "Kita diberi hujan karena karunia dan rahmat Allah." },
-          { id: 26, title: "Doa Melihat Petir", subtitle: "Tanda kebesaran Allah", arabic: "سُبْحَانَ الَّذِي يُسَبِّحُ الرَّعْدُ بِحَمْدِهِ وَالْمَلاَئِكَةُ مِنْ خِيفَتِهِ", latin: "Subhaanalladzii yusabbihur ra'du bihamdihi wal malaa-ikatu min khiifatihi", arti: "Maha Suci Dzat yang petir bertasbih dengan memuji-Nya, dan para malaikat pun (bertasbih) karena takut kepada-Nya." },
-          { id: 27, title: "Doa Ketika Angin Kencang", subtitle: "Memohon kebaikan", arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَهَا وَأَعُوذُ بِكَ مِنْ شَرِّهَا", latin: "Allahumma innii as'aluka khairahaa wa a'uudzu bika min syarrihaa", arti: "Ya Allah, aku memohon kepada-Mu kebaikannya dan aku berlindung kepada-Mu dari keburukannya." },
-          { id: 28, title: "Doa Bercermin", subtitle: "Agar akhlak baik", arabic: "اللَّهُمَّ كَمَا حَسَّنْتَ خَلْقِي فَحَسِّنْ خُلُقِي", latin: "Allahumma kamaa hassanta khalqii fahassin khuluqii", arti: "Ya Allah, sebagaimana Engkau telah memperindah rupaku, maka perindahlah akhlakku." },
-          { id: 29, title: "Doa untuk Kedua Orang Tua", subtitle: "Tanda bakti", arabic: "رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا", latin: "Rabbighfirlii wa liwaalidayya warhamhumaa kamaa rabbayaanii shaghiiran", arti: "Wahai Tuhanku, ampunilah aku dan kedua orang tuaku, dan sayangilah mereka sebagaimana mereka telah menyayangiku di waktu kecil." },
-          { id: 30, title: "Doa Kebaikan Dunia Akhirat", subtitle: "Doa sapu jagat", arabic: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ", latin: "Rabbanaa aatinaa fiddunyaa hasanatan wa fil aakhirati hasanatan wa qinaa 'adzaabannaar", arti: "Ya Tuhan kami, berilah kami kebaikan di dunia dan kebaikan di akhirat, dan peliharalah kami dari siksa neraka." },
-          { id: 31, title: "Doa Sebelum Belajar", subtitle: "Memohon ilmu", arabic: "رَبِّ زِدْنِي عِلْمًا", latin: "Rabbi zidnii 'ilman", arti: "Wahai Tuhanku, tambahkanlah ilmu kepadaku." },
-          { id: 32, title: "Doa Sesudah Belajar", subtitle: "Agar ilmu bermanfaat", arabic: "اللَّهُمَّ انْفَعْنِي بِمَا عَلَّمْتَنِي وَعَلِّمْنِي مَا يَنْفَعُنِي وَزِدْنِي عِلْمًا", latin: "Allahummanfa'nii bimaa 'allamtanii wa 'allimnii maa yanfa'unii wa zidnii 'ilman", arti: "Ya Allah, berilah manfaat atas apa yang telah Engkau ajarkan kepadaku, ajarilah aku apa yang bermanfaat bagiku, dan tambahkanlah ilmu kepadaku." },
-          { id: 33, title: "Doa Penutup Majelis", subtitle: "Kaffaratul Majlis", arabic: "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ أَشْهَدُ أَنْ لاَ إِلَهَ إِلاَّ أَنْتَ أَسْتَغْفِرُكَ وَأَتُوبُ إِلَيْكَ", latin: "Subhaanakallahumma wa bihamdika, asyhadu an laa ilaaha illaa anta, astaghfiruka wa atuubu ilaika", arti: "Maha Suci Engkau ya Allah, dan dengan memuji-Mu, aku bersaksi bahwa tiada Tuhan selain Engkau, aku memohon ampun dan bertaubat kepada-Mu." },
-          { id: 34, title: "Doa Ketika Bersin", subtitle: "Mengucap syukur", arabic: "الْحَمْدُ لِلَّهِ", latin: "Alhamdulillah", arti: "Segala puji bagi Allah." },
-          { id: 35, title: "Jawaban Ketika Orang Bersin", subtitle: "Mendoakan saudara", arabic: "يَرْحَمُكَ اللَّهُ", latin: "Yarhamukallah", arti: "Semoga Allah merahmatimu." },
-          { id: 36, title: "Doa Ketika Marah", subtitle: "Meredam amarah", arabic: "أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ", latin: "A'uudzubillaahi minasy syaithaanir rajiim", arti: "Aku berlindung kepada Allah dari setan yang terkutuk." },
-          { id: 37, title: "Doa Masuk Pasar", subtitle: "Memohon kebaikan pasar", arabic: "لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ...", latin: "Laa ilaaha illallaah wahdahu laa syariika lah...", arti: "Tiada Tuhan selain Allah semata, tiada sekutu bagi-Nya..." },
-          { id: 38, title: "Doa Ketika Tertimpa Musibah", subtitle: "Kalimat istirja'", arabic: "إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ", latin: "Innaa lillaahi wa innaa ilaihi raaji'uun", arti: "Sesungguhnya kami milik Allah dan kepada-Nya lah kami akan kembali." },
-          { id: 39, title: "Doa untuk Pengantin Baru", subtitle: "Mendoakan keberkahan", arabic: "بَارَكَ اللَّهُ لَكَ وَبَارَكَ عَلَيْكَ وَجَمَعَ بَيْنَكُمَا فِي خَيْرٍ", latin: "Baarakallahu laka wa baaraka 'alaika wa jama'a bainakumaa fii khairin", arti: "Semoga Allah memberkahimu, dan memberkahi atasmu, dan mengumpulkan kalian berdua dalam kebaikan." },
-          { id: 40, title: "Doa Ziarah Kubur", subtitle: "Salam kepada ahli kubur", arabic: "السَّلاَمُ عَلَى أَهْلِ الدِّيَارِ مِنَ الْمُؤْمِنِينَ وَالْمُسْلِمِينَ...", latin: "Assalaamu 'ala ahlid diyaari minal mu'miniina wal muslimiin...", arti: "Keselamatan atas penghuni kubur dari kaum mukminin dan muslimin..." },
-          { id: 41, title: "Doa Melihat Hilal", subtitle: "Menyambut bulan baru", arabic: "اللَّهُ أَكْبَرُ، اللَّهُمَّ أَهِلَّهُ عَلَيْنَا بِالْيُمْنِ وَالإِيمَانِ وَالسَّلاَمَةِ وَالإِسْلاَمِ", latin: "Allahu Akbar, Allahumma ahillahu 'alainaa bil yumni wal iimaani wassalaamati wal islaam", arti: "Allah Maha Besar, ya Allah, tampakkanlah bulan itu kepada kami dengan membawa keberkahan dan keimanan, keselamatan dan Islam." },
-          { id: 42, title: "Doa Agar Diberi Kesabaran", subtitle: "Memohon keteguhan", arabic: "رَبَّنَا أَفْرِغْ عَلَيْنَا صَبْرًا وَثَبِّتْ أَقْدَامَنَا", latin: "Rabbanaa afrigh 'alainaa shabran wa tsabbit aqdaamanaa", arti: "Ya Tuhan kami, limpahkanlah kesabaran kepada kami dan kukuhkanlah pendirian kami." },
-          { id: 43, title: "Doa Mohon Petunjuk", subtitle: "Meminta bimbingan", arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْهُدَى وَالتُّقَى وَالْعَفَافَ وَالْغِنَى", latin: "Allahumma innii as'alukal hudaa wattuqaa wal 'afaafa wal ghinaa", arti: "Ya Allah, aku memohon kepada-Mu petunjuk, ketakwaan, kesucian diri, dan kecukupan." },
-          { id: 44, title: "Doa Terhindar dari Sifat Malas", subtitle: "Memohon semangat", arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْعَجْزِ وَالْكَسَلِ", latin: "Allahumma innii a'uudzubika minal 'ajzi wal kasali", arti: "Ya Allah, aku berlindung kepada-Mu dari kelemahan dan kemalasan." },
-          { id: 45, title: "Doa Agar Diteguhkan Hati", subtitle: "Istiqamah dalam iman", arabic: "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ", latin: "Yaa muqallibal quluub, tsabbit qalbii 'alaa diinik", arti: "Wahai Dzat yang membolak-balikkan hati, teguhkanlah hatiku di atas agama-Mu." },
-          { id: 46, title: "Doa Memohon Ampunan & Rahmat", subtitle: "Permohonan ampunan", arabic: "رَبَّنَا ظَلَمْنَا أَنْفُSَنَا وَإِنْ لَمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ", latin: "Rabbanaa zhalamnaa anfusanaa wa illam taghfirlanaa wa tarhamnaa lanakuunanna minal khaasiriin", arti: "Ya Tuhan kami, kami telah menzalimi diri kami sendiri, dan jika Engkau tidak mengampuni kami dan memberi rahmat kepada kami, niscaya kami termasuk orang-orang yang rugi." },
-          { id: 47, title: "Doa Saat Sulit Tidur", subtitle: "Agar tidur nyenyak", arabic: "اللَّهُمَّ غَارَتِ النُّجُومُ وَهَدَأَتِ الْعُيُونُ...", latin: "Allahumma ghaaratinnujuumu wa hada'atil 'uyuun...", arti: "Ya Allah, bintang-bintang telah terbenam, mata-mata telah terpejam..." },
-          { id: 48, title: "Doa Ketika Memulai Pekerjaan", subtitle: "Memohon kelancaran", arabic: "اللَّهُمَّ إِنِّي أَSْأَلُكَ مِنْ خَيْرِ هَذَا الْعَمَلِ وَخَيْرِ مَا فِيهِ", latin: "Allahumma innii as'aluka min khairi hadzal 'amali wa khairi maa fiihi", arti: "Ya Allah, aku memohon kepada-Mu kebaikan pekerjaan ini dan kebaikan yang ada di dalamnya." },
-          { id: 49, title: "Doa Setelah Selesai Bekerja", subtitle: "Rasa syukur", arabic: "الْحَمْدُ لِلَّهِ الَّذِي بِنِعْمَتِهِ تَتِمُّ الصَّالِحَاتُ", latin: "Alhamdulillahilladzi bini'matihi tatimmush shaalihaat", arti: "Segala puji bagi Allah yang dengan nikmat-Nya sempurnalah segala kebaikan." },
-          { id: 50, title: "Doa Ketika Mendengar Kabar Baik", subtitle: "Ekspresi kebahagiaan", arabic: "الْحَمْدُ لِلَّهِ الَّذِي بِنِعْمَتِهِ تَتِمُّ الصَّالِحَاتُ", latin: "Alhamdulillahilladzi bini'matihi tatimmush shaalihaat", arti: "Segala puji bagi Allah yang dengan nikmat-Nya sempurnalah segala kebaikan." },
-          { id: 51, title: "Doa Ketika Mendengar Kabar Buruk", subtitle: "Menjaga kesabaran", arabic: "الْحَمْدُ لِلَّهِ عَلَى كُلِّ حَالٍ", latin: "Alhamdulillahi 'alaa kulli haal", arti: "Segala puji bagi Allah atas segala keadaan." },
-          { id: 52, "title": "Doa Memohon Jodoh Terbaik", "subtitle": "Bagi yang belum menikah", "arabic": "رَبِّ لاَ تَذَرْنِي فَرْدًا وَأَنْتَ خَيْرُ الْوَارِثِينَ", "latin": "Rabbi laa tadzarnii fardan wa anta khairul waaritsiin", "arti": "Ya Tuhanku, janganlah Engkau biarkan aku hidup seorang diri, dan Engkaulah pewaris yang paling baik." },
-          { id: 53, "title": "Doa Mohon Keturunan yang Baik", "subtitle": "Doa Nabi Zakaria", "arabic": "رَبِّ هَبْ لِي مِنْ لَدُنْكَ ذُرِّيَّةً طَيِّبَةً إِنَّكَ سَمِيعُ الدُّعَاءِ", "latin": "Rabbi hablii min ladunka dzurriyyatan thayyibatan innaka samii'ud du'aa", "arti": "Ya Tuhanku, berilah aku dari sisi-Mu seorang anak yang baik. Sesungguhnya Engkau Maha Pendengar doa." },
-          { id: 54, "title": "Doa Agar Terhindar dari Utang", "subtitle": "Memohon kecukupan", "arabic": "اللَّهُمَّ اكْفِنِي بِحَلاَلِكَ عَنْ حَرَامِكَ وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ", "latin": "Allahummak finii bihalaalika 'an haraamika wa aghninii bifadhlika 'amman siwaak", "arti": "Ya Allah, cukupkanlah aku dengan yang halal dan jauhkanlah aku dari yang haram, dan cukupkanlah aku dengan karunia-Mu dari bergantung pada selain-Mu." }
-      ];
-      const translations = {
-          'id': { 'nav_title': 'Menu Navigasi', 'nav_doa': '🤲 Doa Harian', 'nav_quran': '📖 Al-Qur\'an', 'nav_dzikir': '📿 Dzikir & Tasbih', 'nav_kiblat': '🧭 Kiblat', 'nav_settings': '⚙️ Pengaturan', 'remaining_time': 'Waktu Tersisa', 'settings_title': 'Pengaturan', 'settings_dark_mode': 'Mode Malam', 'settings_notifications': 'Aktifkan Notifikasi', 'settings_language': 'Bahasa', 'settings_about': 'Tentang Aplikasi', 'last_read': 'TERAKHIR DIBACA', 'no_last_read': 'Belum ada doa yang dibaca', 'all_doa': 'Semua Doa', 'bookmarked': 'Ditandai', 'Imsak': 'Imsak', 'Fajr': 'Subuh', 'Sunrise': 'Terbit', 'Dhuhr': 'Zuhur', 'Asr': 'Asar', 'Maghrib': 'Magrib', 'Isha': 'Isya\'', 'Imsak_desc': 'Notifikasi & Tanpa Suara Azan', 'Fajr_desc': 'Makkah #1 (Fajr)', 'Sunrise_desc': 'Notifikasi & Tanpa Suara Azan', 'Dhuhr_desc': 'Mishary Rashid', 'Asr_desc': 'Mishary Rashid', 'Maghrib_desc': 'Mishary Rashid', 'Isha_desc': 'Mishary Rashid' },
-          'en': { 'nav_title': 'Navigation Menu', 'nav_doa': '🤲 Daily Prayers', 'nav_quran': '📖 Al-Qur\'an', 'nav_dzikir': '📿 Dhikr & Tasbih', 'nav_kiblat': '🧭 Qibla', 'nav_settings': '⚙️ Settings', 'remaining_time': 'Time Remaining', 'settings_title': 'Settings', 'settings_dark_mode': 'Dark Mode', 'settings_notifications': 'Enable Notifications', 'settings_language': 'Language', 'settings_about': 'About App', 'last_read': 'LAST READ', 'no_last_read': 'No prayers have been read yet', 'all_doa': 'All Prayers', 'bookmarked': 'Bookmarked', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Sunrise', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha', 'Imsak_desc': 'Notification & No Adhan Sound', 'Fajr_desc': 'Makkah #1 (Fajr)', 'Sunrise_desc': 'Notification & No Adhan Sound', 'Dhuhr_desc': 'Mishary Rashid', 'Asr_desc': 'Mishary Rashid', 'Maghrib_desc': 'Mishary Rashid', 'Isha_desc': 'Mishary Rashid' },
-          'ar': { 'nav_title': 'قائمة التنقل', 'nav_doa': '🤲 أدعية يومية', 'nav_quran': '📖 القرآن الكريم', 'nav_dzikir': '📿 ذكر وتسبيح', 'nav_kiblat': '🧭 القبلة', 'nav_settings': '⚙️ الإعدادات', 'remaining_time': 'الوقت المتبقي', 'settings_title': 'الإعدادات', 'settings_dark_mode': 'الوضع الداكن', 'settings_notifications': 'تفعيل الإشعارات', 'settings_language': 'اللغة', 'settings_about': 'حول التطبيق', 'last_read': 'آخر ما قرئ', 'no_last_read': 'لم يتم قراءة أي دعاء بعد', 'all_doa': 'كل الأدعية', 'bookmarked': 'المحفوظة', 'Imsak': 'إمساك', 'Fajr': 'الفجر', 'Sunrise': 'الشروق', 'Dhuhr': 'الظهر', 'Asr': 'العصر', 'Maghrib': 'المغرب', 'Isha': 'العشاء', 'Imsak_desc': 'إشعار وبدون صوت أذان', 'Fajr_desc': 'مكة #1 (الفجر)', 'Sunrise_desc': 'إشعار وبدون صوت أذان', 'Dhuhr_desc': 'مشاري راشد', 'Asr_desc': 'مشاري راشد', 'Maghrib_desc': 'مشاري راشد', 'Isha_desc': 'مشاري راشد' },
-          'tr': { 'nav_title': 'Navigasyon Menüsü', 'nav_doa': '🤲 Günlük Dualar', 'nav_quran': '📖 Kur\'an-ı Kerim', 'nav_dzikir': '📿 Zikir & Tesbih', 'nav_kiblat': '🧭 Kıble', 'nav_settings': '⚙️ Ayarlar', 'remaining_time': 'Kalan Süre', 'settings_title': 'Ayarlar', 'settings_dark_mode': 'Karanlık Mod', 'settings_notifications': 'Bildirimleri Etkinleştir', 'settings_language': 'Dil', 'settings_about': 'Uygulama Hakkında', 'last_read': 'SON OKUNAN', 'no_last_read': 'Henüz okunmuş dua yok', 'all_doa': 'Tüm Dualar', 'bookmarked': 'İşaretli', 'Imsak': 'İmsak', 'Fajr': 'Sabah', 'Sunrise': 'Güneş', 'Dhuhr': 'Öğle', 'Asr': 'İkindi', 'Maghrib': 'Akşam', 'Isha': 'Yatsı', 'Imsak_desc': 'Bildirim & Ezan Sesi Yok', 'Fajr_desc': 'Mekke #1 (Sabah)', 'Sunrise_desc': 'Bildirim & Ezan Sesi Yok', 'Dhuhr_desc': 'Mishary Rashid', 'Asr_desc': 'Mishary Rashid', 'Maghrib_desc': 'Mishary Rashid', 'Isha_desc': 'Mishary Rashid' },
-          'fr': { 'nav_title': 'Menu de navigation', 'nav_doa': '🤲 Prières quotidiennes', 'nav_quran': '📖 Al-Coran', 'nav_dzikir': '📿 Dhikr & Tasbih', 'nav_kiblat': '🧭 Qibla', 'nav_settings': '⚙️ Paramètres', 'remaining_time': 'Temps restant', 'settings_title': 'Paramètres', 'settings_dark_mode': 'Mode sombre', 'settings_notifications': 'Activer les notifications', 'settings_language': 'Langue', 'settings_about': 'À propos de l\'application', 'last_read': 'DERNIÈRE LECTURE', 'no_last_read': 'Aucune prière n\'a encore été lue', 'all_doa': 'Toutes les prières', 'bookmarked': 'Marqué', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Lever du soleil', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha', 'Imsak_desc': 'Notification & Pas de son Adhan', 'Fajr_desc': 'Makkah #1 (Fajr)', 'Sunrise_desc': 'Notification & Pas de son Adhan', 'Dhuhr_desc': 'Mishary Rashid', 'Asr_desc': 'Mishary Rashid', 'Maghrib_desc': 'Mishary Rashid', 'Isha_desc': 'Mishary Rashid' },
-          'es': { 'nav_title': 'Menú de Navegación', 'nav_doa': '🤲 Oraciones Diarias', 'nav_quran': '📖 Al-Corán', 'nav_dzikir': '📿 Dhikr y Tasbih', 'nav_kiblat': '🧭 Quibla', 'nav_settings': '⚙️ Ajustes', 'remaining_time': 'Tiempo restante', 'settings_title': 'Ajustes', 'settings_dark_mode': 'Modo Oscuro', 'settings_notifications': 'Activar Notificaciones', 'settings_language': 'Idioma', 'settings_about': 'Acerca de la App', 'last_read': 'ÚLTIMA LECTURA', 'no_last_read': 'Aún no se han leído oraciones', 'all_doa': 'Todas las Oraciones', 'bookmarked': 'Marcado', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Amanecer', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha', 'Imsak_desc': 'Notificación y sin sonido de Adhan', 'Fajr_desc': 'Makkah #1 (Fajr)', 'Sunrise_desc': 'Notificación y sin sonido de Adhan', 'Dhuhr_desc': 'Mishary Rashid', 'Asr_desc': 'Mishary Rashid', 'Maghrib_desc': 'Mishary Rashid', 'Isha_desc': 'Mishary Rashid' },
-          'de': { 'nav_title': 'Navigationsmenü', 'nav_doa': '🤲 Tägliche Gebete', 'nav_quran': '📖 Al-Quran', 'nav_dzikir': '📿 Dhikr & Tasbih', 'nav_kiblat': '🧭 Qibla', 'nav_settings': '⚙️ Einstellungen', 'remaining_time': 'Verbleibende Zeit', 'settings_title': 'Einstellungen', 'settings_dark_mode': 'Dunkelmodus', 'settings_notifications': 'Benachrichtigungen aktivieren', 'settings_language': 'Sprache', 'settings_about': 'Über die App', 'last_read': 'ZULETZT GELESEN', 'no_last_read': 'Noch keine Gebete gelesen', 'all_doa': 'Alle Gebete', 'bookmarked': 'Gemerkt', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Sonnenaufgang', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha', 'Imsak_desc': 'Benachrichtigung & Kein Adhan-Ton', 'Fajr_desc': 'Mekka #1 (Fajr)', 'Sunrise_desc': 'Benachrichtigung & Kein Adhan-Ton', 'Dhuhr_desc': 'Mishary Rashid', 'Asr_desc': 'Mishary Rashid', 'Maghrib_desc': 'Mishary Rashid', 'Isha_desc': 'Mishary Rashid' },
-          'ru': { 'nav_title': 'Навигационное меню', 'nav_doa': '🤲 Ежедневные молитвы', 'nav_quran': '📖 Аль-Коран', 'nav_dzikir': '📿 Зикр и Тасбих', 'nav_kiblat': '🧭 Кибла', 'nav_settings': '⚙️ Настройки', 'remaining_time': 'Оставшееся время', 'settings_title': 'Настройки', 'settings_dark_mode': 'Темный режим', 'settings_notifications': 'Включить уведомления', 'settings_language': 'Язык', 'settings_about': 'О приложении', 'last_read': 'ПОСЛЕДНЕЕ ПРОЧТЕНИЕ', 'no_last_read': 'Молитвы еще не читались', 'all_doa': 'Все молитвы', 'bookmarked': 'В закладках', 'Imsak': 'Имсак', 'Fajr': 'Фаджр', 'Sunrise': 'Восход', 'Dhuhr': 'Зухр', 'Asr': 'Аср', 'Maghrib': 'Магриб', 'Isha': 'Иша', 'Imsak_desc': 'Уведомление и без звука азана', 'Fajr_desc': 'Мекка #1 (Фаджр)', 'Sunrise_desc': 'Уведомление и без звука азана', 'Dhuhr_desc': 'Мишари Рашид', 'Asr_desc': 'Мишари Рашид', 'Maghrib_desc': 'Мишари Рашид', 'Isha_desc': 'Мишари Рашид' },
-          'ur': { 'nav_title': 'نیویگیشن مینو', 'nav_doa': '🤲 روزانہ کی دعائیں', 'nav_quran': '📖 القرآن', 'nav_dzikir': '📿 ذکر و تسبیح', 'nav_kiblat': '🧭 قبلہ', 'nav_settings': '⚙️ ترتیبات', 'remaining_time': 'باقی وقت', 'settings_title': 'ترتیبات', 'settings_dark_mode': 'ڈارک موڈ', 'settings_notifications': 'اطلاعات کو فعال کریں', 'settings_language': 'زبان', 'settings_about': 'ایپ کے بارے میں', 'last_read': 'آخری بار پڑھا گیا', 'no_last_read': 'ابھی تک کوئی دعا نہیں پڑھی گئی', 'all_doa': 'تمام دعائیں', 'bookmarked': 'نشان زد', 'Imsak': 'امساک', 'Fajr': 'فجر', 'Sunrise': 'طلوع آفتاب', 'Dhuhr': 'ظہر', 'Asr': 'عصر', 'Maghrib': 'مغرب', 'Isha': 'عشاء', 'Imsak_desc': 'اطلاع اور اذان کی آواز نہیں', 'Fajr_desc': 'مکہ #1 (فجر)', 'Sunrise_desc': 'اطلاع اور اذان کی آواز نہیں', 'Dhuhr_desc': 'مشاری راشد', 'Asr_desc': 'مشاری راشد', 'Maghrib_desc': 'مشاری راشد', 'Isha_desc': 'مشاری راشد' },
-          'bn': { 'nav_title': 'নেভিগেশন মেনু', 'nav_doa': '🤲 দৈনিক দোয়া', 'nav_quran': '📖 আল-কুরআন', 'nav_dzikir': '📿 যিকির ও তাসবীহ', 'nav_kiblat': '🧭 কিবলা', 'nav_settings': '⚙️ সেটিংস', 'remaining_time': 'অবশিষ্ট সময়', 'settings_title': 'সেটিংস', 'settings_dark_mode': 'ডার্ক মোড', 'settings_notifications': 'নোটিফিকেশন সক্রিয় করুন', 'settings_language': 'ভাষা', 'settings_about': 'অ্যাপ সম্পর্কে', 'last_read': 'শেষ পঠিত', 'no_last_read': 'এখনও কোন দোয়া পড়া হয়নি', 'all_doa': 'সব দোয়া', 'bookmarked': 'বুকমার্ক করা', 'Imsak': 'ইمسাক', 'Fajr': 'ফজর', 'Sunrise': 'সূর্যোদয়', 'Dhuhr': 'যোহর', 'Asr': 'আসর', 'Maghrib': 'মাগরিব', 'Isha': 'ঈশা', 'Imsak_desc': 'নোটিফিকেশন এবং আযানের শব্দ নেই', 'Fajr_desc': 'মক্কা #1 (ফজর)', 'Sunrise_desc': 'নোটিফিকেশন এবং আযানের শব্দ নেই', 'Dhuhr_desc': 'মিশারি রশিদ', 'Asr_desc': 'মিশারি রশিদ', 'Maghrib_desc': 'মিশারি রশিদ', 'Isha_desc': 'মিشারি রশিদ' }
-      };
-      const juzToSurahMap = { 1:[1,2],2:[2],3:[2,3],4:[3,4],5:[4],6:[4,5],7:[5,6],8:[6,7],9:[7,8],10:[8,9],11:[9,10,11],12:[11,12],13:[12,13,14,15],14:[16,17],15:[17,18],16:[18,19,20],17:[21,22],18:[23,24,25],19:[25,26,27],20:[27,28,29],21:[29,30,31,32,33],22:[33,34,35,36],23:[36,37,38,39],24:[39,40,41],25:[41,42,43,44,45],26:[46,47,48,49,50,51],27:[51,52,53,54,55,56,57],28:[58,59,60,61,62,63,64,65,66],29:[67,68,69,70,71,72,73,74,75,76,77],30:[78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114]};
-      
-      document.addEventListener('DOMContentLoaded', () => {
-        // --- GLOBAL VARIABLES & STATE ---
-        let currentLanguage = 'id';
-        let countdownInterval;
-        let bookmarkedDoas = JSON.parse(localStorage.getItem('bookmarked_doas')) || [];
-        let lastReadDoaId = localStorage.getItem('last_read_doa_id');
-        let currentOpenDoaId = null;
-        let dzikirState = JSON.parse(localStorage.getItem('dzikir_state')) || {};
-        let currentDzikirId = null;
-        window.latestPrayerTimes = null;
-        
-        // Quran State
-        let allSurahsData = [];
-        let bookmarkedSurahs = JSON.parse(localStorage.getItem('bookmarked_surahs')) || [];
-        let lastReadSurah = JSON.parse(localStorage.getItem('last_read_surah'));
-        let currentOpenSurahNumber = null;
-        
-        // --- ELEMENT SELECTORS ---
-        const sidebar = document.getElementById('sidebar');
-        const menuToggle = document.getElementById('menu-toggle');
-        
-        // Prayer Times UI
-        const prayerListContainerEl = document.getElementById('prayer-list-container');
-        const countdownTimerEl = document.getElementById('countdown-timer');
-        const nextPrayerNameEl = document.getElementById('next-prayer-name');
-        const calendarContainerEl = document.getElementById('calendar-view-container');
-        const gregorianDateEl = document.getElementById('gregorian-date-display');
-        const hijriDateEl = document.getElementById('hijri-date-display');
-        
-        // --- CORE APP LOGIC ---
-        function showView(viewId) {
-            document.querySelectorAll('.main-view').forEach(v => v.style.display = 'none');
-            const appContainer = document.querySelector('.app-container');
-            const tasbihView = document.getElementById('tasbih-view');
-            const targetView = document.getElementById(viewId);
-            
-            if (viewId === 'tasbih-view') {
-                appContainer.style.display = 'none';
-                tasbihView.style.display = 'flex';
-            } else {
-                appContainer.style.display = 'block';
-                tasbihView.style.display = 'none';
-                if (targetView) targetView.style.display = 'block';
-            }
-            const prayerView = document.getElementById('prayer-times-view');
-            menuToggle.style.display = (prayerView.style.display === 'block') ? 'flex' : 'none';
-        }
-        
-        function closeSidebar() {
-            menuToggle.classList.remove('open');
-            sidebar.classList.remove('open');
-        }
-        
-        function setupNavigation() {
-            document.getElementById('prayer-times-btn').addEventListener('click', (e) => { e.preventDefault(); showView('prayer-times-view'); closeSidebar(); });
-            document.getElementById('doa-harian-btn').addEventListener('click', (e) => { e.preventDefault(); showView('doa-view'); renderDoaListView('all'); closeSidebar(); });
-            document.getElementById('quran-btn').addEventListener('click', (e) => { e.preventDefault(); showView('quran-view'); renderQuranView('surah'); closeSidebar(); });
-            document.getElementById('dzikir-btn').addEventListener('click', (e) => { e.preventDefault(); showView('dzikir-view'); renderDzikirList(); closeSidebar(); });
-            document.getElementById('settings-btn').addEventListener('click', (e) => { e.preventDefault(); document.getElementById('settings-modal').style.display = 'flex'; closeSidebar(); });
-            
-            document.querySelectorAll('.back-button').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const targetViewId = btn.getAttribute('data-target-view');
-                    if (targetViewId) {
-                        showView(targetViewId);
-                        if (targetViewId === 'dzikir-view') renderDzikirList();
-                    }
-                });
-            });
-        
-            menuToggle.addEventListener('click', (e) => { e.stopPropagation(); menuToggle.classList.toggle('open'); sidebar.classList.toggle('open'); });
-            document.addEventListener('click', (e) => {
-                if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
-                    closeSidebar();
-                }
-            });
-        }
-        
-        // --- PRAYER TIMES FEATURE ---
-        function showPrayerNotification(prayerName) {
-         if (Notification.permission !== 'granted') return;
-         const notificationTitle = `Waktunya Sholat ${prayerName}`;
-         const notificationOptions = {
-             body: `Sekarang telah masuk waktu sholat ${prayerName}.`,
-             icon: 'https://cdn-icons-png.flaticon.com/512/30/30709.png'
-         };
-         const notification = new Notification(notificationTitle, notificationOptions);
-         setTimeout(() => notification.close(), 15000);
-        }
-        
-        function renderPrayerTimes(prayerTimes) {
-            if (!prayerListContainerEl) return;
-            const prayerUIData = { Imsak: { icon: '—', checkable: false }, Fajr: { icon: '—', checkable: true }, Sunrise: { icon: '—', checkable: false }, Dhuhr: { icon: '—', checkable: true }, Asr: { icon: '—', checkable: true }, Maghrib: { icon: '—', checkable: true }, Isha: { icon: '—', checkable: true } };
-            prayerListContainerEl.innerHTML = '';
-            let prayerHtml = '';
-            const prayerOrder = ['Imsak', 'Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-            const now = new Date();
-            const isAfterResetTime = now.getHours() >= 22;
-            prayerOrder.forEach(key => {
-                if (prayerTimes[key]) {
-                    const ui = prayerUIData[key];
-                    const prayerDate = new Date(`${now.toDateString()} ${prayerTimes[key]}`);
-                    let iconToShow = ui.icon;
-                    if (ui.checkable) {
-                        if (isAfterResetTime) iconToShow = '—';
-                        else if (now > prayerDate) iconToShow = '✔';
-                    }
-                    prayerHtml += `<div class="prayer-item"><span class="icon-status">${iconToShow}</span><div class="prayer-details"><div class="prayer-name">${translations[currentLanguage][key] || key}</div><div class="prayer-desc">${translations[currentLanguage][`${key}_desc`] || key}</div></div><div class="prayer-time-action"><div class="prayer-time">${prayerTimes[key]}</div><div class="prayer-action">🔊</div></div></div>`;
-                }
-            });
-            prayerListContainerEl.innerHTML = prayerHtml;
-        }
-        
-        function startCountdown(prayerTimes) {
-            if (countdownInterval) clearInterval(countdownInterval);
-            const prayerOrder = ['Imsak', 'Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-            
-            function update() {
-                const now = new Date();
-                let nextPrayerTime, nextPrayerName;
-                for (const name of prayerOrder) {
-                    const prayerDate = new Date(`${now.toDateString()} ${prayerTimes[name]}`);
-                    if (prayerDate > now) {
-                        nextPrayerTime = prayerDate;
-                        nextPrayerName = name;
-                        break;
-                    }
-                }
-                if (!nextPrayerTime) {
-                    const tomorrow = new Date(now);
-                    tomorrow.setDate(now.getDate() + 1);
-                    nextPrayerTime = new Date(`${tomorrow.toDateString()} ${prayerTimes['Imsak']}`);
-                    nextPrayerName = 'Imsak';
-                }
-                const diff = nextPrayerTime - now;
-                if (diff < 0) return;
-                if (diff > 0 && diff < 1000) {
-                    const prayersWithAlarm = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-                    if (prayersWithAlarm.includes(nextPrayerName)) {
-                        showPrayerNotification(translations[currentLanguage][nextPrayerName] || nextPrayerName);
-                    }
-                    if (window.latestPrayerTimes) renderPrayerTimes(window.latestPrayerTimes);
-                }
-                const h = String(Math.floor(diff / 3600000)).padStart(2, '0');
-                const m = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
-                const s = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
-                countdownTimerEl.textContent = `${h}:${m}:${s}`;
-                nextPrayerNameEl.textContent = translations[currentLanguage][nextPrayerName] || nextPrayerName;
-            }
-            update();
-            countdownInterval = setInterval(update, 1000);
-        }
-        
-        function generateCalendar() {
-            if (!calendarContainerEl) return;
-            const dayNamesList = { 
-                id: ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"], en: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], ar: ["أحد", "إثن", "ثلا", "أرب", "خمي", "جمع", "سبت"], tr: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"], fr: ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"], es: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"], de: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"], ru: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"], ur: ["اتوار", "پیر", "منگل", "بدھ", "جمعرات", "جمعہ", "ہفتہ"], bn: ["রবি", "সোম", "মঙ্গল", "বুধ", "বৃহ", "শুক্র", "শনি"]
-            };
-            const today = new Date();
-            const todayDayIndex = today.getDay();
-            let calendarHtml = '';
-            for (let i = 0; i < 7; i++) {
-                const date = new Date();
-                date.setDate(today.getDate() - (todayDayIndex - i));
-                const isToday = i === todayDayIndex;
-                calendarHtml += `<div class="day ${isToday ? 'today' : ''}"><span class="day-name">${dayNamesList[currentLanguage][i] || dayNamesList['id'][i]}</span><span class="day-number">${date.getDate()}</span></div>`;
-            }
-            calendarContainerEl.innerHTML = calendarHtml;
-        }
-        
-        function updateDates() {
-            if (!gregorianDateEl) return;
-            const now = new Date();
-            const localeMap = { id: 'id-ID', en: 'en-US', ar: 'ar-SA', tr: 'tr-TR', fr: 'fr-FR', es: 'es-ES', de: 'de-DE', ru: 'ru-RU', ur: 'ur-PK', bn: 'bn-BD' };
-            const locale = localeMap[currentLanguage] || 'en-US';
-            gregorianDateEl.textContent = now.toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-        }
-        
-        function setupPrayerTimesWithOfflineCache() {
-            const CACHE_KEY_TIMINGS = 'prayer_timings_data';
-            const CACHE_KEY_CITY = 'prayer_city_data';
-            const CACHE_KEY_HIJRI = 'prayer_hijri_data';
-            const CACHE_KEY_TIMESTAMP = 'prayer_data_timestamp';
+    // --- DATA (Dzikir, Doa, Translations) ---
+    const dzikirData = [
+      { id: 'dzikir_1', title: 'Tasbih', subtitle: 'Menyucikan Allah', arabic: 'سُبْحَانَ اللَّهِ', latin: 'Subhanallah', arti: 'Maha Suci Allah', target: 33 },
+      { id: 'dzikir_2', title: 'Tahmid', subtitle: 'Memuji Allah', arabic: 'الْحَمْدُ لِلَّهِ', latin: 'Alhamdulillah', arti: 'Segala Puji Bagi Allah', target: 33 },
+      { id: 'dzikir_3', title: 'Takbir', subtitle: 'Mengagungkan Allah', arabic: 'اللَّهُ أَكْبَرُ', latin: 'Allahu Akbar', arti: 'Allah Maha Besar', target: 33 },
+      { id: 'dzikir_4', title: 'Tahlil', subtitle: 'Kalimat Tauhid', arabic: 'لَا إِلَهَ إِلَّا اللَّهُ', latin: 'La ilaha illallah', arti: 'Tiada Tuhan selain Allah', target: 33 },
+      { id: 'dzikir_5', title: 'Istighfar', subtitle: 'Memohon Ampunan', arabic: 'أَسْتَغْفِرُ اللَّهَ', latin: 'Astaghfirullah', arti: 'Aku memohon ampun kepada Allah', target: 33 },
+      { id: 'dzikir_6', title: 'Salawat Nabi', subtitle: 'Untuk Nabi Muhammad SAW', arabic: 'اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ', latin: 'Allahumma salli \'ala Muhammad wa \'ala ali Muhammad', arti: 'Ya Allah, berikanlah rahmat kepada Nabi Muhammad dan keluarga Nabi Muhammad.', target: 33 },
+      { id: 'dzikir_7', title: 'Hauqalah', subtitle: 'Pengakuan Kekuatan Allah', arabic: 'لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللهِ', latin: 'La hawla wa la quwwata illa billah', arti: 'Tiada daya dan upaya kecuali dengan kekuatan Allah.', target: 33 }
+    ];
+    const doaHarianData = [
+        { id: 1, title: "Doa Bangun Tidur", subtitle: "Adab memulai hari", arabic: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ", latin: "Alhamdulillahilladzi ahyaanaa ba'da maa amaatanaa wa ilaihin nusyuur", arti: "Segala puji bagi Allah yang telah menghidupkan kami setelah mematikan kami, dan kepada-Nya lah kami akan dibangkitkan." },
+        { id: 2, title: "Doa Masuk Toilet", subtitle: "Memohon perlindungan", arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ", latin: "Allahumma innii a'uudzubika minal khubutsi wal khabaaitsi", arti: "Ya Allah, sesungguhnya aku berlindung kepada-Mu dari setan laki-laki dan setan perempuan." },
+        { id: 3, title: "Doa Keluar Toilet", subtitle: "Memohon ampunan", arabic: "غُفْرَانَكَ", latin: "Ghufraanaka", arti: "Aku memohon ampunan-Mu." },
+        { id: 4, title: "Doa Sebelum Wudhu", subtitle: "Niat bersuci", arabic: "بِسْمِ اللَّهِ", latin: "Bismillah", arti: "Dengan menyebut nama Allah." },
+        { id: 5, title: "Doa Setelah Wudhu", subtitle: "Menyempurnakan wudhu", arabic: "أَشْهَدُ أَنْ لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ", latin: "Asyhadu an laa ilaaha illallaah wahdahu laa syariika lah, wa asyhadu anna muhammadan 'abduhu wa rasuuluh", arti: "Aku bersaksi bahwa tiada Tuhan selain Allah semata, tiada sekutu bagi-Nya, dan aku bersaksi bahwa Muhammad adalah hamba dan utusan-Nya." },
+        { id: 6, title: "Doa Mengenakan Pakaian", subtitle: "Mensyukuri nikmat", arabic: "الْحَمْدُ لِلَّهِ الَّذِي كَسَانِي هَذَا وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلاَ قُوَّةٍ", latin: "Alhamdulillahilladzi kasaanii hadzaa wa razaqaniihi min ghairi haulin minnii wa laa quwwatin", arti: "Segala puji bagi Allah yang telah memberiku pakaian ini dan menganugerahkannya kepadaku tanpa daya dan kekuatan dariku." },
+        { id: 7, title: "Doa Melepas Pakaian", subtitle: "Adab melepas pakaian", arabic: "بِسْمِ اللَّهِ", latin: "Bismillah", arti: "Dengan menyebut nama Allah." },
+        { id: 8, title: "Doa Keluar Rumah", subtitle: "Memohon perlindungan", arabic: "بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ لاَ حَوْلَ وَلاَ قُوَّةَ إِلاَّ بِاللَّهِ", latin: "Bismillahi tawakkaltu 'alallah, laa haula wa laa quwwata illaa billaah", arti: "Dengan nama Allah, aku bertawakal kepada Allah, tiada daya dan kekuatan kecuali dengan pertolongan Allah." },
+        { id: 9, title: "Doa Masuk Rumah", subtitle: "Memohon kebaikan", arabic: "بِسْمِ اللَّهِ وَلَجْنَا وَبِسْمِ اللَّهِ خَرَجْنَا وَعَلَى رَبِّنَا تَوَكَّلْنَا", latin: "Bismillahi walajnaa wa bismillahi kharajnaa wa 'alaa rabbinaa tawakkalnaa", arti: "Dengan nama Allah kami masuk, dan dengan nama Allah kami keluar, dan kepada Tuhan kami, kami bertawakal." },
+        { id: 10, title: "Doa Pergi ke Masjid", subtitle: "Langkah menuju kebaikan", arabic: "اللَّهُمَّ اجْعَلْ فِي قَلْبِي نُورًا وَفِي لِسَانِي نُورًا...", latin: "Allahummaj 'al fii qalbii nuuran wa fii lisaanii nuuran...", arti: "Ya Allah, jadikanlah cahaya di hatiku, cahaya di lidahku..." },
+        { id: 11, title: "Doa Masuk Masjid", subtitle: "Memohon rahmat", arabic: "اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ", latin: "Allahummaftah lii abwaaba rahmatika", arti: "Ya Allah, bukakanlah untukku pintu-pintu rahmat-Mu." },
+        { id: 12, title: "Doa Keluar Masjid", subtitle: "Memohon karunia", arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ", latin: "Allahumma innii as'aluka min fadhlik", arti: "Ya Allah, sesungguhnya aku memohon kepada-Mu dari karunia-Mu." },
+        { id: 13, title: "Doa Sebelum Makan", subtitle: "Agar makanan berkah", arabic: "بِسْمِ اللَّهِ", latin: "Bismillah", arti: "Dengan menyebut nama Allah." },
+        { id: 14, title: "Doa Sesudah Makan", subtitle: "Tanda bersyukur", arabic: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنِي هَذَا وَرَZَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلاَ قُوَّةٍ", latin: "Alhamdulillahilladzi ath'amanii hadzaa wa razaqaniihi min ghairi haulin minnii wa laa quwwatin", arti: "Segala puji bagi Allah yang telah memberiku makanan ini dan menganugerahkannya kepadaku tanpa daya dan kekuatan dariku." },
+        { id: 15, title: "Doa Ketika Lupa Basmalah", subtitle: "Jika lupa di awal", arabic: "بِسْمِ اللَّهِ أَوَّلَهُ وَآخِرَهُ", latin: "Bismillahi awwalahu wa aakhirahu", arti: "Dengan nama Allah di awal dan di akhirnya." },
+        { id: 16, title: "Doa Minum Air Zamzam", subtitle: "Memohon kebaikan", arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا وَرِزْقًا وَاسِعًا وَشِفَاءً مِنْ كُلِّ دَاءٍ", latin: "Allahumma innii as'aluka 'ilman naafi'an, wa rizqan waasi'an, wasyifaa'an min kulli daa'in", arti: "Ya Allah, aku memohon kepada-Mu ilmu yang bermanfaat, rezeki yang luas, dan kesembuhan dari segala penyakit." },
+        { id: 17, title: "Doa Berbuka Puasa", subtitle: "Saat berbuka puasa", arabic: "ذَهَبَ الظَّمَأُ وَابْتَلَّتِ الْعُرُوقُ وَثَبَتَ الأَجْرُ إِنْ شَاءَ اللَّهُ", latin: "Dzahabazh zhoma'u wabtallatil 'uruuqu wa tsabatal ajru insyaallah", arti: "Telah hilang dahaga, telah basah urat-urat, dan telah tetap pahala, insya Allah." },
+        { id: 18, title: "Doa Sebelum Tidur", subtitle: "Adab mengakhiri hari", arabic: "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا", latin: "Bismikallahumma amuutu wa ahyaa", arti: "Dengan nama-Mu ya Allah aku mati dan aku hidup." },
+        { id: 19, title: "Doa Ketika Mimpi Buruk", subtitle: "Memohon perlindungan", arabic: "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ غَضَبِهِ وَعِقَابِهِ وَشَرِّ عِبَادِهِ...", latin: "A'uudzu bikalimaatillaahit taammaati min ghadhabihi wa 'iqaabihi wa syarri 'ibaadihi...", arti: "Aku berlindung dengan kalimat-kalimat Allah yang sempurna dari kemurkaan-Nya, siksa-Nya, dan kejahatan hamba-hamba-Nya..." },
+        { id: 20, title: "Doa Naik Kendaraan", subtitle: "Memohon keselamatan", arabic: "سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ", latin: "Subhaanalladzii sakhkhara lanaa hadzaa wa maa kunnaa lahu muqriniin", arti: "Maha Suci Dzat yang telah menundukkan semua ini bagi kami padahal kami sebelumnya tidak mampu menguasainya." },
+        { id: 21, title: "Doa Safar (Bepergian)", subtitle: "Memohon kemudahan", arabic: "اللَّهُمَّ هَوِّنْ عَلَيْنَا سَفَرَنَا هَذَا وَاطْوِ عَنَّا بُعْدَهُ", latin: "Allahumma hawwin 'alainaa safaranaa hadzaa waathwi 'annaa bu'dahu", arti: "Ya Allah, mudahkanlah perjalanan kami ini, dan dekatkanlah jaraknya bagi kami." },
+        { id: 22, title: "Doa Tiba di Tujuan", subtitle: "Rasa syukur", arabic: "الْحَمْدُ لِلَّهِ الَّذِي سَلَّمَنِي", latin: "Alhamdulillahilladzi sallamanii", arti: "Segala puji bagi Allah yang telah menyelamatkanku." },
+        { id: 23, title: "Doa Menjenguk Orang Sakit", subtitle: "Mendoakan kesembuhan", arabic: "لاَ بَأْسَ طَهُورٌ إِنْ شَاءَ اللَّهُ", latin: "Laa ba'sa thahuurun insyaallah", arti: "Tidak mengapa, semoga menjadi pembersih (dosa), insya Allah." },
+        { id: 24, title: "Doa Ketika Hujan Turun", subtitle: "Memohon hujan bermanfaat", arabic: "اللَّهُمَّ صَيِّبًا نَافِعًا", latin: "Allahumma shayyiban naafi'an", arti: "Ya Allah, (jadikanlah hujan ini) hujan yang bermanfaat." },
+        { id: 25, title: "Doa Setelah Hujan", subtitle: "Rahmat dari Allah", arabic: "مُطِرْنَا بِفَضْلِ اللَّهِ وَرَحْمَتِهِ", latin: "Muthirnaa bifadhlillahi wa rahmatihi", arti: "Kita diberi hujan karena karunia dan rahmat Allah." },
+        { id: 26, title: "Doa Melihat Petir", subtitle: "Tanda kebesaran Allah", arabic: "سُبْحَانَ الَّذِي يُسَبِّحُ الرَّعْدُ بِحَمْدِهِ وَالْمَلاَئِكَةُ مِنْ خِيفَتِهِ", latin: "Subhaanalladzii yusabbihur ra'du bihamdihi wal malaa-ikatu min khiifatihi", arti: "Maha Suci Dzat yang petir bertasbih dengan memuji-Nya, dan para malaikat pun (bertasbih) karena takut kepada-Nya." },
+        { id: 27, title: "Doa Ketika Angin Kencang", subtitle: "Memohon kebaikan", arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَهَا وَأَعُوذُ بِكَ مِنْ شَرِّهَا", latin: "Allahumma innii as'aluka khairahaa wa a'uudzu bika min syarrihaa", arti: "Ya Allah, aku memohon kepada-Mu kebaikannya dan aku berlindung kepada-Mu dari keburukannya." },
+        { id: 28, title: "Doa Bercermin", subtitle: "Agar akhlak baik", arabic: "اللَّهُمَّ كَمَا حَسَّنْتَ خَلْقِي فَحَسِّنْ خُلُقِي", latin: "Allahumma kamaa hassanta khalqii fahassin khuluqii", arti: "Ya Allah, sebagaimana Engkau telah memperindah rupaku, maka perindahlah akhlakku." },
+        { id: 29, title: "Doa untuk Kedua Orang Tua", subtitle: "Tanda bakti", arabic: "رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا", latin: "Rabbighfirlii wa liwaalidayya warhamhumaa kamaa rabbayaanii shaghiiran", arti: "Wahai Tuhanku, ampunilah aku dan kedua orang tuaku, dan sayangilah mereka sebagaimana mereka telah menyayangiku di waktu kecil." },
+        { id: 30, title: "Doa Kebaikan Dunia Akhirat", subtitle: "Doa sapu jagat", arabic: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ", latin: "Rabbanaa aatinaa fiddunyaa hasanatan wa fil aakhirati hasanatan wa qinaa 'adzaabannaar", arti: "Ya Tuhan kami, berilah kami kebaikan di dunia dan kebaikan di akhirat, dan peliharalah kami dari siksa neraka." },
+        { id: 31, title: "Doa Sebelum Belajar", subtitle: "Memohon ilmu", arabic: "رَبِّ زِدْنِي عِلْمًا", latin: "Rabbi zidnii 'ilman", arti: "Wahai Tuhanku, tambahkanlah ilmu kepadaku." },
+        { id: 32, title: "Doa Sesudah Belajar", subtitle: "Agar ilmu bermanfaat", arabic: "اللَّهُمَّ انْفَعْنِي بِمَا عَلَّمْتَنِي وَعَلِّمْنِي مَا يَنْفَعُنِي وَزِدْنِي عِلْمًا", latin: "Allahummanfa'nii bimaa 'allamtanii wa 'allimnii maa yanfa'unii wa zidnii 'ilman", arti: "Ya Allah, berilah manfaat atas apa yang telah Engkau ajarkan kepadaku, ajarilah aku apa yang bermanfaat bagiku, dan tambahkanlah ilmu kepadaku." },
+        { id: 33, title: "Doa Penutup Majelis", subtitle: "Kaffaratul Majlis", arabic: "سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ أَشْهَدُ أَنْ لاَ إِلَهَ إِلاَّ أَنْتَ أَسْتَغْفِرُكَ وَأَتُوبُ إِلَيْكَ", latin: "Subhaanakallahumma wa bihamdika, asyhadu an laa ilaaha illaa anta, astaghfiruka wa atuubu ilaika", arti: "Maha Suci Engkau ya Allah, dan dengan memuji-Mu, aku bersaksi bahwa tiada Tuhan selain Engkau, aku memohon ampun dan bertaubat kepada-Mu." },
+        { id: 34, title: "Doa Ketika Bersin", subtitle: "Mengucap syukur", arabic: "الْحَمْدُ لِلَّهِ", latin: "Alhamdulillah", arti: "Segala puji bagi Allah." },
+        { id: 35, title: "Jawaban Ketika Orang Bersin", subtitle: "Mendoakan saudara", arabic: "يَرْحَمُكَ اللَّهُ", latin: "Yarhamukallah", arti: "Semoga Allah merahmatimu." },
+        { id: 36, title: "Doa Ketika Marah", subtitle: "Meredam amarah", arabic: "أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ", latin: "A'uudzubillaahi minasy syaithaanir rajiim", arti: "Aku berlindung kepada Allah dari setan yang terkutuk." },
+        { id: 37, title: "Doa Masuk Pasar", subtitle: "Memohon kebaikan pasar", arabic: "لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ...", latin: "Laa ilaaha illallaah wahdahu laa syariika lah...", arti: "Tiada Tuhan selain Allah semata, tiada sekutu bagi-Nya..." },
+        { id: 38, title: "Doa Ketika Tertimpa Musibah", subtitle: "Kalimat istirja'", arabic: "إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ", latin: "Innaa lillaahi wa innaa ilaihi raaji'uun", arti: "Sesungguhnya kami milik Allah dan kepada-Nya lah kami akan kembali." },
+        { id: 39, title: "Doa untuk Pengantin Baru", subtitle: "Mendoakan keberkahan", arabic: "بَارَكَ اللَّهُ لَكَ وَبَارَكَ عَلَيْكَ وَجَمَعَ بَيْنَكُمَا فِي خَيْرٍ", latin: "Baarakallahu laka wa baaraka 'alaika wa jama'a bainakumaa fii khairin", arti: "Semoga Allah memberkahimu, dan memberkahi atasmu, dan mengumpulkan kalian berdua dalam kebaikan." },
+        { id: 40, title: "Doa Ziarah Kubur", subtitle: "Salam kepada ahli kubur", arabic: "السَّلاَمُ عَلَى أَهْلِ الدِّيَارِ مِنَ الْمُؤْمِنِينَ وَالْمُسْلِمِينَ...", latin: "Assalaamu 'ala ahlid diyaari minal mu'miniina wal muslimiin...", arti: "Keselamatan atas penghuni kubur dari kaum mukminin dan muslimin..." },
+        { id: 41, title: "Doa Melihat Hilal", subtitle: "Menyambut bulan baru", arabic: "اللَّهُ أَكْبَرُ، اللَّهُمَّ أَهِلَّهُ عَلَيْنَا بِالْيُمْنِ وَالإِيمَانِ وَالسَّلاَمَةِ وَالإِسْلاَمِ", latin: "Allahu Akbar, Allahumma ahillahu 'alainaa bil yumni wal iimaani wassalaamati wal islaam", arti: "Allah Maha Besar, ya Allah, tampakkanlah bulan itu kepada kami dengan membawa keberkahan dan keimanan, keselamatan dan Islam." },
+        { id: 42, title: "Doa Agar Diberi Kesabaran", subtitle: "Memohon keteguhan", arabic: "رَبَّنَا أَفْرِغْ عَلَيْنَا صَبْرًا وَثَبِّتْ أَقْدَامَنَا", latin: "Rabbanaa afrigh 'alainaa shabran wa tsabbit aqdaamanaa", arti: "Ya Tuhan kami, limpahkanlah kesabaran kepada kami dan kukuhkanlah pendirian kami." },
+        { id: 43, title: "Doa Mohon Petunjuk", subtitle: "Meminta bimbingan", arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْهُدَى وَالتُّقَى وَالْعَفَافَ وَالْغِنَى", latin: "Allahumma innii as'alukal hudaa wattuqaa wal 'afaafa wal ghinaa", arti: "Ya Allah, aku memohon kepada-Mu petunjuk, ketakwaan, kesucian diri, dan kecukupan." },
+        { id: 44, title: "Doa Terhindar dari Sifat Malas", subtitle: "Memohon semangat", arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْعَجْزِ وَالْكَسَلِ", latin: "Allahumma innii a'uudzubika minal 'ajzi wal kasali", arti: "Ya Allah, aku berlindung kepada-Mu dari kelemahan dan kemalasan." },
+        { id: 45, title: "Doa Agar Diteguhkan Hati", subtitle: "Istiqamah dalam iman", arabic: "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ", latin: "Yaa muqallibal quluub, tsabbit qalbii 'alaa diinik", arti: "Wahai Dzat yang membolak-balikkan hati, teguhkanlah hatiku di atas agama-Mu." },
+        { id: 46, title: "Doa Memohon Ampunan & Rahmat", subtitle: "Permohonan ampunan", arabic: "رَبَّنَا ظَلَمْنَا أَنْفُSَنَا وَإِنْ لَمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ", latin: "Rabbanaa zhalamnaa anfusanaa wa illam taghfirlanaa wa tarhamnaa lanakuunanna minal khaasiriin", arti: "Ya Tuhan kami, kami telah menzalimi diri kami sendiri, dan jika Engkau tidak mengampuni kami dan memberi rahmat kepada kami, niscaya kami termasuk orang-orang yang rugi." },
+        { id: 47, title: "Doa Saat Sulit Tidur", subtitle: "Agar tidur nyenyak", arabic: "اللَّهُمَّ غَارَتِ النُّجُومُ وَهَدَأَتِ الْعُيُونُ...", latin: "Allahumma ghaaratinnujuumu wa hada'atil 'uyuun...", arti: "Ya Allah, bintang-bintang telah terbenam, mata-mata telah terpejam..." },
+        { id: 48, title: "Doa Ketika Memulai Pekerjaan", subtitle: "Memohon kelancaran", arabic: "اللَّهُمَّ إِنِّي أَSْأَلُكَ مِنْ خَيْرِ هَذَا الْعَمَلِ وَخَيْرِ مَا فِيهِ", latin: "Allahumma innii as'aluka min khairi hadzal 'amali wa khairi maa fiihi", arti: "Ya Allah, aku memohon kepada-Mu kebaikan pekerjaan ini dan kebaikan yang ada di dalamnya." },
+        { id: 49, title: "Doa Setelah Selesai Bekerja", subtitle: "Rasa syukur", arabic: "الْحَمْدُ لِلَّهِ الَّذِي بِنِعْمَتِهِ تَتِمُّ الصَّالِحَاتُ", latin: "Alhamdulillahilladzi bini'matihi tatimmush shaalihaat", arti: "Segala puji bagi Allah yang dengan nikmat-Nya sempurnalah segala kebaikan." },
+        { id: 50, title: "Doa Ketika Mendengar Kabar Baik", subtitle: "Ekspresi kebahagiaan", arabic: "الْحَمْدُ لِلَّهِ الَّذِي بِنِعْمَتِهِ تَتِمُّ الصَّالِحَاتُ", latin: "Alhamdulillahilladzi bini'matihi tatimmush shaalihaat", arti: "Segala puji bagi Allah yang dengan nikmat-Nya sempurnalah segala kebaikan." },
+        { id: 51, title: "Doa Ketika Mendengar Kabar Buruk", subtitle: "Menjaga kesabaran", arabic: "الْحَمْدُ لِلَّهِ عَلَى كُلِّ حَالٍ", latin: "Alhamdulillahi 'alaa kulli haal", arti: "Segala puji bagi Allah atas segala keadaan." },
+        { id: 52, "title": "Doa Memohon Jodoh Terbaik", "subtitle": "Bagi yang belum menikah", "arabic": "رَبِّ لاَ تَذَرْنِي فَرْدًا وَأَنْتَ خَيْرُ الْوَارِثِينَ", "latin": "Rabbi laa tadzarnii fardan wa anta khairul waaritsiin", "arti": "Ya Tuhanku, janganlah Engkau biarkan aku hidup seorang diri, dan Engkaulah pewaris yang paling baik." },
+        { id: 53, "title": "Doa Mohon Keturunan yang Baik", "subtitle": "Doa Nabi Zakaria", "arabic": "رَبِّ هَبْ لِي مِنْ لَدُنْكَ ذُرِّيَّةً طَيِّبَةً إِنَّكَ سَمِيعُ الدُّعَاءِ", "latin": "Rabbi hablii min ladunka dzurriyyatan thayyibatan innaka samii'ud du'aa", "arti": "Ya Tuhanku, berilah aku dari sisi-Mu seorang anak yang baik. Sesungguhnya Engkau Maha Pendengar doa." },
+        { id: 54, "title": "Doa Agar Terhindar dari Utang", "subtitle": "Memohon kecukupan", "arabic": "اللَّهُمَّ اكْفِنِي بِحَلاَلِكَ عَنْ حَرَامِكَ وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ", "latin": "Allahummak finii bihalaalika 'an haraamika wa aghninii bifadhlika 'amman siwaak", "arti": "Ya Allah, cukupkanlah aku dengan yang halal dan jauhkanlah aku dari yang haram, dan cukupkanlah aku dengan karunia-Mu dari bergantung pada selain-Mu." }
+    ];
+    const translations = {
+        'id': { 'nav_title': 'Menu Navigasi', 'nav_doa': '🤲 Doa Harian', 'nav_quran': '📖 Al-Qur\'an', 'nav_dzikir': '📿 Dzikir & Tasbih', 'nav_kiblat': '🧭 Kiblat', 'nav_settings': '⚙️ Pengaturan', 'remaining_time': 'Waktu Tersisa', 'settings_title': 'Pengaturan', 'settings_dark_mode': 'Mode Malam', 'settings_notifications': 'Aktifkan Notifikasi', 'settings_language': 'Bahasa', 'settings_about': 'Tentang Aplikasi', 'last_read': 'TERAKHIR DIBACA', 'no_last_read': 'Belum ada doa yang dibaca', 'all_doa': 'Semua Doa', 'bookmarked': 'Ditandai', 'Imsak': 'Imsak', 'Fajr': 'Subuh', 'Sunrise': 'Terbit', 'Dhuhr': 'Zuhur', 'Asr': 'Asar', 'Maghrib': 'Magrib', 'Isha': 'Isya\'', 'Imsak_desc': 'Notifikasi & Tanpa Suara Azan', 'Fajr_desc': 'Makkah #1 (Fajr)', 'Sunrise_desc': 'Notifikasi & Tanpa Suara Azan', 'Dhuhr_desc': 'Mishary Rashid', 'Asr_desc': 'Mishary Rashid', 'Maghrib_desc': 'Mishary Rashid', 'Isha_desc': 'Mishary Rashid' },
+        'en': { 'nav_title': 'Navigation Menu', 'nav_doa': '🤲 Daily Prayers', 'nav_quran': '📖 Al-Qur\'an', 'nav_dzikir': '📿 Dhikr & Tasbih', 'nav_kiblat': '🧭 Qibla', 'nav_settings': '⚙️ Settings', 'remaining_time': 'Time Remaining', 'settings_title': 'Settings', 'settings_dark_mode': 'Dark Mode', 'settings_notifications': 'Enable Notifications', 'settings_language': 'Language', 'settings_about': 'About App', 'last_read': 'LAST READ', 'no_last_read': 'No prayers have been read yet', 'all_doa': 'All Prayers', 'bookmarked': 'Bookmarked', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Sunrise', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha', 'Imsak_desc': 'Notification & No Adhan Sound', 'Fajr_desc': 'Makkah #1 (Fajr)', 'Sunrise_desc': 'Notification & No Adhan Sound', 'Dhuhr_desc': 'Mishary Rashid', 'Asr_desc': 'Mishary Rashid', 'Maghrib_desc': 'Mishary Rashid', 'Isha_desc': 'Mishary Rashid' },
+        'ar': { 'nav_title': 'قائمة التنقل', 'nav_doa': '🤲 أدعية يومية', 'nav_quran': '📖 القرآن الكريم', 'nav_dzikir': '📿 ذكر وتسبيح', 'nav_kiblat': '🧭 القبلة', 'nav_settings': '⚙️ الإعدادات', 'remaining_time': 'الوقت المتبقي', 'settings_title': 'الإعدادات', 'settings_dark_mode': 'الوضع الداكن', 'settings_notifications': 'تفعيل الإشعارات', 'settings_language': 'اللغة', 'settings_about': 'حول التطبيق', 'last_read': 'آخر ما قرئ', 'no_last_read': 'لم يتم قراءة أي دعاء بعد', 'all_doa': 'كل الأدعية', 'bookmarked': 'المحفوظة', 'Imsak': 'إمساك', 'Fajr': 'الفجر', 'Sunrise': 'الشروق', 'Dhuhr': 'الظهر', 'Asr': 'العصر', 'Maghrib': 'المغرب', 'Isha': 'العشاء', 'Imsak_desc': 'إشعار وبدون صوت أذان', 'Fajr_desc': 'مكة #1 (الفجر)', 'Sunrise_desc': 'إشعار وبدون صوت أذان', 'Dhuhr_desc': 'مشاري راشد', 'Asr_desc': 'مشاري راشد', 'Maghrib_desc': 'مشاري راشد', 'Isha_desc': 'مشاري راشد' },
+        'tr': { 'nav_title': 'Navigasyon Menüsü', 'nav_doa': '🤲 Günlük Dualar', 'nav_quran': '📖 Kur\'an-ı Kerim', 'nav_dzikir': '📿 Zikir & Tesbih', 'nav_kiblat': '🧭 Kıble', 'nav_settings': '⚙️ Ayarlar', 'remaining_time': 'Kalan Süre', 'settings_title': 'Ayarlar', 'settings_dark_mode': 'Karanlık Mod', 'settings_notifications': 'Bildirimleri Etkinleştir', 'settings_language': 'Dil', 'settings_about': 'Uygulama Hakkında', 'last_read': 'SON OKUNAN', 'no_last_read': 'Henüz okunmuş dua yok', 'all_doa': 'Tüm Dualar', 'bookmarked': 'İşaretli', 'Imsak': 'İmsak', 'Fajr': 'Sabah', 'Sunrise': 'Güneş', 'Dhuhr': 'Öğle', 'Asr': 'İkindi', 'Maghrib': 'Akşam', 'Isha': 'Yatsı', 'Imsak_desc': 'Bildirim & Ezan Sesi Yok', 'Fajr_desc': 'Mekke #1 (Sabah)', 'Sunrise_desc': 'Bildirim & Ezan Sesi Yok', 'Dhuhr_desc': 'Mishary Rashid', 'Asr_desc': 'Mishary Rashid', 'Maghrib_desc': 'Mishary Rashid', 'Isha_desc': 'Mishary Rashid' },
+        'fr': { 'nav_title': 'Menu de navigation', 'nav_doa': '🤲 Prières quotidiennes', 'nav_quran': '📖 Al-Coran', 'nav_dzikir': '📿 Dhikr & Tasbih', 'nav_kiblat': '🧭 Qibla', 'nav_settings': '⚙️ Paramètres', 'remaining_time': 'Temps restant', 'settings_title': 'Paramètres', 'settings_dark_mode': 'Mode sombre', 'settings_notifications': 'Activer les notifications', 'settings_language': 'Langue', 'settings_about': 'À propos de l\'application', 'last_read': 'DERNIÈRE LECTURE', 'no_last_read': 'Aucune prière n\'a encore été lue', 'all_doa': 'Toutes les prières', 'bookmarked': 'Marqué', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Lever du soleil', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha', 'Imsak_desc': 'Notification & Pas de son Adhan', 'Fajr_desc': 'Makkah #1 (Fajr)', 'Sunrise_desc': 'Notification & Pas de son Adhan', 'Dhuhr_desc': 'Mishary Rashid', 'Asr_desc': 'Mishary Rashid', 'Maghrib_desc': 'Mishary Rashid', 'Isha_desc': 'Mishary Rashid' },
+        'es': { 'nav_title': 'Menú de Navegación', 'nav_doa': '🤲 Oraciones Diarias', 'nav_quran': '📖 Al-Corán', 'nav_dzikir': '📿 Dhikr y Tasbih', 'nav_kiblat': '🧭 Quibla', 'nav_settings': '⚙️ Ajustes', 'remaining_time': 'Tiempo restante', 'settings_title': 'Ajustes', 'settings_dark_mode': 'Modo Oscuro', 'settings_notifications': 'Activar Notificaciones', 'settings_language': 'Idioma', 'settings_about': 'Acerca de la App', 'last_read': 'ÚLTIMA LECTURA', 'no_last_read': 'Aún no se han leído oraciones', 'all_doa': 'Todas las Oraciones', 'bookmarked': 'Marcado', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Amanecer', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha', 'Imsak_desc': 'Notificación y sin sonido de Adhan', 'Fajr_desc': 'Makkah #1 (Fajr)', 'Sunrise_desc': 'Notificación y sin sonido de Adhan', 'Dhuhr_desc': 'Mishary Rashid', 'Asr_desc': 'Mishary Rashid', 'Maghrib_desc': 'Mishary Rashid', 'Isha_desc': 'Mishary Rashid' },
+        'de': { 'nav_title': 'Navigationsmenü', 'nav_doa': '🤲 Tägliche Gebete', 'nav_quran': '📖 Al-Quran', 'nav_dzikir': '📿 Dhikr & Tasbih', 'nav_kiblat': '🧭 Qibla', 'nav_settings': '⚙️ Einstellungen', 'remaining_time': 'Verbleibende Zeit', 'settings_title': 'Einstellungen', 'settings_dark_mode': 'Dunkelmodus', 'settings_notifications': 'Benachrichtigungen aktivieren', 'settings_language': 'Sprache', 'settings_about': 'Über die App', 'last_read': 'ZULETZT GELESEN', 'no_last_read': 'Noch keine Gebete gelesen', 'all_doa': 'Alle Gebete', 'bookmarked': 'Gemerkt', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Sonnenaufgang', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha', 'Imsak_desc': 'Benachrichtigung & Kein Adhan-Ton', 'Fajr_desc': 'Mekka #1 (Fajr)', 'Sunrise_desc': 'Benachrichtigung & Kein Adhan-Ton', 'Dhuhr_desc': 'Mishary Rashid', 'Asr_desc': 'Mishary Rashid', 'Maghrib_desc': 'Mishary Rashid', 'Isha_desc': 'Mishary Rashid' },
+        'ru': { 'nav_title': 'Навигационное меню', 'nav_doa': '🤲 Ежедневные молитвы', 'nav_quran': '📖 Аль-Коран', 'nav_dzikir': '📿 Зикр и Тасбих', 'nav_kiblat': '🧭 Кибла', 'nav_settings': '⚙️ Настройки', 'remaining_time': 'Оставшееся время', 'settings_title': 'Настройки', 'settings_dark_mode': 'Темный режим', 'settings_notifications': 'Включить уведомления', 'settings_language': 'Язык', 'settings_about': 'О приложении', 'last_read': 'ПОСЛЕДНЕЕ ПРОЧТЕНИЕ', 'no_last_read': 'Молитвы еще не читались', 'all_doa': 'Все молитвы', 'bookmarked': 'В закладках', 'Imsak': 'Имсак', 'Fajr': 'Фаджр', 'Sunrise': 'Восход', 'Dhuhr': 'Зухр', 'Asr': 'Аср', 'Maghrib': 'Магриб', 'Isha': 'Иша', 'Imsak_desc': 'Уведомление и без звука азана', 'Fajr_desc': 'Мекка #1 (Фаджр)', 'Sunrise_desc': 'Уведомление и без звука азана', 'Dhuhr_desc': 'Мишари Рашид', 'Asr_desc': 'Мишари Рашид', 'Maghrib_desc': 'Мишари Рашид', 'Isha_desc': 'Мишари Рашид' },
+        'ur': { 'nav_title': 'نیویگیشن مینو', 'nav_doa': '🤲 روزانہ کی دعائیں', 'nav_quran': '📖 القرآن', 'nav_dzikir': '📿 ذکر و تسبیح', 'nav_kiblat': '🧭 قبلہ', 'nav_settings': '⚙️ ترتیبات', 'remaining_time': 'باقی وقت', 'settings_title': 'ترتیبات', 'settings_dark_mode': 'ڈارک موڈ', 'settings_notifications': 'اطلاعات کو فعال کریں', 'settings_language': 'زبان', 'settings_about': 'ایپ کے بارے میں', 'last_read': 'آخری بار پڑھا گیا', 'no_last_read': 'ابھی تک کوئی دعا نہیں پڑھی گئی', 'all_doa': 'تمام دعائیں', 'bookmarked': 'نشان زد', 'Imsak': 'امساک', 'Fajr': 'فجر', 'Sunrise': 'طلوع آفتاب', 'Dhuhr': 'ظہر', 'Asr': 'عصر', 'Maghrib': 'مغرب', 'Isha': 'عشاء', 'Imsak_desc': 'اطلاع اور اذان کی آواز نہیں', 'Fajr_desc': 'مکہ #1 (فجر)', 'Sunrise_desc': 'اطلاع اور اذان کی آواز نہیں', 'Dhuhr_desc': 'مشاری راشد', 'Asr_desc': 'مشاری راشد', 'Maghrib_desc': 'مشاری راشد', 'Isha_desc': 'مشاری راشد' },
+        'bn': { 'nav_title': 'নেভিগেশন মেনু', 'nav_doa': '🤲 দৈনিক দোয়া', 'nav_quran': '📖 আল-কুরআন', 'nav_dzikir': '📿 যিকির ও তাসবীহ', 'nav_kiblat': '🧭 কিবলা', 'nav_settings': '⚙️ সেটিংস', 'remaining_time': 'অবশিষ্ট সময়', 'settings_title': 'সেটিংস', 'settings_dark_mode': 'ডার্ক মোড', 'settings_notifications': 'নোটিফিকেশন সক্রিয় করুন', 'settings_language': 'ভাষা', 'settings_about': 'অ্যাপ সম্পর্কে', 'last_read': 'শেষ পঠিত', 'no_last_read': 'এখনও কোন দোয়া পড়া হয়নি', 'all_doa': 'সব দোয়া', 'bookmarked': 'বুকমার্ক করা', 'Imsak': 'ইمسাক', 'Fajr': 'ফজর', 'Sunrise': 'সূর্যোদয়', 'Dhuhr': 'যোহর', 'Asr': 'আসর', 'Maghrib': 'মাগরিব', 'Isha': 'ঈশা', 'Imsak_desc': 'নোটিফিকেশন এবং আযানের শব্দ নেই', 'Fajr_desc': 'মক্কা #1 (ফজর)', 'Sunrise_desc': 'নোটিফিকেশন এবং আযানের শব্দ নেই', 'Dhuhr_desc': 'মিশারি রশিদ', 'Asr_desc': 'মিশারি রশিদ', 'Maghrib_desc': 'মিশারি রশিদ', 'Isha_desc': 'মিشারি রশিদ' }
+    };
+    const juzToSurahMap = { 1:[1,2],2:[2],3:[2,3],4:[3,4],5:[4],6:[4,5],7:[5,6],8:[6,7],9:[7,8],10:[8,9],11:[9,10,11],12:[11,12],13:[12,13,14,15],14:[16,17],15:[17,18],16:[18,19,20],17:[21,22],18:[23,24,25],19:[25,26,27],20:[27,28,29],21:[29,30,31,32,33],22:[33,34,35,36],23:[36,37,38,39],24:[39,40,41],25:[41,42,43,44,45],26:[46,47,48,49,50,51],27:[51,52,53,54,55,56,57],28:[58,59,60,61,62,63,64,65,66],29:[67,68,69,70,71,72,73,74,75,76,77],30:[78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114]};
+    
 
-            function loadPrayerDataFromCache() {
-                const cachedTimings = localStorage.getItem(CACHE_KEY_TIMINGS);
-                const cachedCity = localStorage.getItem(CACHE_KEY_CITY);
-                const cachedHijri = localStorage.getItem(CACHE_KEY_HIJRI);
-                if (cachedTimings && cachedCity && cachedHijri) {
-                    console.log("Memuat jadwal sholat dari cache.");
-                    const timings = JSON.parse(cachedTimings);
-                    document.getElementById('city-name').textContent = cachedCity;
-                    hijriDateEl.textContent = cachedHijri;
-                    window.latestPrayerTimes = timings;
-                    renderPrayerTimes(timings);
-                    startCountdown(timings);
-                } else {
-                    console.log("Tidak ada data jadwal sholat di cache.");
-                }
-            }
-
-            function fetchCityName(lat, lon) {
-                fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
-                    .then(r => r.json())
-                    .then(data => {
-                        const cityName = data.address.city || data.address.town || data.address.village || "Lokasi Tidak Diketahui";
-                        document.getElementById('city-name').textContent = cityName;
-                        localStorage.setItem(CACHE_KEY_CITY, cityName);
-                    })
-                    .catch(error => {
-                        console.error("Gagal mengambil nama kota:", error);
-                        const cachedCity = localStorage.getItem(CACHE_KEY_CITY);
-                        if (cachedCity) document.getElementById('city-name').textContent = cachedCity;
-                    });
-            }
-
-            function fetchPrayerTimings(lat, lon) {
-                const ts = Math.floor(Date.now() / 1000);
-                fetch(`https://api.aladhan.com/v1/timings/${ts}?latitude=${lat}&longitude=${lon}&method=11`)
-                    .then(r => r.json())
-                    .then(j => {
-                        if (j.code === 200) {
-                            console.log("Berhasil mengambil data jadwal sholat baru dari API.");
-                            const originalTimings = j.data.timings;
-                            const adjustedTimings = {};
-                            for (const key in originalTimings) {
-                                const [h, m] = originalTimings[key].split(':').map(Number);
-                                const date = new Date();
-                                date.setHours(h, m + 2, 0, 0);
-                                adjustedTimings[key] = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
-                            }
-                            const hijri = j.data.date.hijri;
-                            const hijriText = `${hijri.day} ${hijri.month.en} ${hijri.year} H`;
-                            hijriDateEl.textContent = hijriText;
-                            window.latestPrayerTimes = adjustedTimings;
-                            renderPrayerTimes(adjustedTimings);
-                            startCountdown(adjustedTimings);
-                            localStorage.setItem(CACHE_KEY_TIMINGS, JSON.stringify(adjustedTimings));
-                            localStorage.setItem(CACHE_KEY_HIJRI, hijriText);
-                            localStorage.setItem(CACHE_KEY_TIMESTAMP, new Date().toISOString());
-                            console.log("Data jadwal sholat baru telah disimpan ke cache.");
-                        } else {
-                            console.error("API Aladhan mengembalikan error, menggunakan data cache jika ada.");
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Gagal mengambil jadwal sholat (kemungkinan offline):", error);
-                    });
-            }
-
-            function getLocation() {
-                const fallbackLat = 3.5952;
-                const fallbackLon = 98.6722;
-                const fallbackCity = "Medan";
-                const handleLocationError = (error) => {
-                    console.warn(`Tidak bisa mendapatkan lokasi: ${error.message}. Menggunakan lokasi fallback.`);
-                    fetchPrayerTimings(fallbackLat, fallbackLon);
-                    if (!localStorage.getItem(CACHE_KEY_CITY)) {
-                        document.getElementById('city-name').textContent = fallbackCity;
-                        localStorage.setItem(CACHE_KEY_CITY, fallbackCity);
-                    }
-                };
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(
-                        (position) => {
-                            fetchPrayerTimings(position.coords.latitude, position.coords.longitude);
-                            fetchCityName(position.coords.latitude, position.coords.longitude);
-                        },
-                        handleLocationError, { timeout: 10000 }
-                    );
-                } else {
-                    handleLocationError({ message: "Geolocation tidak didukung" });
-                }
-            }
-
-            loadPrayerDataFromCache();
-            updateDates();
-            generateCalendar();
-            getLocation();
-            setInterval(() => {
-                if (window.latestPrayerTimes) renderPrayerTimes(window.latestPrayerTimes);
-            }, 60000);
+    // --- FUNGSI PERMINTAAN PENYIMPANAN PERMANEN ---
+    async function requestPersistentStorage() {
+      if (navigator.storage && navigator.storage.persist) {
+        try {
+          const isPersisted = await navigator.storage.persisted();
+          console.log(`Penyimpanan sudah permanen: ${isPersisted}`);
+          if (!isPersisted) {
+            const result = await navigator.storage.persist();
+            console.log(`Berhasil meminta penyimpanan permanen: ${result}`);
+          }
+        } catch (error) {
+          console.error('Gagal memeriksa atau meminta penyimpanan permanen:', error);
         }
-        
-        // --- DOA HARIAN FEATURE ---
-        function setupDoaHarian() {
-            const doaListContainer = document.getElementById('doa-list-container-view');
-            const lastReadCard = document.getElementById('last-read-doa-card');
-            const lastReadCardText = lastReadCard.querySelector('p');
-            const singleDoaModal = document.getElementById('single-doa-modal');
-        
-            window.renderDoaListView = function(filter) {
-                doaListContainer.innerHTML = '';
-                let data = (filter === 'bookmarked') ? doaHarianData.filter(d => bookmarkedDoas.includes(d.id)) : doaHarianData;
-                if (data.length === 0) { doaListContainer.innerHTML = `<p class="loading-indicator">Tidak ada doa yang ditandai.</p>`; return; }
-                data.forEach((d, index) => {
-                    const item = document.createElement('div'); item.className = 'list-item';
-                    item.innerHTML = `<span class="num">${d.id}</span><div class="details"><div class="title">${d.title}</div><div class="subtitle">${d.subtitle}</div></div><span class="arabic">${d.arabic.split(' ')[0]}...</span>`;
-                    item.addEventListener('click', () => showSingleDoa(d.id));
-                    doaListContainer.appendChild(item);
-                });
-            }
-            function showSingleDoa(id) {
-                const doa = doaHarianData.find(d => d.id === id); if (!doa) return;
-                currentOpenDoaId = id;
-                singleDoaModal.querySelector('#single-doa-modal-title').textContent = doa.title;
-                singleDoaModal.querySelector('#single-doa-modal-body').innerHTML = `
-                                        <p class="single-item-arabic">${doa.arabic}</p>
-                                        <p class="single-item-latin">${doa.latin}</p>
-                                        <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
-                                        <p class="single-item-arti"><b>Artinya:</b> ${doa.arti}</p>`;
-                updateBookmarkIcon(); singleDoaModal.style.display = 'flex';
-                localStorage.setItem('last_read_doa_id', id); lastReadDoaId = id; renderLastRead();
-            }
-            function renderLastRead() {
-                const p = lastReadCardText;
-                if (lastReadDoaId) { const doa = doaHarianData.find(d => d.id == lastReadDoaId); p.textContent = doa ? doa.title : 'Belum ada doa yang dibaca'; } 
-                else { p.textContent = 'Belum ada doa yang dibaca'; }
-            }
-            function updateBookmarkIcon() { singleDoaModal.querySelector('#bookmark-doa-btn').classList.toggle('bookmarked', bookmarkedDoas.includes(currentOpenDoaId)); }
-            
-            lastReadCard.addEventListener('click', () => { if (lastReadDoaId) showSingleDoa(parseInt(lastReadDoaId)); });
-            singleDoaModal.querySelector('#bookmark-doa-btn').addEventListener('click', () => {
-                const index = bookmarkedDoas.indexOf(currentOpenDoaId);
-                if (index > -1) bookmarkedDoas.splice(index, 1); else bookmarkedDoas.push(currentOpenDoaId);
-                localStorage.setItem('bookmarked_doas', JSON.stringify(bookmarkedDoas)); updateBookmarkIcon();
-                if (document.querySelector('#doa-view .tab-item.active').dataset.tab === 'bookmarked') renderDoaListView('bookmarked');
-            });
-            document.querySelectorAll('#doa-view .tab-item').forEach(tab => tab.addEventListener('click', () => {
-                document.querySelector('#doa-view .tab-item.active').classList.remove('active');
-                tab.classList.add('active'); renderDoaListView(tab.dataset.tab);
-            }));
-            singleDoaModal.querySelector('.close-button').addEventListener('click', () => singleDoaModal.style.display = 'none');
-            renderLastRead();
-        }
-        
-        // --- QURAN FEATURE ---
-        function setupQuranFeature() {
-            const quranListContainer = document.getElementById('quran-list-container');
-            const quranTabs = document.getElementById('quran-tabs');
-            const lastReadSurahCard = document.getElementById('last-read-surah-card');
-            const lastReadSurahCardText = lastReadSurahCard.querySelector('p');
-            const surahViewTitle = document.getElementById('surah-view-title');
-            const surahViewBookmarkBtn = document.getElementById('surah-view-bookmark-btn');
-            const surahViewBody = document.getElementById('surah-view-body');
-            const surahViewBackBtn = document.getElementById('surah-view-back-btn');
-            const juzDetailTitle = document.getElementById('juz-detail-title');
-            const juzSurahListContainer = document.getElementById('juz-surah-list-container');
-        
-            async function fetchAllSurahs() {
-                if (allSurahsData.length > 0) return allSurahsData;
-                try {
-                    quranListContainer.innerHTML = `<div class="loading-indicator">Loading surah data...</div>`;
-                    const response = await fetch('https://api.quran.gading.dev/surah');
-                    const data = await response.json();
-                    if (data.code === 200) {
-                        allSurahsData = data.data;
-                        return allSurahsData;
-                    }
-                } catch (error) { 
-                    console.error("Error fetching surah list:", error);
-                    quranListContainer.innerHTML = `<div class="loading-indicator">Gagal dimuat. Periksa koneksi.</div>`;
-                }
-                return [];
-            }
-            
-            function renderSurahList(surahs, container, backTarget) {
-                container.innerHTML = '';
-                if (!surahs || surahs.length === 0) {
-                    container.innerHTML = `<div class="loading-indicator">No data.</div>`;
-                    return;
-                }
-                surahs.forEach(surah => {
-                    const item = document.createElement('div');
-                    item.className = 'list-item';
-                    item.innerHTML = `
-                                <span class="num">${surah.number}</span>
-                                <div class="details">
-                                    <div class="title">${surah.name.transliteration.id}</div>
-                                    <div class="subtitle">${surah.name.translation.id} (${surah.numberOfVerses} verses)</div>
-                                </div>
-                                <span class="arabic">${surah.name.short}</span>`;
-                    item.addEventListener('click', () => showSurahDetail(surah.number, backTarget));
-                    container.appendChild(item);
-                });
-            }
-        
-            function renderJuzList() {
-                 quranListContainer.innerHTML = '';
-                 for (let i = 1; i <= 30; i++) {
-                     const item = document.createElement('div');
-                     item.className = 'list-item';
-                     item.innerHTML = `
-                               <span class="num">${i}</span>
-                               <div class="details"><div class="title">Juz ${i}</div></div>
-                               <span class="arabic">الجزء ${i}</span>`;
-                     item.addEventListener('click', () => showSurahsInJuz(i));
-                     quranListContainer.appendChild(item);
-                 }
-            }
-            
-            async function showSurahsInJuz(juzNumber) {
-                juzDetailTitle.textContent = `List of Surahs in Juz ${juzNumber}`;
-                juzSurahListContainer.innerHTML = `<div class="loading-indicator">Loading...</div>`;
-                showView('juz-detail-view');
-            
-                const surahs = await fetchAllSurahs();
-                const surahNumbersInJuz = [...new Set(juzToSurahMap[juzNumber])];
-                const surahsInJuz = surahs.filter(s => surahNumbersInJuz.includes(s.number));
-                
-                renderSurahList(surahsInJuz, juzSurahListContainer, 'juz-detail-view');
-            }
-        
-            async function showSurahDetail(number, backTarget = 'quran-view') {
-                surahViewTitle.textContent = `Loading Surah...`;
-                surahViewBody.innerHTML = `<div class="loading-indicator">Loading...</div>`;
-                surahViewBackBtn.setAttribute('data-target-view', backTarget);
-                showView('surah-view');
-                
-                try {
-                    const response = await fetch(`https://api.quran.gading.dev/surah/${number}`);
-                    const result = await response.json();
-                    if (result.code !== 200) throw new Error('Failed to load surah');
-                    
-                    const surah = result.data;
-                    currentOpenSurahNumber = surah.number;
-                    surahViewTitle.textContent = `${surah.name.transliteration.id}`;
-                    
-                    let contentHtml = `
-                                <div class="surah-detail-header">
-                                    <h2>${surah.name.long}</h2>
-                                    <p>${surah.name.translation.id}</p>
-                                    <div class="meta">${surah.revelation.id} • ${surah.numberOfVerses} VERSES</div>
-                                </div>`;
-                    
-                    if (surah.number !== 1 && surah.number !== 9) {
-                        contentHtml += `
-                                <div class="basmala">
-                                    <p class="basmala-arabic">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
-                                    <p class="basmala-translation">Dengan menyebut nama Allah Yang Maha Pengasih, lagi Maha Penyayang</p>
-                                </div>`;
-                    }
-        
-                    surah.verses.forEach(ayah => {
-                        contentHtml += `
-                                <div class="ayah-item">
-                                    <div class="ayah-header"><span class="ayah-number">${surah.number}:${ayah.number.inSurah}</span></div>
-                                    <p class="ayah-arabic">${ayah.text.arab}</p>
-                                    <p class="ayah-latin">${ayah.text.transliteration.en}</p>
-                                    <p class="ayah-translation"><b>Artinya:</b> ${ayah.translation.id}</p>
-                                </div>`;
-                    });
-                    surahViewBody.innerHTML = contentHtml;
-        
-                    lastReadSurah = { number: surah.number, name: surah.name.transliteration.id };
-                    localStorage.setItem('last_read_surah', JSON.stringify(lastReadSurah));
-                    updateLastReadSurahCard();
-                    surahViewBookmarkBtn.classList.toggle('bookmarked', bookmarkedSurahs.includes(surah.number));
-        
-                } catch (error) {
-                    surahViewBody.innerHTML = `<div class="loading-indicator">Gagal memuat surah. Silahkan coba lagi.</div>`;
-                    console.error("Error fetching surah detail:", error);
-                }
-            }
-        
-            function updateLastReadSurahCard() {
-                if (lastReadSurah) {
-                    lastReadSurahCardText.textContent = `Surah ${lastReadSurah.name} (No. ${lastReadSurah.number})`;
-                } else {
-                    lastReadSurahCardText.textContent = "Belum ada surah yang dibaca";
-                }
-            }
-        
-            lastReadSurahCard.addEventListener('click', () => {
-                if (lastReadSurah && lastReadSurah.number) {
-                    showSurahDetail(lastReadSurah.number, 'quran-view');
-                }
-            });
-        
-            surahViewBookmarkBtn.addEventListener('click', function() {
-                if (currentOpenSurahNumber === null) return;
-                const index = bookmarkedSurahs.indexOf(currentOpenSurahNumber);
-                if (index > -1) {
-                    bookmarkedSurahs.splice(index, 1);
-                } else {
-                    bookmarkedSurahs.push(currentOpenSurahNumber);
-                }
-                this.classList.toggle('bookmarked');
-                localStorage.setItem('bookmarked_surahs', JSON.stringify(bookmarkedSurahs));
-            });
-        
-            quranTabs.addEventListener('click', (e) => {
-                if (e.target.classList.contains('tab-item')) {
-                    quranTabs.querySelector('.tab-item.active').classList.remove('active');
-                    e.target.classList.add('active');
-                    renderQuranView(e.target.dataset.tab);
-                }
-            });
-        
-            window.renderQuranView = async function(tab) {
-                quranListContainer.innerHTML = `<div class="loading-indicator">Loading...</div>`;
-                const surahs = await fetchAllSurahs();
-                if (tab === 'surah') {
-                    renderSurahList(surahs, quranListContainer, 'quran-view');
-                } else if (tab === 'juz') {
-                    renderJuzList();
-                } else if (tab === 'bookmarked') {
-                    const bookmarkedList = surahs.filter(s => bookmarkedSurahs.includes(s.number));
-                    if (bookmarkedList.length === 0) {
-                        quranListContainer.innerHTML = `<div class="loading-indicator">Tidak ada surah yang ditandai.</div>`;
-                    } else {
-                        renderSurahList(bookmarkedList, quranListContainer, 'quran-view');
-                    }
-                }
-            };
-            updateLastReadSurahCard();
-        }
-        
-        // --- DZIKIR & TASBIH FEATURE ---
-        function setupDzikir() {
-            const dzikirListContainer = document.getElementById('dzikir-list-container');
-            const dzikirDetailModal = document.getElementById('dzikir-detail-modal');
-            const tasbihView = document.getElementById('tasbih-view');
-            const tasbihTitle = document.getElementById('tasbih-title');
-            const tasbihCurrentCount = document.getElementById('tasbih-current-count');
-            const tasbihTargetCount = document.getElementById('tasbih-target-count');
-            const tasbihTapArea = document.getElementById('tasbih-tap-area');
-            const tasbihResetBtn = document.getElementById('tasbih-reset-btn');
-        
-            function saveState() { localStorage.setItem('dzikir_state', JSON.stringify(dzikirState)); }
-            
-            window.renderDzikirList = () => {
-                dzikirListContainer.innerHTML = '';
-                dzikirData.forEach((d, index) => {
-                    const item = document.createElement('div'); 
-                    item.className = 'list-item';
-                    item.innerHTML = `
-                                <span class="num">📿</span>
-                                <div class="details">
-                                    <div class="title">${d.title}</div>
-                                    <div class="subtitle">${d.subtitle}</div>
-                                </div>
-                                <span class="arabic">${d.arabic}</span>`;
-                    item.addEventListener('click', () => showDzikirDetailModal(d.id));
-                    dzikirListContainer.appendChild(item);
-                });
-            };
-            
-            function showDzikirDetailModal(id) {
-                const dzikir = dzikirData.find(d => d.id === id); if (!dzikir) return;
-                
-                dzikirDetailModal.querySelector('#dzikir-detail-modal-title').textContent = dzikir.title;
-                const modalBody = dzikirDetailModal.querySelector('#dzikir-detail-modal-body');
-                modalBody.innerHTML = `
-                                <p class="single-item-arabic">${dzikir.arabic}</p>
-                                <p class="single-item-latin">${dzikir.latin}</p>
-                                <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
-                                <p class="single-item-arti"><b>Artinya:</b> ${dzikir.arti}</p>
-                                <button id="start-dzikir-btn" class="modal-action-btn">Mulai Dzikir (Target: ${dzikir.target})</button>
-                                  `;
-                
-                modalBody.querySelector('#start-dzikir-btn').addEventListener('click', () => {
-                    dzikirDetailModal.style.display = 'none';
-                    showTasbihView(id);
-                });
-        
-                dzikirDetailModal.style.display = 'flex';
-            }
-        
-            dzikirDetailModal.querySelector('.close-button').addEventListener('click', () => {
-                dzikirDetailModal.style.display = 'none';
-            });
-        
-            function showTasbihView(id) {
-                currentDzikirId = id; 
-                const d = dzikirData.find(dz => dz.id === id);
-                const s = dzikirState[id] || { count: 0, lap: 0 };
-                
-                tasbihTitle.textContent = d.title; 
-                tasbihCurrentCount.textContent = s.count; 
-                tasbihTargetCount.textContent = `/ ${d.target}`;
-                
-                tasbihView.querySelector('.tasbih-arabic').textContent = d.arabic;
-                tasbihView.querySelector('.tasbih-latin').textContent = d.latin;
-                tasbihView.querySelector('.tasbih-arti').textContent = `Artinya: ${d.arti}`;
-                
-                showView('tasbih-view');
-            }
-        
-            tasbihTapArea.addEventListener('click', () => {
-                if (!currentDzikirId) return;
-                const d = dzikirData.find(dz => dz.id === currentDzikirId);
-                let s = dzikirState[currentDzikirId];
-                if (!s) {
-                   s = dzikirState[currentDzikirId] = { count: 0, lap: 0 };
-                }
-                s.count++;
-                if (s.count > d.target) { 
-                    s.count = 1; 
-                    s.lap = (s.lap || 0) + 1; 
-                }
-                s.lastUpdate = new Date().toLocaleString('id-ID');
-                tasbihCurrentCount.textContent = s.count; 
-                saveState();
-                if (navigator.vibrate) navigator.vibrate(50);
-            });
-        
-            tasbihResetBtn.addEventListener('click', () => {
-                if (!currentDzikirId || !dzikirState[currentDzikirId]) return;
-                dzikirState[currentDzikirId].count = 0; 
-                dzikirState[currentDzikirId].lap = 0;
-                tasbihCurrentCount.textContent = 0; 
-                saveState();
-            });
-        }
-        
-        // --- SETTINGS & LANGUAGE ---
-        function setupSettings() {
-            const darkModeToggle = document.getElementById('dark-mode-toggle');
-            const langSelect = document.getElementById('language-select');
-            const settingsModal = document.getElementById('settings-modal');
-            const enableNotificationsBtn = document.getElementById('enable-notifications-btn');
-        
-            const applyTheme = (theme) => { darkModeToggle.checked = theme === 'dark'; document.body.classList.toggle('dark-mode', theme === 'dark'); };
-            darkModeToggle.addEventListener('change', () => { const theme = darkModeToggle.checked ? 'dark' : 'light'; localStorage.setItem('theme', theme); applyTheme(theme); });
-            applyTheme(localStorage.getItem('theme') || 'light');
-        
-            function updateNotificationButtonState() {
-                 if (!("Notification" in window)) {
-                     enableNotificationsBtn.textContent = 'Not Supported';
-                     enableNotificationsBtn.disabled = true;
-                     return;
-                 }
-                 switch(Notification.permission) {
-                     case 'granted':
-                         enableNotificationsBtn.textContent = 'Enabled';
-                         enableNotificationsBtn.disabled = true;
-                         break;
-                     case 'denied':
-                         enableNotificationsBtn.textContent = 'Blocked';
-                         enableNotificationsBtn.disabled = true;
-                         break;
-                     default:
-                         enableNotificationsBtn.textContent = 'Enable';
-                         enableNotificationsBtn.disabled = false;
-                 }
-            }
-        
-            function requestNotificationPermission() {
-                if (!("Notification" in window)) {
-                    alert("This browser does not support desktop notifications.");
-                    updateNotificationButtonState();
-                    return;
-                }
-                if (Notification.permission !== 'denied') {
-                    Notification.requestPermission().then(permission => {
-                        if (permission === "granted") {
-                            new Notification("Notifications Enabled!", {
-                                body: "You will now receive notifications for prayer times.",
-                            });
-                        }
-                        updateNotificationButtonState();
-                    });
-                }
-            }
-            
-            enableNotificationsBtn.addEventListener('click', requestNotificationPermission);
-            updateNotificationButtonState();
-        
-            // ===================================================================
-            // === BAGIAN YANG DIPERBAIKI (FUNGSI setLanguage) ===
-            // ===================================================================
-            const setLanguage = (lang) => {
-                currentLanguage = lang;
-                localStorage.setItem('language', lang);
-                document.documentElement.lang = lang; 
-        
-                // 1. Update semua teks umum menggunakan atribut data-key
-                document.querySelectorAll('[data-key]').forEach(el => {
-                    const key = el.dataset.key;
-                    if (translations[lang] && translations[lang][key]) { 
-                        el.textContent = translations[lang][key]; 
-                    }
-                });
-                
-                // 2. Render ulang UI yang bergantung bahasa, TANPA mengambil data baru dari internet.
-                // Ini adalah kunci perbaikannya.
-                updateDates();
-                generateCalendar();
-        
-                // 3. Periksa apakah data jadwal sholat sudah ada.
-                if (window.latestPrayerTimes) {
-                    // Jika ada, render ulang daftar jadwal sholat dan countdown
-                    // dengan bahasa yang baru dipilih.
-                    renderPrayerTimes(window.latestPrayerTimes);
-                    startCountdown(window.latestPrayerTimes);
-                }
-            };
-        
-            langSelect.addEventListener('change', () => { 
-                setLanguage(langSelect.value); 
-            });
-            // ===================================================================
-            // === AKHIR BAGIAN YANG DIPERBAIKI ===
-            // ===================================================================
-        
-            const savedLang = localStorage.getItem('language') || 'id';
-            langSelect.value = savedLang;
-            setLanguage(savedLang); // Panggil setLanguage saat awal untuk memastikan semuanya sinkron
-        
-            settingsModal.querySelector('.close-button').addEventListener('click', () => settingsModal.style.display = 'none');
-        }
-        
-        // --- INITIALIZATION ---
-        setupNavigation();
-        setupSettings(); 
-        setupDoaHarian();
-        setupQuranFeature();
-        setupDzikir();
-        setupPrayerTimesWithOfflineCache();
-        
-        showView('prayer-times-view');
-      });
-  </script>
-
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js')
-          .then(reg => console.log('Service Worker: Terdaftar.', reg))
-          .catch(err => console.error('Service Worker: Pendaftaran gagal.', err));
-      });
+      }
     }
+
+
+    // --- SCRIPT UTAMA, MENUNGGU HALAMAN SIAP ---
+    document.addEventListener('DOMContentLoaded', () => {
+      // --- GLOBAL VARIABLES & STATE ---
+      let currentLanguage = 'id';
+      let countdownInterval;
+      let bookmarkedDoas = JSON.parse(localStorage.getItem('bookmarked_doas')) || [];
+      let lastReadDoaId = localStorage.getItem('last_read_doa_id');
+      let currentOpenDoaId = null;
+      let dzikirState = JSON.parse(localStorage.getItem('dzikir_state')) || {};
+      let currentDzikirId = null;
+      window.latestPrayerTimes = null;
+      
+      // Quran State
+      let allSurahsData = [];
+      let bookmarkedSurahs = JSON.parse(localStorage.getItem('bookmarked_surahs')) || [];
+      let lastReadSurah = JSON.parse(localStorage.getItem('last_read_surah'));
+      let currentOpenSurahNumber = null;
+      
+      // --- ELEMENT SELECTORS ---
+      const sidebar = document.getElementById('sidebar');
+      const menuToggle = document.getElementById('menu-toggle');
+      
+      // Prayer Times UI
+      const prayerListContainerEl = document.getElementById('prayer-list-container');
+      const countdownTimerEl = document.getElementById('countdown-timer');
+      const nextPrayerNameEl = document.getElementById('next-prayer-name');
+      const calendarContainerEl = document.getElementById('calendar-view-container');
+      const gregorianDateEl = document.getElementById('gregorian-date-display');
+      const hijriDateEl = document.getElementById('hijri-date-display');
+      
+      // --- CORE APP LOGIC ---
+      function showView(viewId) {
+          document.querySelectorAll('.main-view').forEach(v => v.style.display = 'none');
+          const appContainer = document.querySelector('.app-container');
+          const tasbihView = document.getElementById('tasbih-view');
+          const targetView = document.getElementById(viewId);
+          
+          if (viewId === 'tasbih-view') {
+              appContainer.style.display = 'none';
+              tasbihView.style.display = 'flex';
+          } else {
+              appContainer.style.display = 'block';
+              tasbihView.style.display = 'none';
+              if (targetView) targetView.style.display = 'block';
+          }
+          const prayerView = document.getElementById('prayer-times-view');
+          menuToggle.style.display = (prayerView.style.display === 'block') ? 'flex' : 'none';
+      }
+      
+      function closeSidebar() {
+          menuToggle.classList.remove('open');
+          sidebar.classList.remove('open');
+      }
+      
+      function setupNavigation() {
+          document.getElementById('prayer-times-btn').addEventListener('click', (e) => { e.preventDefault(); showView('prayer-times-view'); closeSidebar(); });
+          document.getElementById('doa-harian-btn').addEventListener('click', (e) => { e.preventDefault(); showView('doa-view'); renderDoaListView('all'); closeSidebar(); });
+          document.getElementById('quran-btn').addEventListener('click', (e) => { e.preventDefault(); showView('quran-view'); renderQuranView('surah'); closeSidebar(); });
+          document.getElementById('dzikir-btn').addEventListener('click', (e) => { e.preventDefault(); showView('dzikir-view'); renderDzikirList(); closeSidebar(); });
+          document.getElementById('settings-btn').addEventListener('click', (e) => { e.preventDefault(); document.getElementById('settings-modal').style.display = 'flex'; closeSidebar(); });
+          
+          document.querySelectorAll('.back-button').forEach(btn => {
+              btn.addEventListener('click', () => {
+                  const targetViewId = btn.getAttribute('data-target-view');
+                  if (targetViewId) {
+                      showView(targetViewId);
+                      if (targetViewId === 'dzikir-view') renderDzikirList();
+                  }
+              });
+          });
+      
+          menuToggle.addEventListener('click', (e) => { e.stopPropagation(); menuToggle.classList.toggle('open'); sidebar.classList.toggle('open'); });
+          document.addEventListener('click', (e) => {
+              if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+                  closeSidebar();
+              }
+          });
+      }
+      
+      // --- PRAYER TIMES FEATURE ---
+      function showPrayerNotification(prayerName) {
+       if (Notification.permission !== 'granted') return;
+       const notificationTitle = `Waktunya Sholat ${prayerName}`;
+       const notificationOptions = {
+            body: `Sekarang telah masuk waktu sholat ${prayerName}.`,
+            icon: 'https://cdn-icons-png.flaticon.com/512/30/30709.png'
+       };
+       const notification = new Notification(notificationTitle, notificationOptions);
+       setTimeout(() => notification.close(), 15000);
+      }
+      
+      function renderPrayerTimes(prayerTimes) {
+          if (!prayerListContainerEl) return;
+          const prayerUIData = { Imsak: { icon: '—', checkable: false }, Fajr: { icon: '—', checkable: true }, Sunrise: { icon: '—', checkable: false }, Dhuhr: { icon: '—', checkable: true }, Asr: { icon: '—', checkable: true }, Maghrib: { icon: '—', checkable: true }, Isha: { icon: '—', checkable: true } };
+          prayerListContainerEl.innerHTML = '';
+          let prayerHtml = '';
+          const prayerOrder = ['Imsak', 'Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+          const now = new Date();
+          const isAfterResetTime = now.getHours() >= 22;
+          prayerOrder.forEach(key => {
+              if (prayerTimes[key]) {
+                  const ui = prayerUIData[key];
+                  const prayerDate = new Date(`${now.toDateString()} ${prayerTimes[key]}`);
+                  let iconToShow = ui.icon;
+                  if (ui.checkable) {
+                      if (isAfterResetTime) iconToShow = '—';
+                      else if (now > prayerDate) iconToShow = '✔';
+                  }
+                  prayerHtml += `<div class="prayer-item"><span class="icon-status">${iconToShow}</span><div class="prayer-details"><div class="prayer-name">${translations[currentLanguage][key] || key}</div><div class="prayer-desc">${translations[currentLanguage][`${key}_desc`] || key}</div></div><div class="prayer-time-action"><div class="prayer-time">${prayerTimes[key]}</div><div class="prayer-action">🔊</div></div></div>`;
+              }
+          });
+          prayerListContainerEl.innerHTML = prayerHtml;
+      }
+      
+      function startCountdown(prayerTimes) {
+          if (countdownInterval) clearInterval(countdownInterval);
+          const prayerOrder = ['Imsak', 'Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+          
+          function update() {
+              const now = new Date();
+              let nextPrayerTime, nextPrayerName;
+              for (const name of prayerOrder) {
+                  const prayerDate = new Date(`${now.toDateString()} ${prayerTimes[name]}`);
+                  if (prayerDate > now) {
+                      nextPrayerTime = prayerDate;
+                      nextPrayerName = name;
+                      break;
+                  }
+              }
+              if (!nextPrayerTime) {
+                  const tomorrow = new Date(now);
+                  tomorrow.setDate(now.getDate() + 1);
+                  nextPrayerTime = new Date(`${tomorrow.toDateString()} ${prayerTimes['Imsak']}`);
+                  nextPrayerName = 'Imsak';
+              }
+              const diff = nextPrayerTime - now;
+              if (diff < 0) return;
+              if (diff > 0 && diff < 1000) {
+                  const prayersWithAlarm = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+                  if (prayersWithAlarm.includes(nextPrayerName)) {
+                      showPrayerNotification(translations[currentLanguage][nextPrayerName] || nextPrayerName);
+                  }
+                  if (window.latestPrayerTimes) renderPrayerTimes(window.latestPrayerTimes);
+              }
+              const h = String(Math.floor(diff / 3600000)).padStart(2, '0');
+              const m = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+              const s = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+              countdownTimerEl.textContent = `${h}:${m}:${s}`;
+              nextPrayerNameEl.textContent = translations[currentLanguage][nextPrayerName] || nextPrayerName;
+          }
+          update();
+          countdownInterval = setInterval(update, 1000);
+      }
+      
+      function generateCalendar() {
+          if (!calendarContainerEl) return;
+          const dayNamesList = { 
+              id: ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"], en: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], ar: ["أحد", "إثن", "ثلا", "أرب", "خمي", "جمع", "سبت"], tr: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"], fr: ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"], es: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"], de: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"], ru: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"], ur: ["اتوار", "پیر", "منگل", "بدھ", "جمعرات", "جمعہ", "ہفتہ"], bn: ["রবি", "সোম", "মঙ্গল", "বুধ", "বৃহ", "শুক্র", "শনি"]
+          };
+          const today = new Date();
+          const todayDayIndex = today.getDay();
+          let calendarHtml = '';
+          for (let i = 0; i < 7; i++) {
+              const date = new Date();
+              date.setDate(today.getDate() - (todayDayIndex - i));
+              const isToday = i === todayDayIndex;
+              calendarHtml += `<div class="day ${isToday ? 'today' : ''}"><span class="day-name">${dayNamesList[currentLanguage][i] || dayNamesList['id'][i]}</span><span class="day-number">${date.getDate()}</span></div>`;
+          }
+          calendarContainerEl.innerHTML = calendarHtml;
+      }
+      
+      function updateDates() {
+          if (!gregorianDateEl) return;
+          const now = new Date();
+          const localeMap = { id: 'id-ID', en: 'en-US', ar: 'ar-SA', tr: 'tr-TR', fr: 'fr-FR', es: 'es-ES', de: 'de-DE', ru: 'ru-RU', ur: 'ur-PK', bn: 'bn-BD' };
+          const locale = localeMap[currentLanguage] || 'en-US';
+          gregorianDateEl.textContent = now.toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+      }
+      
+      function setupPrayerTimesWithOfflineCache() {
+          const CACHE_KEY_TIMINGS = 'prayer_timings_data';
+          const CACHE_KEY_CITY = 'prayer_city_data';
+          const CACHE_KEY_HIJRI = 'prayer_hijri_data';
+          const CACHE_KEY_TIMESTAMP = 'prayer_data_timestamp';
+
+          function loadPrayerDataFromCache() {
+              const cachedTimings = localStorage.getItem(CACHE_KEY_TIMINGS);
+              const cachedCity = localStorage.getItem(CACHE_KEY_CITY);
+              const cachedHijri = localStorage.getItem(CACHE_KEY_HIJRI);
+              if (cachedTimings && cachedCity && cachedHijri) {
+                  console.log("Memuat jadwal sholat dari cache.");
+                  const timings = JSON.parse(cachedTimings);
+                  document.getElementById('city-name').textContent = cachedCity;
+                  hijriDateEl.textContent = cachedHijri;
+                  window.latestPrayerTimes = timings;
+                  renderPrayerTimes(timings);
+                  startCountdown(timings);
+              } else {
+                  console.log("Tidak ada data jadwal sholat di cache.");
+              }
+          }
+
+          function fetchCityName(lat, lon) {
+              fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
+                  .then(r => r.json())
+                  .then(data => {
+                      const cityName = data.address.city || data.address.town || data.address.village || "Lokasi Tidak Diketahui";
+                      document.getElementById('city-name').textContent = cityName;
+                      localStorage.setItem(CACHE_KEY_CITY, cityName);
+                  })
+                  .catch(error => {
+                      console.error("Gagal mengambil nama kota:", error);
+                      const cachedCity = localStorage.getItem(CACHE_KEY_CITY);
+                      if (cachedCity) document.getElementById('city-name').textContent = cachedCity;
+                  });
+          }
+
+          function fetchPrayerTimings(lat, lon) {
+              const ts = Math.floor(Date.now() / 1000);
+              fetch(`https://api.aladhan.com/v1/timings/${ts}?latitude=${lat}&longitude=${lon}&method=11`)
+                  .then(r => r.json())
+                  .then(j => {
+                      if (j.code === 200) {
+                          console.log("Berhasil mengambil data jadwal sholat baru dari API.");
+                          const originalTimings = j.data.timings;
+                          const adjustedTimings = {};
+                          for (const key in originalTimings) {
+                              const [h, m] = originalTimings[key].split(':').map(Number);
+                              const date = new Date();
+                              date.setHours(h, m + 2, 0, 0);
+                              adjustedTimings[key] = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+                          }
+                          const hijri = j.data.date.hijri;
+                          const hijriText = `${hijri.day} ${hijri.month.en} ${hijri.year} H`;
+                          hijriDateEl.textContent = hijriText;
+                          window.latestPrayerTimes = adjustedTimings;
+                          renderPrayerTimes(adjustedTimings);
+                          startCountdown(adjustedTimings);
+                          localStorage.setItem(CACHE_KEY_TIMINGS, JSON.stringify(adjustedTimings));
+                          localStorage.setItem(CACHE_KEY_HIJRI, hijriText);
+                          localStorage.setItem(CACHE_KEY_TIMESTAMP, new Date().toISOString());
+                          console.log("Data jadwal sholat baru telah disimpan ke cache.");
+                      } else {
+                          console.error("API Aladhan mengembalikan error, menggunakan data cache jika ada.");
+                      }
+                  })
+                  .catch(error => {
+                      console.error("Gagal mengambil jadwal sholat (kemungkinan offline):", error);
+                  });
+          }
+
+          function getLocation() {
+              const fallbackLat = 3.5952;
+              const fallbackLon = 98.6722;
+              const fallbackCity = "Medan";
+              const handleLocationError = (error) => {
+                  console.warn(`Tidak bisa mendapatkan lokasi: ${error.message}. Menggunakan lokasi fallback.`);
+                  fetchPrayerTimings(fallbackLat, fallbackLon);
+                  if (!localStorage.getItem(CACHE_KEY_CITY)) {
+                      document.getElementById('city-name').textContent = fallbackCity;
+                      localStorage.setItem(CACHE_KEY_CITY, fallbackCity);
+                  }
+              };
+              if (navigator.geolocation) {
+                  navigator.geolocation.getCurrentPosition(
+                      (position) => {
+                          fetchPrayerTimings(position.coords.latitude, position.coords.longitude);
+                          fetchCityName(position.coords.latitude, position.coords.longitude);
+                      },
+                      handleLocationError, { timeout: 10000 }
+                  );
+              } else {
+                  handleLocationError({ message: "Geolocation tidak didukung" });
+              }
+          }
+
+          loadPrayerDataFromCache();
+          updateDates();
+          generateCalendar();
+          getLocation();
+          setInterval(() => {
+              if (window.latestPrayerTimes) renderPrayerTimes(window.latestPrayerTimes);
+          }, 60000);
+      }
+      
+      // --- DOA HARIAN FEATURE ---
+      function setupDoaHarian() {
+          const doaListContainer = document.getElementById('doa-list-container-view');
+          const lastReadCard = document.getElementById('last-read-doa-card');
+          const lastReadCardText = lastReadCard.querySelector('p');
+          const singleDoaModal = document.getElementById('single-doa-modal');
+      
+          window.renderDoaListView = function(filter) {
+              doaListContainer.innerHTML = '';
+              let data = (filter === 'bookmarked') ? doaHarianData.filter(d => bookmarkedDoas.includes(d.id)) : doaHarianData;
+              if (data.length === 0) { doaListContainer.innerHTML = `<p class="loading-indicator">Tidak ada doa yang ditandai.</p>`; return; }
+              data.forEach((d, index) => {
+                  const item = document.createElement('div'); item.className = 'list-item';
+                  item.innerHTML = `<span class="num">${d.id}</span><div class="details"><div class="title">${d.title}</div><div class="subtitle">${d.subtitle}</div></div><span class="arabic">${d.arabic.split(' ')[0]}...</span>`;
+                  item.addEventListener('click', () => showSingleDoa(d.id));
+                  doaListContainer.appendChild(item);
+              });
+          }
+          function showSingleDoa(id) {
+              const doa = doaHarianData.find(d => d.id === id); if (!doa) return;
+              currentOpenDoaId = id;
+              singleDoaModal.querySelector('#single-doa-modal-title').textContent = doa.title;
+              singleDoaModal.querySelector('#single-doa-modal-body').innerHTML = `
+                                          <p class="single-item-arabic">${doa.arabic}</p>
+                                          <p class="single-item-latin">${doa.latin}</p>
+                                          <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
+                                          <p class="single-item-arti"><b>Artinya:</b> ${doa.arti}</p>`;
+              updateBookmarkIcon(); singleDoaModal.style.display = 'flex';
+              localStorage.setItem('last_read_doa_id', id); lastReadDoaId = id; renderLastRead();
+          }
+          function renderLastRead() {
+              const p = lastReadCardText;
+              if (lastReadDoaId) { const doa = doaHarianData.find(d => d.id == lastReadDoaId); p.textContent = doa ? doa.title : 'Belum ada doa yang dibaca'; } 
+              else { p.textContent = 'Belum ada doa yang dibaca'; }
+          }
+          function updateBookmarkIcon() { singleDoaModal.querySelector('#bookmark-doa-btn').classList.toggle('bookmarked', bookmarkedDoas.includes(currentOpenDoaId)); }
+          
+          lastReadCard.addEventListener('click', () => { if (lastReadDoaId) showSingleDoa(parseInt(lastReadDoaId)); });
+          singleDoaModal.querySelector('#bookmark-doa-btn').addEventListener('click', () => {
+              const index = bookmarkedDoas.indexOf(currentOpenDoaId);
+              if (index > -1) bookmarkedDoas.splice(index, 1); else bookmarkedDoas.push(currentOpenDoaId);
+              localStorage.setItem('bookmarked_doas', JSON.stringify(bookmarkedDoas)); updateBookmarkIcon();
+              if (document.querySelector('#doa-view .tab-item.active').dataset.tab === 'bookmarked') renderDoaListView('bookmarked');
+          });
+          document.querySelectorAll('#doa-view .tab-item').forEach(tab => tab.addEventListener('click', () => {
+              document.querySelector('#doa-view .tab-item.active').classList.remove('active');
+              tab.classList.add('active'); renderDoaListView(tab.dataset.tab);
+          }));
+          singleDoaModal.querySelector('.close-button').addEventListener('click', () => singleDoaModal.style.display = 'none');
+          renderLastRead();
+      }
+      
+      // --- QURAN FEATURE ---
+      function setupQuranFeature() {
+          const quranListContainer = document.getElementById('quran-list-container');
+          const quranTabs = document.getElementById('quran-tabs');
+          const lastReadSurahCard = document.getElementById('last-read-surah-card');
+          const lastReadSurahCardText = lastReadSurahCard.querySelector('p');
+          const surahViewTitle = document.getElementById('surah-view-title');
+          const surahViewBookmarkBtn = document.getElementById('surah-view-bookmark-btn');
+          const surahViewBody = document.getElementById('surah-view-body');
+          const surahViewBackBtn = document.getElementById('surah-view-back-btn');
+          const juzDetailTitle = document.getElementById('juz-detail-title');
+          const juzSurahListContainer = document.getElementById('juz-surah-list-container');
+      
+          async function fetchAllSurahs() {
+              if (allSurahsData.length > 0) return allSurahsData;
+              try {
+                  quranListContainer.innerHTML = `<div class="loading-indicator">Loading surah data...</div>`;
+                  const response = await fetch('https://api.quran.gading.dev/surah');
+                  const data = await response.json();
+                  if (data.code === 200) {
+                      allSurahsData = data.data;
+                      return allSurahsData;
+                  }
+              } catch (error) { 
+                  console.error("Error fetching surah list:", error);
+                  quranListContainer.innerHTML = `<div class="loading-indicator">Gagal dimuat. Periksa koneksi.</div>`;
+              }
+              return [];
+          }
+          
+          function renderSurahList(surahs, container, backTarget) {
+              container.innerHTML = '';
+              if (!surahs || surahs.length === 0) {
+                  container.innerHTML = `<div class="loading-indicator">No data.</div>`;
+                  return;
+              }
+              surahs.forEach(surah => {
+                  const item = document.createElement('div');
+                  item.className = 'list-item';
+                  item.innerHTML = `
+                                  <span class="num">${surah.number}</span>
+                                  <div class="details">
+                                      <div class="title">${surah.name.transliteration.id}</div>
+                                      <div class="subtitle">${surah.name.translation.id} (${surah.numberOfVerses} verses)</div>
+                                  </div>
+                                  <span class="arabic">${surah.name.short}</span>`;
+                  item.addEventListener('click', () => showSurahDetail(surah.number, backTarget));
+                  container.appendChild(item);
+              });
+          }
+      
+          function renderJuzList() {
+               quranListContainer.innerHTML = '';
+               for (let i = 1; i <= 30; i++) {
+                  const item = document.createElement('div');
+                  item.className = 'list-item';
+                  item.innerHTML = `
+                                 <span class="num">${i}</span>
+                                 <div class="details"><div class="title">Juz ${i}</div></div>
+                                 <span class="arabic">الجزء ${i}</span>`;
+                  item.addEventListener('click', () => showSurahsInJuz(i));
+                  quranListContainer.appendChild(item);
+               }
+          }
+          
+          async function showSurahsInJuz(juzNumber) {
+              juzDetailTitle.textContent = `List of Surahs in Juz ${juzNumber}`;
+              juzSurahListContainer.innerHTML = `<div class="loading-indicator">Loading...</div>`;
+              showView('juz-detail-view');
+          
+              const surahs = await fetchAllSurahs();
+              const surahNumbersInJuz = [...new Set(juzToSurahMap[juzNumber])];
+              const surahsInJuz = surahs.filter(s => surahNumbersInJuz.includes(s.number));
+              
+              renderSurahList(surahsInJuz, juzSurahListContainer, 'juz-detail-view');
+          }
+      
+          async function showSurahDetail(number, backTarget = 'quran-view') {
+              surahViewTitle.textContent = `Loading Surah...`;
+              surahViewBody.innerHTML = `<div class="loading-indicator">Loading...</div>`;
+              surahViewBackBtn.setAttribute('data-target-view', backTarget);
+              showView('surah-view');
+              
+              try {
+                  const response = await fetch(`https://api.quran.gading.dev/surah/${number}`);
+                  const result = await response.json();
+                  if (result.code !== 200) throw new Error('Failed to load surah');
+                  
+                  const surah = result.data;
+                  currentOpenSurahNumber = surah.number;
+                  surahViewTitle.textContent = `${surah.name.transliteration.id}`;
+                  
+                  let contentHtml = `
+                                  <div class="surah-detail-header">
+                                      <h2>${surah.name.long}</h2>
+                                      <p>${surah.name.translation.id}</p>
+                                      <div class="meta">${surah.revelation.id} • ${surah.numberOfVerses} VERSES</div>
+                                  </div>`;
+                  
+                  if (surah.number !== 1 && surah.number !== 9) {
+                      contentHtml += `
+                                  <div class="basmala">
+                                      <p class="basmala-arabic">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
+                                      <p class="basmala-translation">Dengan menyebut nama Allah Yang Maha Pengasih, lagi Maha Penyayang</p>
+                                  </div>`;
+                  }
+      
+                  surah.verses.forEach(ayah => {
+                      contentHtml += `
+                                  <div class="ayah-item">
+                                      <div class="ayah-header"><span class="ayah-number">${surah.number}:${ayah.number.inSurah}</span></div>
+                                      <p class="ayah-arabic">${ayah.text.arab}</p>
+                                      <p class="ayah-latin">${ayah.text.transliteration.en}</p>
+                                      <p class="ayah-translation"><b>Artinya:</b> ${ayah.translation.id}</p>
+                                  </div>`;
+                  });
+                  surahViewBody.innerHTML = contentHtml;
+      
+                  lastReadSurah = { number: surah.number, name: surah.name.transliteration.id };
+                  localStorage.setItem('last_read_surah', JSON.stringify(lastReadSurah));
+                  updateLastReadSurahCard();
+                  surahViewBookmarkBtn.classList.toggle('bookmarked', bookmarkedSurahs.includes(surah.number));
+      
+              } catch (error) {
+                  surahViewBody.innerHTML = `<div class="loading-indicator">Gagal memuat surah. Silahkan coba lagi.</div>`;
+                  console.error("Error fetching surah detail:", error);
+              }
+          }
+      
+          function updateLastReadSurahCard() {
+              if (lastReadSurah) {
+                  lastReadSurahCardText.textContent = `Surah ${lastReadSurah.name} (No. ${lastReadSurah.number})`;
+              } else {
+                  lastReadSurahCardText.textContent = "Belum ada surah yang dibaca";
+              }
+          }
+      
+          lastReadSurahCard.addEventListener('click', () => {
+              if (lastReadSurah && lastReadSurah.number) {
+                  showSurahDetail(lastReadSurah.number, 'quran-view');
+              }
+          });
+      
+          surahViewBookmarkBtn.addEventListener('click', function() {
+              if (currentOpenSurahNumber === null) return;
+              const index = bookmarkedSurahs.indexOf(currentOpenSurahNumber);
+              if (index > -1) {
+                  bookmarkedSurahs.splice(index, 1);
+              } else {
+                  bookmarkedSurahs.push(currentOpenSurahNumber);
+              }
+              this.classList.toggle('bookmarked');
+              localStorage.setItem('bookmarked_surahs', JSON.stringify(bookmarkedSurahs));
+          });
+      
+          quranTabs.addEventListener('click', (e) => {
+              if (e.target.classList.contains('tab-item')) {
+                  quranTabs.querySelector('.tab-item.active').classList.remove('active');
+                  e.target.classList.add('active');
+                  renderQuranView(e.target.dataset.tab);
+              }
+          });
+      
+          window.renderQuranView = async function(tab) {
+              quranListContainer.innerHTML = `<div class="loading-indicator">Loading...</div>`;
+              const surahs = await fetchAllSurahs();
+              if (tab === 'surah') {
+                  renderSurahList(surahs, quranListContainer, 'quran-view');
+              } else if (tab === 'juz') {
+                  renderJuzList();
+              } else if (tab === 'bookmarked') {
+                  const bookmarkedList = surahs.filter(s => bookmarkedSurahs.includes(s.number));
+                  if (bookmarkedList.length === 0) {
+                      quranListContainer.innerHTML = `<div class="loading-indicator">Tidak ada surah yang ditandai.</div>`;
+                  } else {
+                      renderSurahList(bookmarkedList, quranListContainer, 'quran-view');
+                  }
+              }
+          };
+          updateLastReadSurahCard();
+      }
+      
+      // --- DZIKIR & TASBIH FEATURE ---
+      function setupDzikir() {
+          const dzikirListContainer = document.getElementById('dzikir-list-container');
+          const dzikirDetailModal = document.getElementById('dzikir-detail-modal');
+          const tasbihView = document.getElementById('tasbih-view');
+          const tasbihTitle = document.getElementById('tasbih-title');
+          const tasbihCurrentCount = document.getElementById('tasbih-current-count');
+          const tasbihTargetCount = document.getElementById('tasbih-target-count');
+          const tasbihTapArea = document.getElementById('tasbih-tap-area');
+          const tasbihResetBtn = document.getElementById('tasbih-reset-btn');
+      
+          function saveState() { localStorage.setItem('dzikir_state', JSON.stringify(dzikirState)); }
+          
+          window.renderDzikirList = () => {
+              dzikirListContainer.innerHTML = '';
+              dzikirData.forEach((d, index) => {
+                  const item = document.createElement('div'); 
+                  item.className = 'list-item';
+                  item.innerHTML = `
+                                  <span class="num">📿</span>
+                                  <div class="details">
+                                      <div class="title">${d.title}</div>
+                                      <div class="subtitle">${d.subtitle}</div>
+                                  </div>
+                                  <span class="arabic">${d.arabic}</span>`;
+                  item.addEventListener('click', () => showDzikirDetailModal(d.id));
+                  dzikirListContainer.appendChild(item);
+              });
+          };
+          
+          function showDzikirDetailModal(id) {
+              const dzikir = dzikirData.find(d => d.id === id); if (!dzikir) return;
+              
+              dzikirDetailModal.querySelector('#dzikir-detail-modal-title').textContent = dzikir.title;
+              const modalBody = dzikirDetailModal.querySelector('#dzikir-detail-modal-body');
+              modalBody.innerHTML = `
+                                  <p class="single-item-arabic">${dzikir.arabic}</p>
+                                  <p class="single-item-latin">${dzikir.latin}</p>
+                                  <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
+                                  <p class="single-item-arti"><b>Artinya:</b> ${dzikir.arti}</p>
+                                  <button id="start-dzikir-btn" class="modal-action-btn">Mulai Dzikir (Target: ${dzikir.target})</button>
+                                   `;
+              
+              modalBody.querySelector('#start-dzikir-btn').addEventListener('click', () => {
+                  dzikirDetailModal.style.display = 'none';
+                  showTasbihView(id);
+              });
+      
+              dzikirDetailModal.style.display = 'flex';
+          }
+      
+          dzikirDetailModal.querySelector('.close-button').addEventListener('click', () => {
+              dzikirDetailModal.style.display = 'none';
+          });
+      
+          function showTasbihView(id) {
+              currentDzikirId = id; 
+              const d = dzikirData.find(dz => dz.id === id);
+              const s = dzikirState[id] || { count: 0, lap: 0 };
+              
+              tasbihTitle.textContent = d.title; 
+              tasbihCurrentCount.textContent = s.count; 
+              tasbihTargetCount.textContent = `/ ${d.target}`;
+              
+              tasbihView.querySelector('.tasbih-arabic').textContent = d.arabic;
+              tasbihView.querySelector('.tasbih-latin').textContent = d.latin;
+              tasbihView.querySelector('.tasbih-arti').textContent = `Artinya: ${d.arti}`;
+              
+              showView('tasbih-view');
+          }
+      
+          tasbihTapArea.addEventListener('click', () => {
+              if (!currentDzikirId) return;
+              const d = dzikirData.find(dz => dz.id === currentDzikirId);
+              let s = dzikirState[currentDzikirId];
+              if (!s) {
+                 s = dzikirState[currentDzikirId] = { count: 0, lap: 0 };
+              }
+              s.count++;
+              if (s.count > d.target) { 
+                  s.count = 1; 
+                  s.lap = (s.lap || 0) + 1; 
+              }
+              s.lastUpdate = new Date().toLocaleString('id-ID');
+              tasbihCurrentCount.textContent = s.count; 
+              saveState();
+              if (navigator.vibrate) navigator.vibrate(50);
+          });
+      
+          tasbihResetBtn.addEventListener('click', () => {
+              if (!currentDzikirId || !dzikirState[currentDzikirId]) return;
+              dzikirState[currentDzikirId].count = 0; 
+              dzikirState[currentDzikirId].lap = 0;
+              tasbihCurrentCount.textContent = 0; 
+              saveState();
+          });
+      }
+      
+      // --- SETTINGS & LANGUAGE ---
+      function setupSettings() {
+          const darkModeToggle = document.getElementById('dark-mode-toggle');
+          const langSelect = document.getElementById('language-select');
+          const settingsModal = document.getElementById('settings-modal');
+          const enableNotificationsBtn = document.getElementById('enable-notifications-btn');
+      
+          const applyTheme = (theme) => { darkModeToggle.checked = theme === 'dark'; document.body.classList.toggle('dark-mode', theme === 'dark'); };
+          darkModeToggle.addEventListener('change', () => { const theme = darkModeToggle.checked ? 'dark' : 'light'; localStorage.setItem('theme', theme); applyTheme(theme); });
+          applyTheme(localStorage.getItem('theme') || 'light');
+      
+          function updateNotificationButtonState() {
+               if (!("Notification" in window)) {
+                   enableNotificationsBtn.textContent = 'Not Supported';
+                   enableNotificationsBtn.disabled = true;
+                   return;
+               }
+               switch(Notification.permission) {
+                   case 'granted':
+                       enableNotificationsBtn.textContent = 'Enabled';
+                       enableNotificationsBtn.disabled = true;
+                       break;
+                   case 'denied':
+                       enableNotificationsBtn.textContent = 'Blocked';
+                       enableNotificationsBtn.disabled = true;
+                       break;
+                   default:
+                       enableNotificationsBtn.textContent = 'Enable';
+                       enableNotificationsBtn.disabled = false;
+               }
+          }
+      
+          function requestNotificationPermission() {
+              if (!("Notification" in window)) {
+                  alert("This browser does not support desktop notifications.");
+                  updateNotificationButtonState();
+                  return;
+              }
+              if (Notification.permission !== 'denied') {
+                  Notification.requestPermission().then(permission => {
+                      if (permission === "granted") {
+                          new Notification("Notifications Enabled!", {
+                              body: "You will now receive notifications for prayer times.",
+                          });
+                      }
+                      updateNotificationButtonState();
+                  });
+              }
+          }
+          
+          enableNotificationsBtn.addEventListener('click', requestNotificationPermission);
+          updateNotificationButtonState();
+      
+          // ===================================================================
+          // === BAGIAN YANG DIPERBAIKI (FUNGSI setLanguage) ===
+          // ===================================================================
+          const setLanguage = (lang) => {
+              currentLanguage = lang;
+              localStorage.setItem('language', lang);
+              document.documentElement.lang = lang; 
+      
+              // 1. Update semua teks umum menggunakan atribut data-key
+              document.querySelectorAll('[data-key]').forEach(el => {
+                  const key = el.dataset.key;
+                  if (translations[lang] && translations[lang][key]) { 
+                      el.textContent = translations[lang][key]; 
+                  }
+              });
+              
+              // 2. Render ulang UI yang bergantung bahasa, TANPA mengambil data baru dari internet.
+              // Ini adalah kunci perbaikannya.
+              updateDates();
+              generateCalendar();
+      
+              // 3. Periksa apakah data jadwal sholat sudah ada.
+              if (window.latestPrayerTimes) {
+                  // Jika ada, render ulang daftar jadwal sholat dan countdown
+                  // dengan bahasa yang baru dipilih.
+                  renderPrayerTimes(window.latestPrayerTimes);
+                  startCountdown(window.latestPrayerTimes);
+              }
+          };
+      
+          langSelect.addEventListener('change', () => { 
+              setLanguage(langSelect.value); 
+          });
+          // ===================================================================
+          // === AKHIR BAGIAN YANG DIPERBAIKI ===
+          // ===================================================================
+      
+          const savedLang = localStorage.getItem('language') || 'id';
+          langSelect.value = savedLang;
+          setLanguage(savedLang); // Panggil setLanguage saat awal untuk memastikan semuanya sinkron
+      
+          settingsModal.querySelector('.close-button').addEventListener('click', () => settingsModal.style.display = 'none');
+      }
+      
+      // --- INITIALIZATION ---
+      setupNavigation();
+      setupSettings(); 
+      setupDoaHarian();
+      setupQuranFeature();
+      setupDzikir();
+      setupPrayerTimesWithOfflineCache();
+      
+      showView('prayer-times-view');
+    });
+
+
+    // --- PENDAFTARAN SERVICE WORKER & PENYIMPANAN PERMANEN ---
+    window.addEventListener('load', () => {
+      // 1. Pendaftaran Service Worker
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+          .then(registration => {
+            console.log('Service Worker berhasil didaftarkan:', registration);
+          })
+          .catch(error => {
+            console.error('Pendaftaran Service Worker gagal:', error);
+          });
+      } else {
+        console.log('Browser tidak mendukung Service Worker.');
+      }
+
+      // 2. Meminta Penyimpanan Permanen
+      requestPersistentStorage();
+    });
   </script>
 </body>
 </html>
