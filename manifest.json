@@ -1,0 +1,22 @@
+{
+    "name": "Annur Islamic",
+    "short_name": "Annur",
+    "description": "Aplikasi Jadwal Sholat, Al-Qur'an, dan Doa Harian.",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#0d264a",
+    "theme_color": "#0d264a",
+    "orientation": "portrait-primary",
+    "icons": [
+      {
+        "src": "https://cdn-icons-png.flaticon.com/512/30/30709.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "https://cdn-icons-png.flaticon.com/512/30/30709.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ]
+  }
