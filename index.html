@@ -79,30 +79,28 @@
     #prayer-times-view .main-header p { font-size: 0.9rem; color: var(--header-text); opacity: 0.9; margin-bottom: 0.5rem; }
     #prayer-times-view #countdown-timer { font-size: 2.25rem; font-weight: 700; color: var(--header-text); letter-spacing: 2px; }
     
-    /* === CSS PERUBAHAN DIMULAI === */
     #prayer-times-view .main-header #location-display {
         display: flex;
         align-items: center;
-        justify-content: flex-start; /* Meratakan konten ke kiri */
-        padding-top: 1.5rem; /* Jarak dari countdown timer */
+        justify-content: flex-start;
+        padding-top: 1.5rem;
         text-align: left;
         font-size: 0.9rem;
         font-weight: 500;
-        color: var(--header-text); /* Menggunakan warna teks header */
+        color: var(--header-text);
         opacity: 0.9;
     }
     
     #prayer-times-view .calendar-section {
         background-color: var(--card-bg);
         border-radius: var(--radius);
-        margin: -2.5rem 1rem 1.5rem 1rem; /* Mengembalikan margin untuk efek tumpuk */
+        margin: -2.5rem 1rem 1.5rem 1rem;
         padding: 1rem;
         box-shadow: 0 4px 10px var(--card-shadow);
         position: relative;
         z-index: 10;
         transition: background-color var(--transition);
     }
-    /* === AKHIR PERUBAHAN CSS === */
 
     #prayer-times-view #location-display .icon { margin-right: 0.4rem; }
     #prayer-times-view .date-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; font-size: 0.9rem; font-weight: 600; }
@@ -238,8 +236,6 @@
     .ayah-translation { font-size: 0.9rem; line-height: 1.5rem; }
     body.dark-mode .ayah-latin { color: #ddd; }
     body.dark-mode .ayah-translation { color: #ccc; }
-
-
   </style>
 </head>
 <body>
@@ -273,8 +269,7 @@
           <div class="calendar-view" id="calendar-view-container"></div>
         </section>
         <main class="prayer-list-section" id="prayer-list-container"></main>
-        <footer class="app-footer">Annur Islamic</footer> </div>
-
+        <footer class="app-footer">Annur Islamic</footer> 
     </div>
 
     <div id="doa-view" class="main-view generic-list-view" style="display: none;">
@@ -325,7 +320,7 @@
         <span class="action-icon" id="surah-view-bookmark-btn">⭐</span>
       </div>
       <div id="surah-view-body">
-        </div>
+      </div>
     </div>
 
     <div id="dzikir-view" class="main-view generic-list-view" style="display: none;">
@@ -697,9 +692,6 @@
           gregorianDateEl.textContent = now.toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
       }
       
-      // ===================================================================
-      // === KODE BARU DIMASUKKAN DI SINI ===
-      // ===================================================================
       function setupPrayerTimesWithOfflineCache() {
         const CACHE_KEY_MONTHLY_TIMINGS = 'prayer_monthly_timings';
         const CACHE_KEY_CITY = 'prayer_city_data';
@@ -720,7 +712,6 @@
             
             if (monthlyData && monthlyData.key === cacheKey) {
                 console.log("Memuat jadwal sholat dari cache bulanan.");
-                // Cari data untuk hari ini (indeks array adalah tanggal - 1)
                 const todayData = monthlyData.data[day - 1];
                 if(todayData) {
                     const todayTimings = todayData.timings;
@@ -754,40 +745,46 @@
                 });
         }
 
+        // ===================================================================
+        // === FUNGSI YANG DIPERBAIKI ADA DI SINI ===
+        // ===================================================================
         function fetchPrayerTimings(lat, lon) {
             const now = new Date();
             const year = now.getFullYear();
             const month = now.getMonth() + 1;
-            
-            // Menggunakan API 'calendar' untuk mengambil data sebulan penuh
+
             fetch(`https://api.aladhan.com/v1/calendar/${year}/${month}?latitude=${lat}&longitude=${lon}&method=11`)
                 .then(r => r.json())
                 .then(j => {
                     if (j.code === 200) {
                         console.log("Berhasil mengambil data jadwal sholat baru untuk sebulan dari API.");
                         const cacheKey = `timings_${year}_${month}`;
-                        // Menyesuaikan waktu +2 menit untuk setiap jadwal
+
                         const adjustedData = j.data.map(dailyData => {
                             const adjustedTimings = {};
                             for (const key in dailyData.timings) {
-                                const [h, m] = dailyData.timings[key].split(':').map(Number);
-                                const date = new Date();
-                                date.setHours(h, m + 2, 0, 0); // Tambah 2 menit
-                                adjustedTimings[key] = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+                                const timeString = dailyData.timings[key].split(' ')[0]; 
+                                const [h, m] = timeString.split(':').map(Number);
+
+                                if (!isNaN(h) && !isNaN(m)) {
+                                    const date = new Date();
+                                    date.setHours(h, m + 2, 0, 0); 
+                                    adjustedTimings[key] = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+                                } else {
+                                    adjustedTimings[key] = dailyData.timings[key];
+                                }
                             }
                             return { ...dailyData, timings: adjustedTimings };
                         });
 
                         const dataToStore = {
                             key: cacheKey,
-                            data: adjustedData // Simpan data yang sudah disesuaikan
+                            data: adjustedData
                         };
                         
-                        // Simpan data sebulan penuh ke localStorage
                         localStorage.setItem(CACHE_KEY_MONTHLY_TIMINGS, JSON.stringify(dataToStore));
                         console.log("Data jadwal sholat sebulan penuh telah disimpan ke cache.");
                         
-                        // Setelah menyimpan, muat kembali data untuk hari ini
                         loadPrayerDataFromCache(); 
                     } else {
                         console.error("API Aladhan mengembalikan error, menggunakan data cache jika ada.");
@@ -797,6 +794,9 @@
                     console.error("Gagal mengambil jadwal sholat (kemungkinan offline):", error);
                 });
         }
+        // ===================================================================
+        // === AKHIR DARI FUNGSI YANG DIPERBAIKI ===
+        // ===================================================================
 
         function getLocation() {
             const fallbackLat = 3.5952;
@@ -804,7 +804,6 @@
             const fallbackCity = "Medan";
             const handleLocationError = (error) => {
                 console.warn(`Tidak bisa mendapatkan lokasi: ${error.message}. Menggunakan lokasi fallback.`);
-                // Jika lokasi gagal dideteksi, coba fetch dengan fallback, TAPI HANYA JIKA cache kosong
                 if (!localStorage.getItem(CACHE_KEY_MONTHLY_TIMINGS)) {
                     fetchPrayerTimings(fallbackLat, fallbackLon);
                 }
@@ -829,15 +828,11 @@
         loadPrayerDataFromCache();
         updateDates();
         generateCalendar();
-        getLocation(); // getLocation akan memanggil fetchPrayerTimings jika online
+        getLocation();
         setInterval(() => {
             if (window.latestPrayerTimes) renderPrayerTimes(window.latestPrayerTimes);
         }, 60000);
       }
-      // ===================================================================
-      // === AKHIR DARI KODE BARU ===
-      // ===================================================================
-
       
       // --- DOA HARIAN FEATURE ---
       function setupDoaHarian() {
@@ -1224,15 +1219,11 @@
           enableNotificationsBtn.addEventListener('click', requestNotificationPermission);
           updateNotificationButtonState();
       
-          // ===================================================================
-          // === BAGIAN YANG DIPERBAIKI (FUNGSI setLanguage) ===
-          // ===================================================================
           const setLanguage = (lang) => {
               currentLanguage = lang;
               localStorage.setItem('language', lang);
               document.documentElement.lang = lang; 
       
-              // 1. Update semua teks umum menggunakan atribut data-key
               document.querySelectorAll('[data-key]').forEach(el => {
                   const key = el.dataset.key;
                   if (translations[lang] && translations[lang][key]) { 
@@ -1240,15 +1231,10 @@
                   }
               });
               
-              // 2. Render ulang UI yang bergantung bahasa, TANPA mengambil data baru dari internet.
-              // Ini adalah kunci perbaikannya.
               updateDates();
               generateCalendar();
       
-              // 3. Periksa apakah data jadwal sholat sudah ada.
               if (window.latestPrayerTimes) {
-                  // Jika ada, render ulang daftar jadwal sholat dan countdown
-                  // dengan bahasa yang baru dipilih.
                   renderPrayerTimes(window.latestPrayerTimes);
                   startCountdown(window.latestPrayerTimes);
               }
@@ -1257,13 +1243,10 @@
           langSelect.addEventListener('change', () => { 
               setLanguage(langSelect.value); 
           });
-          // ===================================================================
-          // === AKHIR BAGIAN YANG DIPERBAIKI ===
-          // ===================================================================
       
           const savedLang = localStorage.getItem('language') || 'id';
           langSelect.value = savedLang;
-          setLanguage(savedLang); // Panggil setLanguage saat awal untuk memastikan semuanya sinkron
+          setLanguage(savedLang);
       
           settingsModal.querySelector('.close-button').addEventListener('click', () => settingsModal.style.display = 'none');
       }
@@ -1274,17 +1257,15 @@
       setupDoaHarian();
       setupQuranFeature();
       setupDzikir();
-      setupPrayerTimesWithOfflineCache(); // Panggil fungsi yang sudah diperbarui
+      setupPrayerTimesWithOfflineCache();
       
       showView('prayer-times-view');
     });
 
-
     // --- PENDAFTARAN SERVICE WORKER & PENYIMPANAN PERMANEN ---
     window.addEventListener('load', () => {
-      // 1. Pendaftaran Service Worker
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js') // Pastikan nama file sw.js benar
+        navigator.serviceWorker.register('sw.js')
           .then(registration => {
             console.log('Service Worker berhasil didaftarkan:', registration);
           })
@@ -1295,7 +1276,6 @@
         console.log('Browser tidak mendukung Service Worker.');
       }
 
-      // 2. Meminta Penyimpanan Permanen
       requestPersistentStorage();
     });
   </script>
