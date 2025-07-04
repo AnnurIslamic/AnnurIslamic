@@ -25,14 +25,13 @@
       --button-text: #ffffff;
     }
 
-.app-footer {
-  text-align: center;
-  margin-top: 2rem;
-  font-size: 0.9rem;
-  color: var(--text-light);
-  font-weight: 500;
-}
-
+    .app-footer {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: var(--text-light);
+      font-weight: 500;
+    }
 
     body.dark-mode {
       --primary-bg: #121212;
@@ -211,6 +210,73 @@
     }
     .modal-action-btn:active { transform: scale(0.98); }
 
+    /* --- STYLE UNTUK MENU DETAIL APLIKASI --- */
+    .settings-menu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.9rem 0;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    body.dark-mode .settings-menu-item {
+      border-bottom-color: #333;
+    }
+
+    .settings-menu-item:hover {
+       background-color: rgba(0, 0, 0, 0.03);
+    }
+    
+    body.dark-mode .settings-menu-item:hover {
+       background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .settings-menu-item span:first-child {
+      font-weight: 500;
+    }
+
+    .settings-menu-item .arrow {
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--text-light);
+    }
+
+    /* --- STYLE UNTUK TOMBOL DETAIL APLIKASI --- */
+    .detail-app-container {
+      text-align: center;
+      padding: 1.5rem 0 0.5rem 0;
+    }
+
+    #detail-app-btn {
+      background-color: var(--header-bg);
+      color: var(--header-text);
+      border: none;
+      border-radius: var(--radius);
+      padding: 0.7rem 1.5rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, background-color var(--transition);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    #detail-app-btn:active {
+      transform: scale(0.96);
+    }
+    
+    body.dark-mode #detail-app-btn {
+        background-color: var(--tap-area-bg);
+        color: var(--text-color);
+    }
+
+    /* --- STYLE UNTUK KONTEN HALAMAN DETAIL --- */
+    .content-body p, .content-body li {
+        line-height: 1.6;
+        margin-bottom: 1rem;
+        color: var(--text-color);
+    }
 
     /* --- SURAH VIEW STYLES --- */
     #surah-view, #juz-detail-view { padding-top: 1.5rem; padding-bottom: 2rem; }
@@ -384,9 +450,14 @@
             <option value="bn">বাংলা (Bengali)</option>
           </select>
         </div>
+        
         <div class="settings-item">
           <label data-key="settings_about">Tentang Aplikasi</label>
           <span>v18.02.22 (Beta)</span>
+        </div>
+
+        <div class="detail-app-container">
+            <button id="detail-app-btn">Detail Aplikasi</button>
         </div>
       </div>
     </div>
@@ -413,6 +484,97 @@
     </div>
   </div>
 
+  <div id="app-detail-view" class="main-view" style="display: none; padding-top: 1.5rem;">
+    <div class="view-header">
+      <span class="back-button" id="detail-view-back-btn">‹</span>
+      <h2>Detail Aplikasi</h2>
+    </div>
+    <div class="content-body">
+      <div class="settings-menu-item" data-target-view="privacy-policy-view">
+        <span>Kebijakan Privasi</span>
+        <span class="arrow">&rsaquo;</span>
+      </div>
+      <div class="settings-menu-item" data-target-view="terms-of-use-view">
+        <span>Ketentuan Penggunaan</span>
+        <span class="arrow">&rsaquo;</span>
+      </div>
+      <div class="settings-menu-item" data-target-view="additional-info-view">
+        <span>Informasi Tambahan</span>
+        <span class="arrow">&rsaquo;</span>
+      </div>
+       <div class="settings-menu-item" data-target-view="feedback-view">
+        <span>Saran & Masukan</span>
+        <span class="arrow">&rsaquo;</span>
+      </div>
+      <div class="settings-item">
+        <label>Versi Aplikasi</label>
+        <span>v18.02.22 (Beta)</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="privacy-policy-view" class="main-view" style="display: none; padding-top: 1.5rem;">
+    <div class="view-header">
+      <span class="back-button" data-target-view="app-detail-view">‹</span>
+      <h2>Kebijakan Privasi</h2>
+    </div>
+    <div class="content-body" style="padding: 0 1.5rem;">
+      <p><strong>Pembaruan Terakhir: 4 Juli 2025</strong></p>
+      <p>Aplikasi Annur Islamic ("kami" atau "milik kami") berkomitmen untuk melindungi privasi Anda. Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, dan melindungi informasi Anda saat Anda menggunakan aplikasi kami.</p>
+      <br>
+      <p><strong>Pengumpulan Informasi Lokasi:</strong></p>
+      <p>Aplikasi ini mengumpulkan data lokasi geografis Anda (latitude dan longitude) hanya untuk tujuan menghitung waktu sholat yang akurat. Data ini tidak pernah disimpan di server kami atau dibagikan dengan pihak ketiga mana pun. Semua perhitungan dilakukan secara lokal di perangkat Anda.</p>
+      <br>
+      <p><strong>Penyimpanan Lokal:</strong></p>
+      <p>Kami menggunakan penyimpanan lokal (localStorage) di browser Anda untuk menyimpan preferensi seperti tema (mode malam), bahasa, dan data cache jadwal sholat untuk penggunaan offline. Data ini tetap berada di perangkat Anda dan tidak dikirim ke tempat lain.</p>
+    </div>
+  </div>
+
+  <div id="terms-of-use-view" class="main-view" style="display: none; padding-top: 1.5rem;">
+    <div class="view-header">
+      <span class="back-button" data-target-view="app-detail-view">‹</span>
+      <h2>Ketentuan Penggunaan</h2>
+    </div>
+    <div class="content-body" style="padding: 0 1.5rem;">
+        <p>Dengan mengunduh atau menggunakan aplikasi Annur Islamic, Anda secara otomatis menyetujui ketentuan berikut:</p>
+        <ul>
+            <li style="margin-bottom: 1rem;">Anda tidak diizinkan untuk menyalin, atau memodifikasi aplikasi, bagian mana pun dari aplikasi, atau merek dagang kami dengan cara apa pun.</li>
+            <li style="margin-bottom: 1rem;">Aplikasi ini disediakan "sebagaimana adanya". Meskipun kami berusaha untuk memastikan keakuratan data (seperti waktu sholat dan konten Al-Qur'an), kami tidak memberikan jaminan atas keakuratannya. Pengguna disarankan untuk melakukan verifikasi silang dengan sumber tepercaya.</li>
+            <li style="margin-bottom: 1rem;">Kami berhak untuk mengubah ketentuan ini kapan saja. Penggunaan aplikasi secara berkelanjutan setelah perubahan akan dianggap sebagai penerimaan Anda terhadap ketentuan baru.</li>
+        </ul>
+    </div>
+  </div>
+
+  <div id="additional-info-view" class="main-view" style="display: none; padding-top: 1.5rem;">
+    <div class="view-header">
+      <span class="back-button" data-target-view="app-detail-view">‹</span>
+      <h2>Informasi Tambahan</h2>
+    </div>
+    <div class="content-body" style="padding: 0 1.5rem;">
+      <p><strong>Sumber Data:</strong></p>
+      <ul>
+        <li><strong>Waktu Sholat:</strong> Menggunakan API dari Aladhan.com dengan metode kalkulasi ISNA (Islamic Society of North America).</li>
+        <li><strong>Al-Qur'an:</strong> Teks, terjemahan, dan data surah diambil dari API publik Quran.gading.dev.</li>
+        <li><strong>Lokasi:</strong> Nama kota didapatkan melalui layanan Nominatim (OpenStreetMap).</li>
+      </ul>
+      <br>
+      <p>Aplikasi ini adalah proyek non-komersial dan dibuat untuk tujuan membantu umat Muslim dalam menjalankan ibadah sehari-hari. Aplikasi ini bersifat gratis dan tidak mengandung iklan.</p>
+    </div>
+  </div>
+
+  <div id="feedback-view" class="main-view" style="display: none; padding-top: 1.5rem;">
+    <div class="view-header">
+      <span class="back-button" data-target-view="app-detail-view">‹</span>
+      <h2>Saran & Masukan</h2>
+    </div>
+    <div class="content-body" style="padding: 0 1.5rem; text-align: center;">
+      <p>Kami sangat menghargai saran dan masukan dari Anda untuk membuat aplikasi ini menjadi lebih baik.</p>
+      <br>
+      <p>Silakan kirimkan ide, laporan bug, atau masukan lainnya melalui email ke pengembang.</p>
+      <br>
+      <a href="mailto:emailanda@contoh.com?subject=Masukan untuk Aplikasi Annur Islamic" class="modal-action-btn" style="text-decoration: none;">Kirim Email</a>
+    </div>
+  </div>
 
   <script>
     // --- DATA (Dzikir, Doa, Translations) ---
@@ -491,7 +653,7 @@
         'de': { 'nav_title': 'Navigationsmenü', 'nav_doa': '🤲 Tägliche Gebete', 'nav_quran': '📖 Al-Quran', 'nav_dzikir': '📿 Dhikr & Tasbih', 'nav_kiblat': '🧭 Qibla', 'nav_settings': '⚙️ Einstellungen', 'remaining_time': 'Verbleibende Zeit', 'settings_title': 'Einstellungen', 'settings_dark_mode': 'Dunkelmodus', 'settings_notifications': 'Benachrichtigungen aktivieren', 'settings_language': 'Sprache', 'settings_about': 'Über die App', 'last_read': 'ZULETZT GELESEN', 'no_last_read': 'Noch keine Gebete gelesen', 'all_doa': 'Alle Gebete', 'bookmarked': 'Gemerkt', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Sonnenaufgang', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha', 'Imsak_desc': 'Benachrichtigung & Kein Adhan-Ton', 'Fajr_desc': 'Mekka #1 (Fajr)', 'Sunrise_desc': 'Benachrichtigung & Kein Adhan-Ton', 'Dhuhr_desc': 'Mishary Rashid', 'Asr_desc': 'Mishary Rashid', 'Maghrib_desc': 'Mishary Rashid', 'Isha_desc': 'Mishary Rashid' },
         'ru': { 'nav_title': 'Навигационное меню', 'nav_doa': '🤲 Ежедневные молитвы', 'nav_quran': '📖 Аль-Коран', 'nav_dzikir': '📿 Зикр и Тасбих', 'nav_kiblat': '🧭 Кибла', 'nav_settings': '⚙️ Настройки', 'remaining_time': 'Оставшееся время', 'settings_title': 'Настройки', 'settings_dark_mode': 'Темный режим', 'settings_notifications': 'Включить уведомления', 'settings_language': 'Язык', 'settings_about': 'О приложении', 'last_read': 'ПОСЛЕДНЕЕ ПРОЧТЕНИЕ', 'no_last_read': 'Молитвы еще не читались', 'all_doa': 'Все молитвы', 'bookmarked': 'В закладках', 'Imsak': 'Имсак', 'Fajr': 'Фаджр', 'Sunrise': 'Восход', 'Dhuhr': 'Зухр', 'Asr': 'Аср', 'Maghrib': 'Магриб', 'Isha': 'Иша', 'Imsak_desc': 'Уведомление и без звука азана', 'Fajr_desc': 'Мекка #1 (Фаджр)', 'Sunrise_desc': 'Уведомление и без звука азана', 'Dhuhr_desc': 'Мишари Рашид', 'Asr_desc': 'Мишари Рашид', 'Maghrib_desc': 'Мишари Рашид', 'Isha_desc': 'Мишари Рашид' },
         'ur': { 'nav_title': 'نیویگیشن مینو', 'nav_doa': '🤲 روزانہ کی دعائیں', 'nav_quran': '📖 القرآن', 'nav_dzikir': '📿 ذکر و تسبیح', 'nav_kiblat': '🧭 قبلہ', 'nav_settings': '⚙️ ترتیبات', 'remaining_time': 'باقی وقت', 'settings_title': 'ترتیبات', 'settings_dark_mode': 'ڈارک موڈ', 'settings_notifications': 'اطلاعات کو فعال کریں', 'settings_language': 'زبان', 'settings_about': 'ایپ کے بارے میں', 'last_read': 'آخری بار پڑھا گیا', 'no_last_read': 'ابھی تک کوئی دعا نہیں پڑھی گئی', 'all_doa': 'تمام دعائیں', 'bookmarked': 'نشان زد', 'Imsak': 'امساک', 'Fajr': 'فجر', 'Sunrise': 'طلوع آفتاب', 'Dhuhr': 'ظہر', 'Asr': 'عصر', 'Maghrib': 'مغرب', 'Isha': 'عشاء', 'Imsak_desc': 'اطلاع اور اذان کی آواز نہیں', 'Fajr_desc': 'مکہ #1 (فجر)', 'Sunrise_desc': 'اطلاع اور اذان کی آواز نہیں', 'Dhuhr_desc': 'مشاری راشد', 'Asr_desc': 'مشاری راشد', 'Maghrib_desc': 'مشاری راشد', 'Isha_desc': 'مشاری راشد' },
-        'bn': { 'nav_title': 'নেভিগেশন মেনু', 'nav_doa': '🤲 দৈনিক দোয়া', 'nav_quran': '📖 আল-কুরআন', 'nav_dzikir': '📿 যিকির ও তাসবীহ', 'nav_kiblat': '🧭 কিবলা', 'nav_settings': '⚙️ সেটিংস', 'remaining_time': 'অবশিষ্ট সময়', 'settings_title': 'সেটিংস', 'settings_dark_mode': 'ডার্ক মোড', 'settings_notifications': 'নোটিফিকেশন সক্রিয় করুন', 'settings_language': 'ভাষা', 'settings_about': 'অ্যাপ সম্পর্কে', 'last_read': 'শেষ পঠিত', 'no_last_read': 'এখনও কোন দোয়া পড়া হয়নি', 'all_doa': 'সব দোয়া', 'bookmarked': 'বুকমার্ক করা', 'Imsak': 'ইمسাক', 'Fajr': 'ফজর', 'Sunrise': 'সূর্যোদয়', 'Dhuhr': 'যোহর', 'Asr': 'আসর', 'Maghrib': 'মাগরিব', 'Isha': 'ঈশা', 'Imsak_desc': 'নোটিফিকেশন এবং আযানের শব্দ নেই', 'Fajr_desc': 'মক্কা #1 (ফজর)', 'Sunrise_desc': 'নোটিফিকেশন এবং আযানের শব্দ নেই', 'Dhuhr_desc': 'মিশারি রশিদ', 'Asr_desc': 'মিশারি রশিদ', 'Maghrib_desc': 'মিশারি রশিদ', 'Isha_desc': 'মিشারি রশিদ' }
+        'bn': { 'nav_title': 'নেভিগেশন মেনু', 'nav_doa': '🤲 দৈনিক দোয়া', 'nav_quran': '📖 আল-কুরআন', 'nav_dzikir': '📿 যিকির ও তাসবীহ', 'nav_kiblat': '🧭 কিবলা', 'nav_settings': '⚙️ সেটিংস', 'remaining_time': 'অবশিষ্ট সময়', 'settings_title': 'সেটিংস', 'settings_dark_mode': 'ডার্ক মোড', 'settings_notifications': 'নোটিফিকেশন সক্রিয় করুন', 'settings_language': 'ভাষা', 'settings_about': 'অ্যাপ সম্পর্কে', 'last_read': 'শেষ পঠিত', 'no_last_read': 'এখনও কোন দোয়া পড়া হয়নি', 'all_doa': 'সব দোয়া', 'bookmarked': 'বুকমার্ক করা', 'Imsak': 'ইمسাক', 'Fajr': 'ফজর', 'Sunrise': 'সূর্যোদয়', 'Dhuhr': 'যোহর', 'Asr': 'আসর', 'Maghrib': 'মাগরিব', 'Isha': 'ঈশা', 'Imsak_desc': 'নোটিফিকেশন এবং আযানের শব্দ নেই', 'Fajr_desc': 'মক্কা #1 (ফজর)', 'Sunrise_desc': 'নোটিফিকেশন এবং আযানের শব্দ নেই', 'Dhuhr_desc': 'মিשারি রশিদ', 'Asr_desc': 'মিশারি রশিদ', 'Maghrib_desc': 'মিশারি রশিদ', 'Isha_desc': 'মিشারি রশিদ' }
     };
     const juzToSurahMap = { 1:[1,2],2:[2],3:[2,3],4:[3,4],5:[4],6:[4,5],7:[5,6],8:[6,7],9:[7,8],10:[8,9],11:[9,10,11],12:[11,12],13:[12,13,14,15],14:[16,17],15:[17,18],16:[18,19,20],17:[21,22],18:[23,24,25],19:[25,26,27],20:[27,28,29],21:[29,30,31,32,33],22:[33,34,35,36],23:[36,37,38,39],24:[39,40,41],25:[41,42,43,44,45],26:[46,47,48,49,50,51],27:[51,52,53,54,55,56,57],28:[58,59,60,61,62,63,64,65,66],29:[67,68,69,70,71,72,73,74,75,76,77],30:[78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114]};
     
@@ -579,7 +741,6 @@
                   const targetViewId = btn.getAttribute('data-target-view');
                   if (targetViewId) {
                       showView(targetViewId);
-                      if (targetViewId === 'dzikir-view') renderDzikirList();
                   }
               });
           });
@@ -745,9 +906,6 @@
                 });
         }
 
-        // ===================================================================
-        // === FUNGSI YANG DIPERBAIKI ADA DI SINI ===
-        // ===================================================================
         function fetchPrayerTimings(lat, lon) {
             const now = new Date();
             const year = now.getFullYear();
@@ -794,9 +952,6 @@
                     console.error("Gagal mengambil jadwal sholat (kemungkinan offline):", error);
                 });
         }
-        // ===================================================================
-        // === AKHIR DARI FUNGSI YANG DIPERBAIKI ===
-        // ===================================================================
 
         function getLocation() {
             const fallbackLat = 3.5952;
@@ -926,12 +1081,12 @@
                   const item = document.createElement('div');
                   item.className = 'list-item';
                   item.innerHTML = `
-                                  <span class="num">${surah.number}</span>
-                                  <div class="details">
-                                      <div class="title">${surah.name.transliteration.id}</div>
-                                      <div class="subtitle">${surah.name.translation.id} (${surah.numberOfVerses} verses)</div>
-                                  </div>
-                                  <span class="arabic">${surah.name.short}</span>`;
+                                      <span class="num">${surah.number}</span>
+                                      <div class="details">
+                                          <div class="title">${surah.name.transliteration.id}</div>
+                                          <div class="subtitle">${surah.name.translation.id} (${surah.numberOfVerses} verses)</div>
+                                      </div>
+                                      <span class="arabic">${surah.name.short}</span>`;
                   item.addEventListener('click', () => showSurahDetail(surah.number, backTarget));
                   container.appendChild(item);
               });
@@ -943,9 +1098,9 @@
                   const item = document.createElement('div');
                   item.className = 'list-item';
                   item.innerHTML = `
-                                      <span class="num">${i}</span>
-                                      <div class="details"><div class="title">Juz ${i}</div></div>
-                                      <span class="arabic">الجزء ${i}</span>`;
+                                              <span class="num">${i}</span>
+                                              <div class="details"><div class="title">Juz ${i}</div></div>
+                                              <span class="arabic">الجزء ${i}</span>`;
                   item.addEventListener('click', () => showSurahsInJuz(i));
                   quranListContainer.appendChild(item);
               }
@@ -987,20 +1142,20 @@
                   
                   if (surah.number !== 1 && surah.number !== 9) {
                       contentHtml += `
-                                  <div class="basmala">
-                                      <p class="basmala-arabic">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
-                                      <p class="basmala-translation">Dengan menyebut nama Allah Yang Maha Pengasih, lagi Maha Penyayang</p>
-                                  </div>`;
+                                      <div class="basmala">
+                                          <p class="basmala-arabic">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
+                                          <p class="basmala-translation">Dengan menyebut nama Allah Yang Maha Pengasih, lagi Maha Penyayang</p>
+                                      </div>`;
                   }
       
                   surah.verses.forEach(ayah => {
                       contentHtml += `
-                                  <div class="ayah-item">
-                                      <div class="ayah-header"><span class="ayah-number">${surah.number}:${ayah.number.inSurah}</span></div>
-                                      <p class="ayah-arabic">${ayah.text.arab}</p>
-                                      <p class="ayah-latin">${ayah.text.transliteration.en}</p>
-                                      <p class="ayah-translation"><b>Artinya:</b> ${ayah.translation.id}</p>
-                                  </div>`;
+                                      <div class="ayah-item">
+                                          <div class="ayah-header"><span class="ayah-number">${surah.number}:${ayah.number.inSurah}</span></div>
+                                          <p class="ayah-arabic">${ayah.text.arab}</p>
+                                          <p class="ayah-latin">${ayah.text.transliteration.en}</p>
+                                          <p class="ayah-translation"><b>Artinya:</b> ${ayah.translation.id}</p>
+                                      </div>`;
                   });
                   surahViewBody.innerHTML = contentHtml;
       
@@ -1087,12 +1242,12 @@
                   const item = document.createElement('div'); 
                   item.className = 'list-item';
                   item.innerHTML = `
-                                  <span class="num">📿</span>
-                                  <div class="details">
-                                      <div class="title">${d.title}</div>
-                                      <div class="subtitle">${d.subtitle}</div>
-                                  </div>
-                                  <span class="arabic">${d.arabic}</span>`;
+                                      <span class="num">📿</span>
+                                      <div class="details">
+                                          <div class="title">${d.title}</div>
+                                          <div class="subtitle">${d.subtitle}</div>
+                                      </div>
+                                      <span class="arabic">${d.arabic}</span>`;
                   item.addEventListener('click', () => showDzikirDetailModal(d.id));
                   dzikirListContainer.appendChild(item);
               });
@@ -1104,12 +1259,12 @@
               dzikirDetailModal.querySelector('#dzikir-detail-modal-title').textContent = dzikir.title;
               const modalBody = dzikirDetailModal.querySelector('#dzikir-detail-modal-body');
               modalBody.innerHTML = `
-                                  <p class="single-item-arabic">${dzikir.arabic}</p>
-                                  <p class="single-item-latin">${dzikir.latin}</p>
-                                  <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
-                                  <p class="single-item-arti"><b>Artinya:</b> ${dzikir.arti}</p>
-                                  <button id="start-dzikir-btn" class="modal-action-btn">Mulai Dzikir (Target: ${dzikir.target})</button>
-                                      `;
+                                          <p class="single-item-arabic">${dzikir.arabic}</p>
+                                          <p class="single-item-latin">${dzikir.latin}</p>
+                                          <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
+                                          <p class="single-item-arti"><b>Artinya:</b> ${dzikir.arti}</p>
+                                          <button id="start-dzikir-btn" class="modal-action-btn">Mulai Dzikir (Target: ${dzikir.target})</button>
+                                              `;
               
               modalBody.querySelector('#start-dzikir-btn').addEventListener('click', () => {
                   dzikirDetailModal.style.display = 'none';
@@ -1197,7 +1352,7 @@
                       enableNotificationsBtn.disabled = false;
               }
           }
-      
+          
           function requestNotificationPermission() {
               if (!("Notification" in window)) {
                   alert("This browser does not support desktop notifications.");
@@ -1250,6 +1405,36 @@
       
           settingsModal.querySelector('.close-button').addEventListener('click', () => settingsModal.style.display = 'none');
       }
+
+      // --- FUNGSI UNTUK HALAMAN DETAIL APLIKASI & KONTENNYA ---
+      function setupAppDetailPages() {
+          const settingsModal = document.getElementById('settings-modal');
+          const detailAppBtn = document.getElementById('detail-app-btn');
+          const detailViewBackBtn = document.getElementById('detail-view-back-btn');
+          
+          if (!detailAppBtn) return;
+
+          // Saat tombol "Detail Aplikasi" di modal Pengaturan diklik
+          detailAppBtn.addEventListener('click', () => {
+              settingsModal.style.display = 'none'; // Sembunyikan modal pengaturan
+              showView('app-detail-view'); // Tampilkan halaman detail
+          });
+
+          // Saat tombol kembali di halaman Detail Aplikasi diklik
+          detailViewBackBtn.addEventListener('click', () => {
+              showView('prayer-times-view'); // Kembali ke halaman utama
+          });
+
+          // Menambahkan event klik ke semua item menu di halaman detail
+          document.querySelectorAll('#app-detail-view .settings-menu-item').forEach(item => {
+              item.addEventListener('click', () => {
+                  const targetViewId = item.getAttribute('data-target-view');
+                  if (targetViewId) {
+                      showView(targetViewId);
+                  }
+              });
+          });
+      }
       
       // --- INITIALIZATION ---
       setupNavigation();
@@ -1257,6 +1442,7 @@
       setupDoaHarian();
       setupQuranFeature();
       setupDzikir();
+      setupAppDetailPages();
       setupPrayerTimesWithOfflineCache();
       
       showView('prayer-times-view');
