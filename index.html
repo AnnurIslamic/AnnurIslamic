@@ -697,111 +697,147 @@
           gregorianDateEl.textContent = now.toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
       }
       
+      // ===================================================================
+      // === KODE BARU DIMASUKKAN DI SINI ===
+      // ===================================================================
       function setupPrayerTimesWithOfflineCache() {
-          const CACHE_KEY_TIMINGS = 'prayer_timings_data';
-          const CACHE_KEY_CITY = 'prayer_city_data';
-          const CACHE_KEY_HIJRI = 'prayer_hijri_data';
-          const CACHE_KEY_TIMESTAMP = 'prayer_data_timestamp';
+        const CACHE_KEY_MONTHLY_TIMINGS = 'prayer_monthly_timings';
+        const CACHE_KEY_CITY = 'prayer_city_data';
 
-          function loadPrayerDataFromCache() {
-              const cachedTimings = localStorage.getItem(CACHE_KEY_TIMINGS);
-              const cachedCity = localStorage.getItem(CACHE_KEY_CITY);
-              const cachedHijri = localStorage.getItem(CACHE_KEY_HIJRI);
-              if (cachedTimings && cachedCity && cachedHijri) {
-                  console.log("Memuat jadwal sholat dari cache.");
-                  const timings = JSON.parse(cachedTimings);
-                  document.getElementById('city-name').textContent = cachedCity;
-                  hijriDateEl.textContent = cachedHijri;
-                  window.latestPrayerTimes = timings;
-                  renderPrayerTimes(timings);
-                  startCountdown(timings);
-              } else {
-                  console.log("Tidak ada data jadwal sholat di cache.");
-              }
-          }
+        function loadPrayerDataFromCache() {
+            const cachedCity = localStorage.getItem(CACHE_KEY_CITY);
+            if (cachedCity) {
+                document.getElementById('city-name').textContent = cachedCity;
+            }
 
-          function fetchCityName(lat, lon) {
-              fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
-                  .then(r => r.json())
-                  .then(data => {
-                      const cityName = data.address.city || data.address.town || data.address.village || "Lokasi Tidak Diketahui";
-                      document.getElementById('city-name').textContent = cityName;
-                      localStorage.setItem(CACHE_KEY_CITY, cityName);
-                  })
-                  .catch(error => {
-                      console.error("Gagal mengambil nama kota:", error);
-                      const cachedCity = localStorage.getItem(CACHE_KEY_CITY);
-                      if (cachedCity) document.getElementById('city-name').textContent = cachedCity;
-                  });
-          }
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = today.getMonth() + 1;
+            const day = today.getDate();
+            const cacheKey = `timings_${year}_${month}`;
 
-          function fetchPrayerTimings(lat, lon) {
-              const ts = Math.floor(Date.now() / 1000);
-              fetch(`https://api.aladhan.com/v1/timings/${ts}?latitude=${lat}&longitude=${lon}&method=11`)
-                  .then(r => r.json())
-                  .then(j => {
-                      if (j.code === 200) {
-                          console.log("Berhasil mengambil data jadwal sholat baru dari API.");
-                          const originalTimings = j.data.timings;
-                          const adjustedTimings = {};
-                          for (const key in originalTimings) {
-                              const [h, m] = originalTimings[key].split(':').map(Number);
-                              const date = new Date();
-                              date.setHours(h, m + 2, 0, 0);
-                              adjustedTimings[key] = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
-                          }
-                          const hijri = j.data.date.hijri;
-                          const hijriText = `${hijri.day} ${hijri.month.en} ${hijri.year} H`;
-                          hijriDateEl.textContent = hijriText;
-                          window.latestPrayerTimes = adjustedTimings;
-                          renderPrayerTimes(adjustedTimings);
-                          startCountdown(adjustedTimings);
-                          localStorage.setItem(CACHE_KEY_TIMINGS, JSON.stringify(adjustedTimings));
-                          localStorage.setItem(CACHE_KEY_HIJRI, hijriText);
-                          localStorage.setItem(CACHE_KEY_TIMESTAMP, new Date().toISOString());
-                          console.log("Data jadwal sholat baru telah disimpan ke cache.");
-                      } else {
-                          console.error("API Aladhan mengembalikan error, menggunakan data cache jika ada.");
-                      }
-                  })
-                  .catch(error => {
-                      console.error("Gagal mengambil jadwal sholat (kemungkinan offline):", error);
-                  });
-          }
+            const monthlyData = JSON.parse(localStorage.getItem(CACHE_KEY_MONTHLY_TIMINGS));
+            
+            if (monthlyData && monthlyData.key === cacheKey) {
+                console.log("Memuat jadwal sholat dari cache bulanan.");
+                // Cari data untuk hari ini (indeks array adalah tanggal - 1)
+                const todayData = monthlyData.data[day - 1];
+                if(todayData) {
+                    const todayTimings = todayData.timings;
+                    const todayHijri = todayData.date.hijri;
+                    const hijriText = `${todayHijri.day} ${todayHijri.month.en} ${todayHijri.year} H`;
+                    
+                    hijriDateEl.textContent = hijriText;
+                    window.latestPrayerTimes = todayTimings;
+                    renderPrayerTimes(todayTimings);
+                    startCountdown(todayTimings);
+                } else {
+                    console.error("Data untuk hari ini tidak ditemukan di cache bulanan.");
+                }
+            } else {
+                console.log("Tidak ada data jadwal sholat di cache untuk bulan ini, akan coba fetch dari internet.");
+            }
+        }
+        
+        function fetchCityName(lat, lon) {
+            fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
+                .then(r => r.json())
+                .then(data => {
+                    const cityName = data.address.city || data.address.town || data.address.village || "Lokasi Tidak Diketahui";
+                    document.getElementById('city-name').textContent = cityName;
+                    localStorage.setItem(CACHE_KEY_CITY, cityName);
+                })
+                .catch(error => {
+                    console.error("Gagal mengambil nama kota:", error);
+                    const cachedCity = localStorage.getItem(CACHE_KEY_CITY);
+                    if (cachedCity) document.getElementById('city-name').textContent = cachedCity;
+                });
+        }
 
-          function getLocation() {
-              const fallbackLat = 3.5952;
-              const fallbackLon = 98.6722;
-              const fallbackCity = "Medan";
-              const handleLocationError = (error) => {
-                  console.warn(`Tidak bisa mendapatkan lokasi: ${error.message}. Menggunakan lokasi fallback.`);
-                  fetchPrayerTimings(fallbackLat, fallbackLon);
-                  if (!localStorage.getItem(CACHE_KEY_CITY)) {
-                      document.getElementById('city-name').textContent = fallbackCity;
-                      localStorage.setItem(CACHE_KEY_CITY, fallbackCity);
-                  }
-              };
-              if (navigator.geolocation) {
-                  navigator.geolocation.getCurrentPosition(
-                      (position) => {
-                          fetchPrayerTimings(position.coords.latitude, position.coords.longitude);
-                          fetchCityName(position.coords.latitude, position.coords.longitude);
-                      },
-                      handleLocationError, { timeout: 10000 }
-                  );
-              } else {
-                  handleLocationError({ message: "Geolocation tidak didukung" });
-              }
-          }
+        function fetchPrayerTimings(lat, lon) {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth() + 1;
+            
+            // Menggunakan API 'calendar' untuk mengambil data sebulan penuh
+            fetch(`https://api.aladhan.com/v1/calendar/${year}/${month}?latitude=${lat}&longitude=${lon}&method=11`)
+                .then(r => r.json())
+                .then(j => {
+                    if (j.code === 200) {
+                        console.log("Berhasil mengambil data jadwal sholat baru untuk sebulan dari API.");
+                        const cacheKey = `timings_${year}_${month}`;
+                        // Menyesuaikan waktu +2 menit untuk setiap jadwal
+                        const adjustedData = j.data.map(dailyData => {
+                            const adjustedTimings = {};
+                            for (const key in dailyData.timings) {
+                                const [h, m] = dailyData.timings[key].split(':').map(Number);
+                                const date = new Date();
+                                date.setHours(h, m + 2, 0, 0); // Tambah 2 menit
+                                adjustedTimings[key] = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+                            }
+                            return { ...dailyData, timings: adjustedTimings };
+                        });
 
-          loadPrayerDataFromCache();
-          updateDates();
-          generateCalendar();
-          getLocation();
-          setInterval(() => {
-              if (window.latestPrayerTimes) renderPrayerTimes(window.latestPrayerTimes);
-          }, 60000);
+                        const dataToStore = {
+                            key: cacheKey,
+                            data: adjustedData // Simpan data yang sudah disesuaikan
+                        };
+                        
+                        // Simpan data sebulan penuh ke localStorage
+                        localStorage.setItem(CACHE_KEY_MONTHLY_TIMINGS, JSON.stringify(dataToStore));
+                        console.log("Data jadwal sholat sebulan penuh telah disimpan ke cache.");
+                        
+                        // Setelah menyimpan, muat kembali data untuk hari ini
+                        loadPrayerDataFromCache(); 
+                    } else {
+                        console.error("API Aladhan mengembalikan error, menggunakan data cache jika ada.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Gagal mengambil jadwal sholat (kemungkinan offline):", error);
+                });
+        }
+
+        function getLocation() {
+            const fallbackLat = 3.5952;
+            const fallbackLon = 98.6722;
+            const fallbackCity = "Medan";
+            const handleLocationError = (error) => {
+                console.warn(`Tidak bisa mendapatkan lokasi: ${error.message}. Menggunakan lokasi fallback.`);
+                // Jika lokasi gagal dideteksi, coba fetch dengan fallback, TAPI HANYA JIKA cache kosong
+                if (!localStorage.getItem(CACHE_KEY_MONTHLY_TIMINGS)) {
+                    fetchPrayerTimings(fallbackLat, fallbackLon);
+                }
+                if (!localStorage.getItem(CACHE_KEY_CITY)) {
+                    document.getElementById('city-name').textContent = fallbackCity;
+                    localStorage.setItem(CACHE_KEY_CITY, fallbackCity);
+                }
+            };
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        fetchPrayerTimings(position.coords.latitude, position.coords.longitude);
+                        fetchCityName(position.coords.latitude, position.coords.longitude);
+                    },
+                    handleLocationError, { timeout: 10000 }
+                );
+            } else {
+                handleLocationError({ message: "Geolocation tidak didukung" });
+            }
+        }
+
+        loadPrayerDataFromCache();
+        updateDates();
+        generateCalendar();
+        getLocation(); // getLocation akan memanggil fetchPrayerTimings jika online
+        setInterval(() => {
+            if (window.latestPrayerTimes) renderPrayerTimes(window.latestPrayerTimes);
+        }, 60000);
       }
+      // ===================================================================
+      // === AKHIR DARI KODE BARU ===
+      // ===================================================================
+
       
       // --- DOA HARIAN FEATURE ---
       function setupDoaHarian() {
@@ -826,10 +862,10 @@
               currentOpenDoaId = id;
               singleDoaModal.querySelector('#single-doa-modal-title').textContent = doa.title;
               singleDoaModal.querySelector('#single-doa-modal-body').innerHTML = `
-                                      <p class="single-item-arabic">${doa.arabic}</p>
-                                      <p class="single-item-latin">${doa.latin}</p>
-                                      <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
-                                      <p class="single-item-arti"><b>Artinya:</b> ${doa.arti}</p>`;
+                                          <p class="single-item-arabic">${doa.arabic}</p>
+                                          <p class="single-item-latin">${doa.latin}</p>
+                                          <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
+                                          <p class="single-item-arti"><b>Artinya:</b> ${doa.arti}</p>`;
               updateBookmarkIcon(); singleDoaModal.style.display = 'flex';
               localStorage.setItem('last_read_doa_id', id); lastReadDoaId = id; renderLastRead();
           }
@@ -907,17 +943,17 @@
           }
       
           function renderJuzList() {
-               quranListContainer.innerHTML = '';
-               for (let i = 1; i <= 30; i++) {
-                   const item = document.createElement('div');
-                   item.className = 'list-item';
-                   item.innerHTML = `
-                                   <span class="num">${i}</span>
-                                   <div class="details"><div class="title">Juz ${i}</div></div>
-                                   <span class="arabic">الجزء ${i}</span>`;
-                   item.addEventListener('click', () => showSurahsInJuz(i));
-                   quranListContainer.appendChild(item);
-               }
+              quranListContainer.innerHTML = '';
+              for (let i = 1; i <= 30; i++) {
+                  const item = document.createElement('div');
+                  item.className = 'list-item';
+                  item.innerHTML = `
+                                      <span class="num">${i}</span>
+                                      <div class="details"><div class="title">Juz ${i}</div></div>
+                                      <span class="arabic">الجزء ${i}</span>`;
+                  item.addEventListener('click', () => showSurahsInJuz(i));
+                  quranListContainer.appendChild(item);
+              }
           }
           
           async function showSurahsInJuz(juzNumber) {
@@ -983,7 +1019,7 @@
                   console.error("Error fetching surah detail:", error);
               }
           }
-      
+          
           function updateLastReadSurahCard() {
               if (lastReadSurah) {
                   lastReadSurahCardText.textContent = `Surah ${lastReadSurah.name} (No. ${lastReadSurah.number})`;
@@ -991,7 +1027,7 @@
                   lastReadSurahCardText.textContent = "Belum ada surah yang dibaca";
               }
           }
-      
+          
           lastReadSurahCard.addEventListener('click', () => {
               if (lastReadSurah && lastReadSurah.number) {
                   showSurahDetail(lastReadSurah.number, 'quran-view');
@@ -1238,7 +1274,7 @@
       setupDoaHarian();
       setupQuranFeature();
       setupDzikir();
-      setupPrayerTimesWithOfflineCache();
+      setupPrayerTimesWithOfflineCache(); // Panggil fungsi yang sudah diperbarui
       
       showView('prayer-times-view');
     });
