@@ -243,13 +243,13 @@
 </head>
 <body>
   <nav id="sidebar">
-    <h3 data-key="nav_title">Menu Navigasi</h3>
+    <h3 data-key="nav_title">Menu</h3>
     <ul>
       <li><a href="#" id="prayer-times-btn">🕒 Jadwal Sholat</a></li>
       <li><a href="#" id="doa-harian-btn" data-key="nav_doa">🤲 Doa Harian</a></li>
       <li><a href="#" id="quran-btn" data-key="nav_quran">📖 Al-Qur'an</a></li>
       <li><a href="#" id="dzikir-btn" data-key="nav_dzikir">📿 Dzikir & Tasbih</a></li>
-      <li><a href="#" data-key="nav_kiblat">🧭 Kiblat</a></li>
+      <li><a href="#" data-key="nav_kiblat">🕋 Kiblat</a></li>
       <li><a href="#" id="settings-btn" data-key="nav_settings">⚙️ Pengaturan</a></li>
     </ul>
   </nav>
@@ -825,10 +825,10 @@
               currentOpenDoaId = id;
               singleDoaModal.querySelector('#single-doa-modal-title').textContent = doa.title;
               singleDoaModal.querySelector('#single-doa-modal-body').innerHTML = `
-                                          <p class="single-item-arabic">${doa.arabic}</p>
-                                          <p class="single-item-latin">${doa.latin}</p>
-                                          <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
-                                          <p class="single-item-arti"><b>Artinya:</b> ${doa.arti}</p>`;
+                                      <p class="single-item-arabic">${doa.arabic}</p>
+                                      <p class="single-item-latin">${doa.latin}</p>
+                                      <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
+                                      <p class="single-item-arti"><b>Artinya:</b> ${doa.arti}</p>`;
               updateBookmarkIcon(); singleDoaModal.style.display = 'flex';
               localStorage.setItem('last_read_doa_id', id); lastReadDoaId = id; renderLastRead();
           }
@@ -908,14 +908,14 @@
           function renderJuzList() {
                quranListContainer.innerHTML = '';
                for (let i = 1; i <= 30; i++) {
-                  const item = document.createElement('div');
-                  item.className = 'list-item';
-                  item.innerHTML = `
-                                 <span class="num">${i}</span>
-                                 <div class="details"><div class="title">Juz ${i}</div></div>
-                                 <span class="arabic">الجزء ${i}</span>`;
-                  item.addEventListener('click', () => showSurahsInJuz(i));
-                  quranListContainer.appendChild(item);
+                   const item = document.createElement('div');
+                   item.className = 'list-item';
+                   item.innerHTML = `
+                                   <span class="num">${i}</span>
+                                   <div class="details"><div class="title">Juz ${i}</div></div>
+                                   <span class="arabic">الجزء ${i}</span>`;
+                   item.addEventListener('click', () => showSurahsInJuz(i));
+                   quranListContainer.appendChild(item);
                }
           }
           
@@ -1077,7 +1077,7 @@
                                   <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
                                   <p class="single-item-arti"><b>Artinya:</b> ${dzikir.arti}</p>
                                   <button id="start-dzikir-btn" class="modal-action-btn">Mulai Dzikir (Target: ${dzikir.target})</button>
-                                   `;
+                                      `;
               
               modalBody.querySelector('#start-dzikir-btn').addEventListener('click', () => {
                   dzikirDetailModal.style.display = 'none';
@@ -1146,24 +1146,24 @@
           applyTheme(localStorage.getItem('theme') || 'light');
       
           function updateNotificationButtonState() {
-               if (!("Notification" in window)) {
-                   enableNotificationsBtn.textContent = 'Not Supported';
-                   enableNotificationsBtn.disabled = true;
-                   return;
-               }
-               switch(Notification.permission) {
-                   case 'granted':
-                       enableNotificationsBtn.textContent = 'Enabled';
-                       enableNotificationsBtn.disabled = true;
-                       break;
-                   case 'denied':
-                       enableNotificationsBtn.textContent = 'Blocked';
-                       enableNotificationsBtn.disabled = true;
-                       break;
-                   default:
-                       enableNotificationsBtn.textContent = 'Enable';
-                       enableNotificationsBtn.disabled = false;
-               }
+              if (!("Notification" in window)) {
+                  enableNotificationsBtn.textContent = 'Not Supported';
+                  enableNotificationsBtn.disabled = true;
+                  return;
+              }
+              switch(Notification.permission) {
+                  case 'granted':
+                      enableNotificationsBtn.textContent = 'Enabled';
+                      enableNotificationsBtn.disabled = true;
+                      break;
+                  case 'denied':
+                      enableNotificationsBtn.textContent = 'Blocked';
+                      enableNotificationsBtn.disabled = true;
+                      break;
+                  default:
+                      enableNotificationsBtn.textContent = 'Enable';
+                      enableNotificationsBtn.disabled = false;
+              }
           }
       
           function requestNotificationPermission() {
@@ -1247,7 +1247,7 @@
     window.addEventListener('load', () => {
       // 1. Pendaftaran Service Worker
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js')
+        navigator.serviceWorker.register('sw.js') // Pastikan nama file sw.js benar
           .then(registration => {
             console.log('Service Worker berhasil didaftarkan:', registration);
           })
