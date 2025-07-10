@@ -301,11 +301,88 @@
         color: var(--text-color);
     }
 
-    /* --- STYLE UNTUK KONTEN HALAMAN DETAIL --- */
-    .content-body p, .content-body li {
-        line-height: 1.6;
+    /* --- STYLE UNTUK KONTEN HALAMAN DETAIL (DIPERBARUI) --- */
+    .content-body {
+        padding: 0 1rem 1.5rem 1rem; /* Penyesuaian padding */
+    }
+
+    .content-card {
+        background-color: var(--card-bg);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 8px var(--card-shadow);
+        transition: background-color var(--transition);
+    }
+
+    .content-card p, .content-card li {
+        line-height: 1.7; /* Meningkatkan jarak antar baris */
+        color: var(--text-color);
+        opacity: 0.9;
+        margin-bottom: 1rem;
+    }
+
+    .content-card p:last-child, .content-card li:last-child {
+        margin-bottom: 0;
+    }
+
+    .content-card strong {
+        color: var(--header-bg);
+        font-weight: 600;
+    }
+
+    body.dark-mode .content-card strong {
+        color: var(--accent-color);
+    }
+
+    .content-title-icon {
+        font-size: 1.5rem;
+        margin-right: 0.75rem;
+        color: var(--header-bg);
+        vertical-align: middle;
+    }
+
+    body.dark-mode .content-title-icon {
+        color: var(--accent-color);
+    }
+
+    h3.content-title {
+        display: flex;
+        align-items: center;
+        font-size: 1.2rem;
+        font-weight: 600;
         margin-bottom: 1rem;
         color: var(--text-color);
+    }
+
+    ul.styled-list {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    ul.styled-list li {
+        position: relative;
+        padding-left: 1.8rem;
+        margin-bottom: 1rem;
+    }
+
+    ul.styled-list li::before {
+        content: '✓'; /* Tanda centang sebagai bullet point */
+        position: absolute;
+        left: 0;
+        top: 2px;
+        color: var(--header-bg);
+        font-weight: 700;
+        font-size: 1.1rem;
+    }
+
+    body.dark-mode ul.styled-list li::before {
+        color: var(--accent-color);
+    }
+
+    .email-link-wrapper {
+        text-align: center;
+        margin-top: 1.5rem;
     }
 
     /* --- SURAH VIEW STYLES --- */
@@ -677,67 +754,81 @@
   </div>
 
   <div id="privacy-policy-view" class="main-view" style="display: none; padding-top: 1.5rem;">
-    <div class="view-header">
-      <span class="back-button" data-target-view="app-detail-view">‹</span>
-      <h2>Kebijakan Privasi</h2>
-    </div>
-    <div class="content-body" style="padding: 0 1.5rem;">
-      <p><strong>Pembaruan Terakhir: 9 Juli 2025</strong></p>
-      <p>Aplikasi Annur Islamic ("kami" atau "milik kami") berkomitmen untuk melindungi privasi Anda. Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, dan melindungi informasi Anda saat Anda menggunakan aplikasi kami.</p>
-      <br>
-      <p><strong>Pengumpulan Informasi Lokasi:</strong></p>
-      <p>Aplikasi ini mengumpulkan data lokasi geografis Anda (latitude dan longitude) hanya untuk tujuan menghitung waktu sholat yang akurat dan menentukan arah Kiblat. Data ini tidak pernah disimpan di server kami atau dibagikan dengan pihak ketiga mana pun. Semua perhitungan dilakukan secara lokal di perangkat Anda.</p>
-      <br>
-      <p><strong>Penyimpanan Lokal:</strong></p>
-      <p>Kami menggunakan penyimpanan lokal (localStorage) di browser Anda untuk menyimpan preferensi seperti tema (mode malam), bahasa, dan data cache jadwal sholat untuk penggunaan offline. Data ini tetap berada di perangkat Anda dan tidak dikirim ke tempat lain.</p>
-    </div>
+      <div class="view-header">
+          <span class="back-button" data-target-view="app-detail-view">‹</span>
+          <h2>Kebijakan Privasi</h2>
+      </div>
+      <div class="content-body">
+          <div class="content-card">
+              <p><strong>Pembaruan Terakhir: 10 Juli 2025</strong></p>
+              <p>Aplikasi <strong>Annur Islamic</strong> ("kami") berkomitmen untuk melindungi privasi Anda. Kebijakan ini menjelaskan bagaimana kami mengumpulkan, menggunakan, dan melindungi informasi Anda.</p>
+          </div>
+
+          <div class="content-card">
+              <h3 class="content-title"><span class="content-title-icon">📍</span>Pengumpulan Informasi Lokasi</h3>
+              <p>Aplikasi ini mengumpulkan data lokasi geografis Anda (latitude dan longitude) hanya untuk tujuan menghitung waktu sholat yang akurat dan menentukan arah Kiblat. Data ini <strong>tidak pernah disimpan</strong> di server kami atau dibagikan dengan pihak ketiga. Semua perhitungan dilakukan secara lokal di perangkat Anda.</p>
+          </div>
+
+          <div class="content-card">
+              <h3 class="content-title"><span class="content-title-icon">💾</span>Penyimpanan Lokal</h3>
+              <p>Kami menggunakan penyimpanan lokal (localStorage) di browser Anda untuk menyimpan preferensi seperti tema (mode malam), bahasa, dan data cache jadwal sholat untuk penggunaan offline. Data ini sepenuhnya tetap berada di perangkat Anda dan tidak dikirim ke mana pun.</p>
+          </div>
+      </div>
   </div>
 
   <div id="terms-of-use-view" class="main-view" style="display: none; padding-top: 1.5rem;">
-    <div class="view-header">
-      <span class="back-button" data-target-view="app-detail-view">‹</span>
-      <h2>Ketentuan Penggunaan</h2>
-    </div>
-    <div class="content-body" style="padding: 0 1.5rem;">
-        <p>Dengan mengunduh atau menggunakan aplikasi Annur Islamic, Anda secara otomatis menyetujui ketentuan berikut:</p>
-        <ul>
-            <li style="margin-bottom: 1rem;">Anda tidak diizinkan untuk menyalin, atau memodifikasi aplikasi, bagian mana pun dari aplikasi, atau merek dagang kami dengan cara apa pun.</li>
-            <li style="margin-bottom: 1rem;">Aplikasi ini disediakan "sebagaimana adanya". Meskipun kami berusaha untuk memastikan keakuratan data (seperti waktu sholat, arah Kiblat, dan konten Al-Qur'an), kami tidak memberikan jaminan atas keakuratannya. Pengguna disarankan untuk melakukan verifikasi silang dengan sumber tepercaya dan melakukan kalibrasi sensor jika diperlukan.</li>
-            <li style="margin-bottom: 1rem;">Kami berhak untuk mengubah ketentuan ini kapan saja. Penggunaan aplikasi secara berkelanjutan setelah perubahan akan dianggap sebagai penerimaan Anda terhadap ketentuan baru.</li>
-        </ul>
-    </div>
+      <div class="view-header">
+          <span class="back-button" data-target-view="app-detail-view">‹</span>
+          <h2>Ketentuan Penggunaan</h2>
+      </div>
+      <div class="content-body">
+          <div class="content-card">
+              <p>Dengan mengunduh atau menggunakan aplikasi Annur Islamic, Anda secara otomatis menyetujui ketentuan berikut:</p>
+              <ul class="styled-list">
+                  <li>Anda tidak diizinkan untuk menyalin, memodifikasi aplikasi, atau merek dagang kami dengan cara apa pun.</li>
+                  <li>Aplikasi ini disediakan "sebagaimana adanya". Kami berusaha memastikan keakuratan data, namun tidak memberikan jaminan mutlak. Pengguna disarankan untuk verifikasi silang dengan sumber tepercaya.</li>
+                  <li>Kami berhak untuk mengubah ketentuan ini kapan saja. Penggunaan aplikasi secara berkelanjutan dianggap sebagai penerimaan Anda terhadap ketentuan baru.</li>
+              </ul>
+          </div>
+      </div>
   </div>
 
   <div id="additional-info-view" class="main-view" style="display: none; padding-top: 1.5rem;">
-    <div class="view-header">
-      <span class="back-button" data-target-view="app-detail-view">‹</span>
-      <h2>Informasi Tambahan</h2>
-    </div>
-    <div class="content-body" style="padding: 0 1.5rem;">
-      <p><strong>Sumber Data:</strong></p>
-      <ul>
-        <li><strong>Waktu Sholat:</strong> Menggunakan API dari Aladhan.com dengan metode kalkulasi ISNA (Islamic Society of North America).</li>
-        <li><strong>Al-Qur'an:</strong> Teks, terjemahan, dan data surah diambil dari API publik Quran.gading.dev.</li>
-        <li><strong>Arah Kiblat:</strong> Dihitung menggunakan koordinat geografis perangkat dan data sensor (kompas/giroskop) dengan koreksi deklinasi magnetik.</li>
-        <li><strong>Lokasi:</strong> Nama kota didapatkan melalui layanan Nominatim (OpenStreetMap).</li>
-      </ul>
-      <br>
-      <p>Aplikasi ini adalah proyek non-komersial dan dibuat untuk tujuan membantu umat Muslim dalam menjalankan ibadah sehari-hari. Aplikasi ini bersifat gratis dan tidak mengandung iklan.</p>
-    </div>
+      <div class="view-header">
+          <span class="back-button" data-target-view="app-detail-view">‹</span>
+          <h2>Informasi Tambahan</h2>
+      </div>
+      <div class="content-body">
+          <div class="content-card">
+              <h3 class="content-title"><span class="content-title-icon">📊</span>Sumber Data</h3>
+              <ul class="styled-list">
+                  <li><strong>Waktu Sholat:</strong> Menggunakan API dari Aladhan.com dengan metode kalkulasi ISNA.</li>
+                  <li><strong>Al-Qur'an:</strong> Teks, terjemahan, dan data surah diambil dari API publik Quran.gading.dev.</li>
+                  <li><strong>Arah Kiblat:</strong> Dihitung menggunakan koordinat geografis dan data sensor perangkat.</li>
+                  <li><strong>Lokasi:</strong> Nama kota didapatkan melalui layanan Nominatim (OpenStreetMap).</li>
+              </ul>
+          </div>
+          <div class="content-card">
+               <h3 class="content-title"><span class="content-title-icon">❤️</span>Proyek Non-Komersial</h3>
+              <p>Aplikasi ini adalah proyek non-komersial, dibuat untuk membantu umat Muslim dalam ibadah sehari-hari. Aplikasi ini sepenuhnya <strong>gratis dan tidak mengandung iklan</strong>.</p>
+          </div>
+      </div>
   </div>
 
   <div id="feedback-view" class="main-view" style="display: none; padding-top: 1.5rem;">
-    <div class="view-header">
-      <span class="back-button" data-target-view="app-detail-view">‹</span>
-      <h2>Saran & Masukan</h2>
-    </div>
-    <div class="content-body" style="padding: 0 1.5rem; text-align: center;">
-      <p>Kami sangat menghargai saran dan masukan dari Anda untuk membuat aplikasi ini menjadi lebih baik.</p>
-      <br>
-      <p>Silakan kirimkan ide, laporan bug, atau masukan lainnya melalui email ke pengembang.</p>
-      <br>
-      <a href="mailto:annuislamic60@gmail.com?subject=Masukan untuk Aplikasi Annur Islamic" class="modal-action-btn" style="text-decoration: none;">Kirim Email</a>
-    </div>
+      <div class="view-header">
+          <span class="back-button" data-target-view="app-detail-view">‹</span>
+          <h2>Saran & Masukan</h2>
+      </div>
+      <div class="content-body">
+           <div class="content-card">
+              <h3 class="content-title"><span class="content-title-icon">💌</span>Hubungi Kami</h3>
+              <p>Kami sangat menghargai saran dan masukan dari Anda untuk membuat aplikasi ini menjadi lebih baik. Silakan kirimkan ide, laporan bug, atau masukan lainnya melalui email kepada pengembang.</p>
+              <div class="email-link-wrapper">
+                   <a href="mailto:annuislamic60@gmail.com?subject=Masukan untuk Aplikasi Annur Islamic" class="modal-action-btn" style="text-decoration: none; display: inline-block; width: auto; padding: 0.8rem 1.5rem;">Kirim Email</a>
+              </div>
+          </div>
+      </div>
   </div>
 
   <script>
@@ -817,7 +908,7 @@
         'de': { 'nav_title': 'Navigationsmenü', 'nav_doa': '🤲 Tägliche Gebete', 'nav_quran': '📖 Al-Quran', 'nav_dzikir': '📿 Dhikr & Tasbih', 'nav_kiblat': '🧭 Qibla', 'nav_settings': '⚙️ Einstellungen', 'remaining_time': 'Verbleibende Zeit', 'settings_title': 'Einstellungen', 'settings_dark_mode': 'Dunkelmodus', 'settings_notifications': 'Benachrichtigungen aktivieren', 'settings_language': 'Sprache', 'settings_about': 'Über die App', 'last_read': 'ZULETZT GELESEN', 'no_last_read': 'Noch keine Gebete gelesen', 'all_doa': 'Alle Gebete', 'bookmarked': 'Gemerkt', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Sonnenaufgang', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha', 'Imsak_desc': 'Benachrichtigung & Kein Adhan-Ton', 'Fajr_desc': 'Mekka #1 (Fajr)', 'Sunrise_desc': 'Benachrichtigung & Kein Adhan-Ton', 'Dhuhr_desc': 'Mishary Rashid', 'Asr_desc': 'Mishary Rashid', 'Maghrib_desc': 'Mishary Rashid', 'Isha_desc': 'Mishary Rashid' },
         'ru': { 'nav_title': 'Навигационное меню', 'nav_doa': '🤲 Ежедневные молитвы', 'nav_quran': '📖 Аль-Коран', 'nav_dzikir': '📿 Зикр и Тасбих', 'nav_kiblat': '🧭 Кибла', 'nav_settings': '⚙️ Настройки', 'remaining_time': 'Оставшееся время', 'settings_title': 'Настройки', 'settings_dark_mode': 'Темный режим', 'settings_notifications': 'Включить уведомления', 'settings_language': 'Язык', 'settings_about': 'О приложении', 'last_read': 'ПОСЛЕДНЕЕ ПРОЧТЕНИЕ', 'no_last_read': 'Молитвы еще не читались', 'all_doa': 'Все молитвы', 'bookmarked': 'В закладках', 'Imsak': 'Имсак', 'Fajr': 'Фаджр', 'Sunrise': 'Восход', 'Dhuhr': 'Зухр', 'Asr': 'Аср', 'Maghrib': 'Магриб', 'Isha': 'Иша', 'Imsak_desc': 'Уведомление и без звука азана', 'Fajr_desc': 'Мекка #1 (Фаджр)', 'Sunrise_desc': 'Уведомление и без звука азана', 'Dhuhr_desc': 'Мишари Рашид', 'Asr_desc': 'Мишари Рашид', 'Maghrib_desc': 'Мишари Рашид', 'Isha_desc': 'Мишари Рашид' },
         'ur': { 'nav_title': 'نیویگیشن مینو', 'nav_doa': '🤲 روزانہ کی دعائیں', 'nav_quran': '📖 القرآن', 'nav_dzikir': '📿 ذکر و تسبیح', 'nav_kiblat': '🧭 قبلہ', 'nav_settings': '⚙️ ترتیبات', 'remaining_time': 'باقی وقت', 'settings_title': 'ترتیبات', 'settings_dark_mode': 'ڈارک موڈ', 'settings_notifications': 'اطلاعات کو فعال کریں', 'settings_language': 'زبان', 'settings_about': 'ایپ کے بارے میں', 'last_read': 'آخری بار پڑھا گیا', 'no_last_read': 'ابھی تک کوئی دعا نہیں پڑھی گئی', 'all_doa': 'تمام دعائیں', 'bookmarked': 'نشان زد', 'Imsak': 'امساک', 'Fajr': 'فجر', 'Sunrise': 'طلوع آفتاب', 'Dhuhr': 'ظہر', 'Asr': 'عصر', 'Maghrib': 'مغرب', 'Isha': 'عشاء', 'Imsak_desc': 'اطلاع اور اذان کی آواز نہیں', 'Fajr_desc': 'مکہ #1 (فجر)', 'Sunrise_desc': 'اطلاع اور اذان کی آواز نہیں', 'Dhuhr_desc': 'مشاری راشد', 'Asr_desc': 'مشاری راشد', 'Maghrib_desc': 'مشاری راشد', 'Isha_desc': 'مشاری راشد' },
-        'bn': { 'nav_title': 'নেভিগেশন মেনু', 'nav_doa': '🤲 দৈনিক দোয়া', 'nav_quran': '📖 আল-কুরআন', 'nav_dzikir': '📿 যিকির ও তাসবীহ', 'nav_kiblat': '🧭 কিবলা', 'nav_settings': '⚙️ সেটিংস', 'remaining_time': 'অবশিষ্ট সময়', 'settings_title': 'সেটিংস', 'settings_dark_mode': 'ডার্ক মোড', 'settings_notifications': 'নোটিফিকেশন সক্রিয় করুন', 'settings_language': 'ভাষা', 'settings_about': 'অ্যাপ সম্পর্কে', 'last_read': 'শেষ পঠিত', 'no_last_read': 'এখনও কোন দোয়া পড়া হয়নি', 'all_doa': 'সব দোয়া', 'bookmarked': 'বুকমার্ক করা', 'Imsak': 'ইمسাক', 'Fajr': 'ফজর', 'Sunrise': 'সূর্যোদয়', 'Dhuhr': 'যোহর', 'Asr': 'আসর', 'Maghrib': 'মাগরিব', 'Isha': 'ঈশা', 'Imsak_desc': 'নোটিফিকেশন এবং আযানের শব্দ নেই', 'Fajr_desc': 'মক্কা #1 (ফজর)', 'Sunrise_desc': 'নোটিফিকেশন এবং আযানের শব্দ নেই', 'Dhuhr_desc': 'মিשারি রশিদ', 'Asr_desc': 'মিשারি রশিদ', 'Maghrib_desc': 'মিশারি রশিদ', 'Isha_desc': 'মিשারি রশিদ' }
+        'bn': { 'nav_title': 'নেভিগেশন মেনু', 'nav_doa': '🤲 দৈনিক দোয়া', 'nav_quran': '📖 আল-কুরআন', 'nav_dzikir': '📿 যিকির ও তাসবীহ', 'nav_kiblat': '🧭 কিবলা', 'nav_settings': '⚙️ সেটিংস', 'remaining_time': 'অবশিষ্ট সময়', 'settings_title': 'সেটিংস', 'settings_dark_mode': 'ডার্ক মোড', 'settings_notifications': 'নোটিফিকেশন সক্রিয় করুন', 'settings_language': 'ভাষা', 'settings_about': 'অ্যাপ সম্পর্কে', 'last_read': 'শেষ পঠিত', 'no_last_read': 'এখনও কোন দোয়া পড়া হয়নি', 'all_doa': 'সব দোয়া', 'bookmarked': 'বুকমার্ক করা', 'Imsak': 'ইمسাক', 'Fajr': 'ফজর', 'Sunrise': 'সূর্যোদয়', 'Dhuhr': 'যোহর', 'Asr': 'আসর', 'Maghrib': 'মাগরিব', 'Isha': 'ঈশা', 'Imsak_desc': 'নোটিফিকেশন এবং আযানের শব্দ নেই', 'Fajr_desc': 'মক্কা #1 (ফজর)', 'Sunrise_desc': 'নোটিফিকেশন এবং আযানের শব্দ নেই', 'Dhuhr_desc': 'মিשারি রশিদ', 'Asr_desc': 'মিשারি রশিদ', 'Maghrib_desc': 'মিשারি রশিদ', 'Isha_desc': 'মিשারি রশিদ' }
     };
     const juzToSurahMap = { 1:[1,2],2:[2],3:[2,3],4:[3,4],5:[4],6:[4,5],7:[5,6],8:[6,7],9:[7,8],10:[8,9],11:[9,10,11],12:[11,12],13:[12,13,14,15],14:[16,17],15:[17,18],16:[18,19,20],17:[21,22],18:[23,24,25],19:[25,26,27],20:[27,28,29],21:[29,30,31,32,33],22:[33,34,35,36],23:[36,37,38,39],24:[39,40,41],25:[41,42,43,44,45],26:[46,47,48,49,50,51],27:[51,52,53,54,55,56,57],28:[58,59,60,61,62,63,64,65,66],29:[67,68,69,70,71,72,73,74,75,76,77],30:[78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114]};
     
@@ -1034,126 +1125,126 @@
        const CACHE_KEY_CITY = 'prayer_city_data';
 
        function loadPrayerDataFromCache() {
-           const cachedCity = localStorage.getItem(CACHE_KEY_CITY);
-           if (cachedCity) {
-               document.getElementById('city-name').textContent = cachedCity;
-           }
+            const cachedCity = localStorage.getItem(CACHE_KEY_CITY);
+            if (cachedCity) {
+                document.getElementById('city-name').textContent = cachedCity;
+            }
 
-           const today = new Date();
-           const year = today.getFullYear();
-           const month = today.getMonth() + 1;
-           const day = today.getDate();
-           const cacheKey = `timings_${year}_${month}`;
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = today.getMonth() + 1;
+            const day = today.getDate();
+            const cacheKey = `timings_${year}_${month}`;
 
-           const monthlyData = JSON.parse(localStorage.getItem(CACHE_KEY_MONTHLY_TIMINGS));
-           
-           if (monthlyData && monthlyData.key === cacheKey) {
-               console.log("Memuat jadwal sholat dari cache bulanan.");
-               const todayData = monthlyData.data[day - 1];
-               if(todayData) {
-                   const todayTimings = todayData.timings;
-                   const todayHijri = todayData.date.hijri;
-                   const hijriText = `${todayHijri.day} ${todayHijri.month.en} ${todayHijri.year} H`;
-                   
-                   hijriDateEl.textContent = hijriText;
-                   window.latestPrayerTimes = todayTimings;
-                   renderPrayerTimes(todayTimings);
-                   startCountdown(todayTimings);
-               } else {
-                   console.error("Data untuk hari ini tidak ditemukan di cache bulanan.");
-               }
-           } else {
-               console.log("Tidak ada data jadwal sholat di cache untuk bulan ini, akan coba fetch dari internet.");
-           }
+            const monthlyData = JSON.parse(localStorage.getItem(CACHE_KEY_MONTHLY_TIMINGS));
+            
+            if (monthlyData && monthlyData.key === cacheKey) {
+                console.log("Memuat jadwal sholat dari cache bulanan.");
+                const todayData = monthlyData.data[day - 1];
+                if(todayData) {
+                    const todayTimings = todayData.timings;
+                    const todayHijri = todayData.date.hijri;
+                    const hijriText = `${todayHijri.day} ${todayHijri.month.en} ${todayHijri.year} H`;
+                    
+                    hijriDateEl.textContent = hijriText;
+                    window.latestPrayerTimes = todayTimings;
+                    renderPrayerTimes(todayTimings);
+                    startCountdown(todayTimings);
+                } else {
+                    console.error("Data untuk hari ini tidak ditemukan di cache bulanan.");
+                }
+            } else {
+                console.log("Tidak ada data jadwal sholat di cache untuk bulan ini, akan coba fetch dari internet.");
+            }
        }
        
        function fetchCityName(lat, lon) {
-           fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
-               .then(r => r.json())
-               .then(data => {
-                   const cityName = data.address.city || data.address.town || data.address.village || "Lokasi Tidak Diketahui";
-                   document.getElementById('city-name').textContent = cityName;
-                   localStorage.setItem(CACHE_KEY_CITY, cityName);
-               })
-               .catch(error => {
-                   console.error("Gagal mengambil nama kota:", error);
-                   const cachedCity = localStorage.getItem(CACHE_KEY_CITY);
-                   if (cachedCity) document.getElementById('city-name').textContent = cachedCity;
-               });
+            fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
+                .then(r => r.json())
+                .then(data => {
+                    const cityName = data.address.city || data.address.town || data.address.village || "Lokasi Tidak Diketahui";
+                    document.getElementById('city-name').textContent = cityName;
+                    localStorage.setItem(CACHE_KEY_CITY, cityName);
+                })
+                .catch(error => {
+                    console.error("Gagal mengambil nama kota:", error);
+                    const cachedCity = localStorage.getItem(CACHE_KEY_CITY);
+                    if (cachedCity) document.getElementById('city-name').textContent = cachedCity;
+                });
        }
 
        function fetchPrayerTimings(lat, lon) {
-           const now = new Date();
-           const year = now.getFullYear();
-           const month = now.getMonth() + 1;
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth() + 1;
 
-           fetch(`https://api.aladhan.com/v1/calendar/${year}/${month}?latitude=${lat}&longitude=${lon}&method=11`)
-               .then(r => r.json())
-               .then(j => {
-                   if (j.code === 200) {
-                       console.log("Berhasil mengambil data jadwal sholat baru untuk sebulan dari API.");
-                       const cacheKey = `timings_${year}_${month}`;
+            fetch(`https://api.aladhan.com/v1/calendar/${year}/${month}?latitude=${lat}&longitude=${lon}&method=11`)
+                .then(r => r.json())
+                .then(j => {
+                    if (j.code === 200) {
+                        console.log("Berhasil mengambil data jadwal sholat baru untuk sebulan dari API.");
+                        const cacheKey = `timings_${year}_${month}`;
 
-                       const adjustedData = j.data.map(dailyData => {
-                           const adjustedTimings = {};
-                           for (const key in dailyData.timings) {
-                               const timeString = dailyData.timings[key].split(' ')[0]; 
-                               const [h, m] = timeString.split(':').map(Number);
+                        const adjustedData = j.data.map(dailyData => {
+                            const adjustedTimings = {};
+                            for (const key in dailyData.timings) {
+                                const timeString = dailyData.timings[key].split(' ')[0]; 
+                                const [h, m] = timeString.split(':').map(Number);
 
-                               if (!isNaN(h) && !isNaN(m)) {
-                                   const date = new Date();
-                                   date.setHours(h, m + 2, 0, 0); 
-                                   adjustedTimings[key] = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
-                               } else {
-                                   adjustedTimings[key] = dailyData.timings[key];
-                               }
-                           }
-                           return { ...dailyData, timings: adjustedTimings };
-                       });
+                                if (!isNaN(h) && !isNaN(m)) {
+                                    const date = new Date();
+                                    date.setHours(h, m + 2, 0, 0); 
+                                    adjustedTimings[key] = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+                                } else {
+                                    adjustedTimings[key] = dailyData.timings[key];
+                                }
+                            }
+                            return { ...dailyData, timings: adjustedTimings };
+                        });
 
-                       const dataToStore = {
-                           key: cacheKey,
-                           data: adjustedData
-                       };
-                       
-                       localStorage.setItem(CACHE_KEY_MONTHLY_TIMINGS, JSON.stringify(dataToStore));
-                       console.log("Data jadwal sholat sebulan penuh telah disimpan ke cache.");
-                       
-                       loadPrayerDataFromCache(); 
-                   } else {
-                       console.error("API Aladhan mengembalikan error, menggunakan data cache jika ada.");
-                   }
-               })
-               .catch(error => {
-                   console.error("Gagal mengambil jadwal sholat (kemungkinan offline):", error);
-               });
+                        const dataToStore = {
+                            key: cacheKey,
+                            data: adjustedData
+                        };
+                        
+                        localStorage.setItem(CACHE_KEY_MONTHLY_TIMINGS, JSON.stringify(dataToStore));
+                        console.log("Data jadwal sholat sebulan penuh telah disimpan ke cache.");
+                        
+                        loadPrayerDataFromCache(); 
+                    } else {
+                        console.error("API Aladhan mengembalikan error, menggunakan data cache jika ada.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Gagal mengambil jadwal sholat (kemungkinan offline):", error);
+                });
        }
 
        function getLocation() {
-           const fallbackLat = 3.5952;
-           const fallbackLon = 98.6722;
-           const fallbackCity = "Medan";
-           const handleLocationError = (error) => {
-               console.warn(`Tidak bisa mendapatkan lokasi: ${error.message}. Menggunakan lokasi fallback.`);
-               if (!localStorage.getItem(CACHE_KEY_MONTHLY_TIMINGS)) {
-                   fetchPrayerTimings(fallbackLat, fallbackLon);
-               }
-               if (!localStorage.getItem(CACHE_KEY_CITY)) {
-                   document.getElementById('city-name').textContent = fallbackCity;
-                   localStorage.setItem(CACHE_KEY_CITY, fallbackCity);
-               }
-           };
-           if (navigator.geolocation) {
-               navigator.geolocation.getCurrentPosition(
-                   (position) => {
-                       fetchPrayerTimings(position.coords.latitude, position.coords.longitude);
-                       fetchCityName(position.coords.latitude, position.coords.longitude);
-                   },
-                   handleLocationError, { timeout: 10000 }
-               );
-           } else {
-               handleLocationError({ message: "Geolocation tidak didukung" });
-           }
+            const fallbackLat = 3.5952;
+            const fallbackLon = 98.6722;
+            const fallbackCity = "Medan";
+            const handleLocationError = (error) => {
+                console.warn(`Tidak bisa mendapatkan lokasi: ${error.message}. Menggunakan lokasi fallback.`);
+                if (!localStorage.getItem(CACHE_KEY_MONTHLY_TIMINGS)) {
+                    fetchPrayerTimings(fallbackLat, fallbackLon);
+                }
+                if (!localStorage.getItem(CACHE_KEY_CITY)) {
+                    document.getElementById('city-name').textContent = fallbackCity;
+                    localStorage.setItem(CACHE_KEY_CITY, fallbackCity);
+                }
+            };
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        fetchPrayerTimings(position.coords.latitude, position.coords.longitude);
+                        fetchCityName(position.coords.latitude, position.coords.longitude);
+                    },
+                    handleLocationError, { timeout: 10000 }
+                );
+            } else {
+                handleLocationError({ message: "Geolocation tidak didukung" });
+            }
        }
 
        loadPrayerDataFromCache();
@@ -1161,7 +1252,7 @@
        generateCalendar();
        getLocation();
        setInterval(() => {
-           if (window.latestPrayerTimes) renderPrayerTimes(window.latestPrayerTimes);
+            if (window.latestPrayerTimes) renderPrayerTimes(window.latestPrayerTimes);
        }, 60000);
       }
       
@@ -1188,10 +1279,10 @@
               currentOpenDoaId = id;
               singleDoaModal.querySelector('#single-doa-modal-title').textContent = doa.title;
               singleDoaModal.querySelector('#single-doa-modal-body').innerHTML = `
-                                              <p class="single-item-arabic">${doa.arabic}</p>
-                                              <p class="single-item-latin">${doa.latin}</p>
-                                              <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
-                                              <p class="single-item-arti"><b>Artinya:</b> ${doa.arti}</p>`;
+                                                  <p class="single-item-arabic">${doa.arabic}</p>
+                                                  <p class="single-item-latin">${doa.latin}</p>
+                                                  <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
+                                                  <p class="single-item-arti"><b>Artinya:</b> ${doa.arti}</p>`;
               updateBookmarkIcon(); singleDoaModal.style.display = 'flex';
               localStorage.setItem('last_read_doa_id', id); lastReadDoaId = id; renderLastRead();
           }
@@ -1257,12 +1348,12 @@
                   const item = document.createElement('div');
                   item.className = 'list-item';
                   item.innerHTML = `
-                                      <span class="num">${surah.number}</span>
-                                      <div class="details">
-                                          <div class="title">${surah.name.transliteration.id}</div>
-                                          <div class="subtitle">${surah.name.translation.id} (${surah.numberOfVerses} verses)</div>
-                                      </div>
-                                      <span class="arabic">${surah.name.short}</span>`;
+                                          <span class="num">${surah.number}</span>
+                                          <div class="details">
+                                              <div class="title">${surah.name.transliteration.id}</div>
+                                              <div class="subtitle">${surah.name.translation.id} (${surah.numberOfVerses} verses)</div>
+                                          </div>
+                                          <span class="arabic">${surah.name.short}</span>`;
                   item.addEventListener('click', () => showSurahDetail(surah.number, backTarget));
                   container.appendChild(item);
               });
@@ -1274,9 +1365,9 @@
                   const item = document.createElement('div');
                   item.className = 'list-item';
                   item.innerHTML = `
-                                              <span class="num">${i}</span>
-                                              <div class="details"><div class="title">Juz ${i}</div></div>
-                                              <span class="arabic">الجزء ${i}</span>`;
+                                                  <span class="num">${i}</span>
+                                                  <div class="details"><div class="title">Juz ${i}</div></div>
+                                                  <span class="arabic">الجزء ${i}</span>`;
                   item.addEventListener('click', () => showSurahsInJuz(i));
                   quranListContainer.appendChild(item);
               }
@@ -1310,28 +1401,28 @@
                   surahViewTitle.textContent = `${surah.name.transliteration.id}`;
                   
                   let contentHtml = `
-                                <div class="surah-detail-header">
-                                    <h2>${surah.name.long}</h2>
-                                    <p>${surah.name.translation.id}</p>
-                                    <div class="meta">${surah.revelation.id} • ${surah.numberOfVerses} VERSES</div>
-                                </div>`;
+                                       <div class="surah-detail-header">
+                                           <h2>${surah.name.long}</h2>
+                                           <p>${surah.name.translation.id}</p>
+                                           <div class="meta">${surah.revelation.id} • ${surah.numberOfVerses} VERSES</div>
+                                       </div>`;
                   
                   if (surah.number !== 1 && surah.number !== 9) {
                       contentHtml += `
-                                      <div class="basmala">
-                                          <p class="basmala-arabic">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
-                                          <p class="basmala-translation">Dengan menyebut nama Allah Yang Maha Pengasih, lagi Maha Penyayang</p>
-                                      </div>`;
+                                          <div class="basmala">
+                                              <p class="basmala-arabic">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
+                                              <p class="basmala-translation">Dengan menyebut nama Allah Yang Maha Pengasih, lagi Maha Penyayang</p>
+                                          </div>`;
                   }
       
                   surah.verses.forEach(ayah => {
                       contentHtml += `
-                                      <div class="ayah-item">
-                                          <div class="ayah-header"><span class="ayah-number">${surah.number}:${ayah.number.inSurah}</span></div>
-                                          <p class="ayah-arabic">${ayah.text.arab}</p>
-                                          <p class="ayah-latin">${ayah.text.transliteration.en}</p>
-                                          <p class="ayah-translation"><b>Artinya:</b> ${ayah.translation.id}</p>
-                                      </div>`;
+                                          <div class="ayah-item">
+                                              <div class="ayah-header"><span class="ayah-number">${surah.number}:${ayah.number.inSurah}</span></div>
+                                              <p class="ayah-arabic">${ayah.text.arab}</p>
+                                              <p class="ayah-latin">${ayah.text.transliteration.en}</p>
+                                              <p class="ayah-translation"><b>Artinya:</b> ${ayah.translation.id}</p>
+                                          </div>`;
                   });
                   surahViewBody.innerHTML = contentHtml;
       
@@ -1435,12 +1526,12 @@
               dzikirDetailModal.querySelector('#dzikir-detail-modal-title').textContent = dzikir.title;
               const modalBody = dzikirDetailModal.querySelector('#dzikir-detail-modal-body');
               modalBody.innerHTML = `
-                                              <p class="single-item-arabic">${dzikir.arabic}</p>
-                                              <p class="single-item-latin">${dzikir.latin}</p>
-                                              <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
-                                              <p class="single-item-arti"><b>Artinya:</b> ${dzikir.arti}</p>
-                                              <button id="start-dzikir-btn" class="modal-action-btn">Mulai Dzikir (Target: ${dzikir.target})</button>
-                                                  `;
+                                                  <p class="single-item-arabic">${dzikir.arabic}</p>
+                                                  <p class="single-item-latin">${dzikir.latin}</p>
+                                                  <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
+                                                  <p class="single-item-arti"><b>Artinya:</b> ${dzikir.arti}</p>
+                                                  <button id="start-dzikir-btn" class="modal-action-btn">Mulai Dzikir (Target: ${dzikir.target})</button>
+                                                          `;
               
               modalBody.querySelector('#start-dzikir-btn').addEventListener('click', () => {
                   dzikirDetailModal.style.display = 'none';
