@@ -1,44 +1,39 @@
-// File: sw.js (Versi Gabungan & Final)
+// File: sw.js (Versi Perbaikan yang Lebih Andal)
 
 // NAMA CACHE
-// Nama cache unik. Ubah nomor versi jika Anda memperbarui file statis.
-const STATIC_CACHE_NAME = 'annur-islamic-static-v4';
-const DYNAMIC_CACHE_NAME = 'annur-islamic-dynamic-v4';
+const STATIC_CACHE_NAME = 'annur-islamic-static-v5'; // Versi dinaikkan untuk memicu update
+const DYNAMIC_CACHE_NAME = 'annur-islamic-dynamic-v5';
 
 // ASET INTI APLIKASI (App Shell)
-// Aset yang harus selalu ada untuk penggunaan offline.
+// Kita hanya akan pre-cache file yang 100% pasti ada.
+// Aset lain seperti logo dan manifest akan di-cache secara dinamis saat diakses.
 const APP_SHELL_ASSETS = [
     '/',
-    'index.html',
-    'manifest.json',
-    'logo-annur.jpg',
-    // Tambahkan path ke file CSS dan JS utama Anda di sini jika ada.
-    // Contoh: 'styles/main.css', 'scripts/app.js'
+    'index.html'
 ];
 
 // ==========================================================
 // BAGIAN 1: LOGIKA CACHING DAN OFFLINE
 // ==========================================================
 
-// Event 'install': Menyimpan App Shell ke cache saat Service Worker diinstal.
+// Event 'install': Menyimpan App Shell ke cache.
 self.addEventListener('install', event => {
     console.log('[SW] Menginstal Service Worker...');
     event.waitUntil(
         caches.open(STATIC_CACHE_NAME).then(cache => {
             console.log('[SW] Melakukan pre-caching App Shell...');
-            // Menambahkan semua aset inti ke dalam cache.
+            // Hanya cache file inti, mengurangi risiko gagal
             return cache.addAll(APP_SHELL_ASSETS);
         })
     );
 });
 
-// Event 'activate': Membersihkan cache lama agar tidak memakan ruang.
+// Event 'activate': Membersihkan cache lama.
 self.addEventListener('activate', event => {
     console.log('[SW] Mengaktifkan Service Worker...');
     event.waitUntil(
         caches.keys().then(keyList => {
             return Promise.all(keyList.map(key => {
-                // Hapus semua cache yang tidak sesuai dengan nama cache saat ini.
                 if (key !== STATIC_CACHE_NAME && key !== DYNAMIC_CACHE_NAME) {
                     console.log('[SW] Menghapus cache lama:', key);
                     return caches.delete(key);
@@ -49,43 +44,37 @@ self.addEventListener('activate', event => {
     return self.clients.claim();
 });
 
-// Event 'fetch': Menyadap semua permintaan jaringan untuk menyediakan fungsionalitas offline.
+// Event 'fetch': Menyadap semua permintaan jaringan.
 self.addEventListener('fetch', event => {
-    const requestUrl = new URL(event.request.url);
+    event.respondWith(
+        caches.match(event.request)
+            .then(cachedResponse => {
+                // Jika request ada di cache, langsung kembalikan dari cache
+                if (cachedResponse) {
+                    return cachedResponse;
+                }
 
-    // Strategi 1: Cache First, then Network untuk API dan Font.
-    // Ini ideal untuk data yang jarang berubah dan bisa digunakan kembali saat offline.
-    // API jadwal sholat ditambahkan ke sini.
-    if (requestUrl.hostname === 'api.quran.gading.dev' ||
-        requestUrl.hostname === 'api.aladhan.com' || // <-- API jadwal sholat ditambahkan
-        requestUrl.hostname === 'fonts.gstatic.com' ||
-        requestUrl.hostname === 'fonts.googleapis.com') {
-        event.respondWith(
-            caches.open(DYNAMIC_CACHE_NAME).then(cache => {
-                return cache.match(event.request).then(cachedResponse => {
-                    // Jika respons ada di cache, langsung gunakan.
-                    if (cachedResponse) {
-                        return cachedResponse;
-                    }
-                    // Jika tidak, ambil dari jaringan.
-                    return fetch(event.request).then(networkResponse => {
-                        // Simpan respons jaringan ke cache dinamis untuk penggunaan offline berikutnya.
-                        cache.put(event.request, networkResponse.clone());
-                        return networkResponse;
+                // Jika tidak ada di cache, ambil dari jaringan
+                return fetch(event.request)
+                    .then(networkResponse => {
+                        // Buka cache dinamis untuk menyimpan request baru ini
+                        return caches.open(DYNAMIC_CACHE_NAME)
+                            .then(cache => {
+                                // Simpan salinan respons ke cache untuk penggunaan offline berikutnya
+                                // Ini akan otomatis meng-cache logo, manifest, font, dan panggilan API saat pertama kali diakses
+                                cache.put(event.request.url, networkResponse.clone());
+                                // Kembalikan respons asli ke aplikasi
+                                return networkResponse;
+                            });
                     });
-                });
             })
-        );
-    }
-    // Strategi 2: Cache First untuk aset statis lainnya (App Shell)
-    else {
-        event.respondWith(
-            caches.match(event.request).then(response => {
-                // Kembalikan dari cache jika ada. Jika tidak, ambil dari jaringan.
-                return response || fetch(event.request);
+            .catch(error => {
+                // Ini adalah bagian fallback jika jaringan dan cache gagal
+                console.error('[SW] Gagal mengambil data:', error);
+                // Anda bisa menambahkan halaman offline fallback di sini jika mau
+                // return caches.match('/offline.html');
             })
-        );
-    }
+    );
 });
 
 
@@ -93,27 +82,23 @@ self.addEventListener('fetch', event => {
 // BAGIAN 2: LOGIKA NOTIFIKASI LATAR BELAKANG
 // ==========================================================
 
-let scheduledTimeout; // Variabel untuk menyimpan timer agar tidak duplikat
+let scheduledTimeout;
 
 // Event 'message': Menerima data jadwal sholat dari aplikasi utama.
 self.addEventListener('message', event => {
-    // Pastikan pesan yang diterima adalah untuk menjadwalkan notifikasi
     if (event.data && event.data.type === 'SCHEDULE_PRAYER_NOTIFICATION') {
         const prayerTimes = event.data.payload;
 
-        // Hentikan jadwal notifikasi lama jika ada yang sedang berjalan
         if (scheduledTimeout) {
             clearTimeout(scheduledTimeout);
         }
 
-        // Tentukan jadwal sholat berikutnya yang relevan (tanpa Sunrise dan Imsak)
         const now = new Date();
         const prayerOrderForNotification = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
         let nextPrayerName = '';
         let nextPrayerTime = null;
 
         for (const name of prayerOrderForNotification) {
-            // Pastikan prayerTimes[name] ada sebelum membuat tanggal
             if (prayerTimes[name]) {
                 const prayerDate = new Date(`${now.toDateString()} ${prayerTimes[name]}`);
                 if (prayerDate > now) {
@@ -124,25 +109,21 @@ self.addEventListener('message', event => {
             }
         }
 
-        // Jika tidak ada jadwal berikutnya hari ini, tidak perlu menjadwalkan apa pun.
-        // Notifikasi akan dijadwalkan kembali saat pengguna membuka aplikasi keesokan harinya.
         if (!nextPrayerTime) {
             console.log('[SW] Semua jadwal notifikasi untuk hari ini telah lewat.');
             return;
         }
 
-        // Hitung selisih waktu dari sekarang ke waktu sholat berikutnya
         const timeUntilNextPrayer = nextPrayerTime.getTime() - now.getTime();
 
         console.log(`[SW] Notifikasi untuk ${nextPrayerName} dijadwalkan dalam ${Math.round(timeUntilNextPrayer / 60000)} menit.`);
 
-        // Atur timer untuk menampilkan notifikasi dari Service Worker
         scheduledTimeout = setTimeout(() => {
             self.registration.showNotification(`Waktunya Sholat ${nextPrayerName}`, {
                 body: `Segera laksanakan sholat ${nextPrayerName}.`,
-                icon: 'logo-annur.jpg', // Pastikan path icon ini benar
-                badge: 'logo-annur.jpg', // Icon untuk notifikasi di perangkat mobile
-                vibrate: [200, 100, 200] // Pola getaran
+                icon: 'logo-annur.jpg',
+                badge: 'logo-annur.jpg',
+                vibrate: [200, 100, 200]
             });
         }, timeUntilNextPrayer);
     }
