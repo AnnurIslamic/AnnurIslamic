@@ -1,6 +1,6 @@
 // Nama cache unik. Ubah nomor versi jika Anda memperbarui file statis.
-const STATIC_CACHE_NAME = 'annur-islamic-static-v4';
-const DYNAMIC_CACHE_NAME = 'annur-islamic-dynamic-v4';
+const STATIC_CACHE_NAME = 'annur-islamic-static-v5';
+const DYNAMIC_CACHE_NAME = 'annur-islamic-dynamic-v5';
 
 // Aset inti aplikasi (App Shell) yang harus selalu ada untuk penggunaan offline.
 // Daftar ini diambil dari gabungan kedua file Anda untuk kelengkapan.
