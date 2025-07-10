@@ -227,11 +227,11 @@
     }
 
     .settings-menu-item:hover {
-       background-color: rgba(0, 0, 0, 0.03);
+        background-color: rgba(0, 0, 0, 0.03);
     }
     
     body.dark-mode .settings-menu-item:hover {
-       background-color: rgba(255, 255, 255, 0.05);
+        background-color: rgba(255, 255, 255, 0.05);
     }
 
     .settings-menu-item span:first-child {
@@ -243,6 +243,35 @@
       font-weight: 400;
       color: var(--text-light);
     }
+    
+    /* --- CSS UNTUK TOMBOL PLAY STORE --- */
+    .playstore-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 0.8rem 1rem;
+        margin-top: 1.5rem;
+        background-color: #000000;
+        color: #ffffff;
+        border-radius: var(--radius);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+    .playstore-btn:active {
+        transform: scale(0.97);
+    }
+    .playstore-btn .playstore-icon {
+        width: 24px;
+        height: 24px;
+    }
+    body.dark-mode .playstore-btn {
+        background-color: #ffffff;
+        color: #000000;
+    }
+
 
     /* --- STYLE UNTUK TOMBOL DETAIL APLIKASI --- */
     .detail-app-container {
@@ -303,6 +332,102 @@
     .ayah-translation { font-size: 0.9rem; line-height: 1.5rem; }
     body.dark-mode .ayah-latin { color: #ddd; }
     body.dark-mode .ayah-translation { color: #ccc; }
+    
+    /* --- TAMPILAN KIBLAT --- */
+    #qibla-view {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      box-sizing: border-box;
+      background-color: #000000;
+      color: #ffffff;
+      padding: 1rem;
+    }
+    #qibla-view .view-header {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      color: white;
+    }
+     #qibla-view .view-header h2, #qibla-view .back-button {
+        color: #ffffff;
+     }
+
+    #qibla-compass-container {
+        position: relative;
+        width: 300px;
+        height: 300px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #qibla-compass-circle {
+        width: 100%;
+        height: 100%;
+        background-color: #F0E68C; /* Khaki - pale yellow */
+        border: 5px solid #5C4033; /* Dark brown border */
+        border-radius: 50%;
+        transition: background-color 0.4s ease;
+        position: relative;
+    }
+    #qibla-compass-circle.aligned {
+        background-color: #FFD700; /* Gold */
+    }
+    
+    #qibla-lubber-line {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 30px;
+      background-color: #FF4500; /* OrangeRed */
+      border-radius: 2px;
+      z-index: 3;
+    }
+
+    #qibla-needle {
+        position: absolute;
+        width: 4px;
+        height: 120px; /* Length of the needle */
+        background-color: #333333;
+        top: 30px; /* Start below the lubber line */
+        left: 50%;
+        transform-origin: bottom center;
+        transform: translateX(-50%) rotate(0deg); /* Initial position */
+        transition: transform 0.2s linear;
+        border-radius: 2px;
+        z-index: 2;
+    }
+    
+    /* --- [BARU] Info box di Kiblat --- */
+    #qibla-info-box {
+      margin-top: 2rem;
+      text-align: center;
+      max-width: 320px;
+    }
+    #qibla-info-box .direction-degree {
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+    #qibla-info-box .calibration-info {
+      font-size: 0.8rem;
+      color: #ccc;
+      line-height: 1.4;
+      margin-bottom: 1rem;
+    }
+    #qibla-recalibrate-btn {
+      background: none;
+      border: 1px solid #f9d788;
+      color: #f9d788;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
   </style>
 </head>
 <body>
@@ -313,7 +438,7 @@
       <li><a href="#" id="doa-harian-btn" data-key="nav_doa">🤲 Doa Harian</a></li>
       <li><a href="#" id="quran-btn" data-key="nav_quran">📖 Al-Qur'an</a></li>
       <li><a href="#" id="dzikir-btn" data-key="nav_dzikir">📿 Dzikir & Tasbih</a></li>
-      <li><a href="#" data-key="nav_kiblat">🕋 Kiblat</a></li>
+      <li><a href="#" id="qibla-btn" data-key="nav_kiblat">🕋 Kiblat</a></li>
       <li><a href="#" id="settings-btn" data-key="nav_settings">⚙️ Pengaturan</a></li>
     </ul>
   </nav>
@@ -397,6 +522,31 @@
       </div>
       <div class="list-container" id="dzikir-list-container"></div>
     </div>
+  </div>
+
+  <div id="qibla-view" class="main-view">
+      <div class="view-header">
+        <span class="back-button" data-target-view="prayer-times-view">‹</span>
+        <h2>Arah Kiblat</h2>
+      </div>
+      
+      <div id="qibla-compass-container">
+        <div id="qibla-compass-circle">
+          <div id="qibla-lubber-line"></div>
+          <div id="qibla-needle"></div>
+        </div>
+      </div>
+      
+      <div id="qibla-info-box">
+          <p class="direction-degree">Arahkan jarum ke garis merah</p>
+          <p class="calibration-info">Jika arah tidak akurat, gerakkan HP membentuk angka 8 & jauhkan dari logam/magnet.</p>
+          <button id="qibla-recalibrate-btn">Kalibrasi Ulang</button>
+      </div>
+
+      <div id="qibla-permission-prompt" style="display: none; text-align:center; padding: 2rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+          <p style="color:white; margin-bottom: 1rem;">Fitur ini memerlukan izin lokasi dan sensor gerak.</p>
+          <button id="qibla-permission-btn" class="modal-action-btn" style="max-width: 200px; margin:auto; background-color: #f9d788; color: #1a3a32;">Mulai</button>
+      </div>
   </div>
 
   <div id="tasbih-view" class="main-view">
@@ -490,7 +640,7 @@
       <span class="back-button" id="detail-view-back-btn">‹</span>
       <h2>Detail Aplikasi</h2>
     </div>
-    <div class="content-body">
+    <div class="content-body" style="padding: 0 1.5rem;">
       <div class="settings-menu-item" data-target-view="privacy-policy-view">
         <span>Kebijakan Privasi</span>
         <span class="arrow">&rsaquo;</span>
@@ -511,6 +661,18 @@
         <label>Versi Aplikasi</label>
         <span>v18.02.22 (Beta)</span>
       </div>
+      
+      <a href="https://play.google.com/store/apps/details?id=com.nama.paket.anda" target="_blank" class="playstore-btn">
+          <svg class="playstore-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2.57 2.15C2.37 2.27 2.25 2.5 2.25 2.75v18.5c0 .25.12.48.32.6l10.06-10.05L2.57 2.15z" fill="#00c0f3"></path>
+              <path d="M14.2 11.25L3.92 21.43c.19.07.4.12.63.12h.02c.26 0 .5-.09.7-.25l3.8-2.61 5.13-5.44z" fill="#4ffab9"></path>
+              <path d="M14.2 12.75l-5.13-5.44-3.8-2.61a1.24 1.24 0 0 1-.7-.25h-.02c-.23 0-.44.05-.63.12L14.2 12.75z" fill="#ffda44"></path>
+              <path d="M19.7 15.02c.7-.72.7-1.89 0-2.6l-3.32-3.32-2.18 2.31 5.5 3.61z" fill="#ff5555"></path>
+              <path d="M14.2 12l-10.1 9.98c.2.12.43.2.68.2a1.2 1.2 0 0 0 .99-.5l12.5-7.18-4.07-4.1z" fill="#ff7043" opacity=".6"></path>
+          </svg>
+          <span>Unduh di Google PlayStore</span>
+      </a>
+      
     </div>
   </div>
 
@@ -520,11 +682,11 @@
       <h2>Kebijakan Privasi</h2>
     </div>
     <div class="content-body" style="padding: 0 1.5rem;">
-      <p><strong>Pembaruan Terakhir: 4 Juli 2025</strong></p>
+      <p><strong>Pembaruan Terakhir: 9 Juli 2025</strong></p>
       <p>Aplikasi Annur Islamic ("kami" atau "milik kami") berkomitmen untuk melindungi privasi Anda. Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, dan melindungi informasi Anda saat Anda menggunakan aplikasi kami.</p>
       <br>
       <p><strong>Pengumpulan Informasi Lokasi:</strong></p>
-      <p>Aplikasi ini mengumpulkan data lokasi geografis Anda (latitude dan longitude) hanya untuk tujuan menghitung waktu sholat yang akurat. Data ini tidak pernah disimpan di server kami atau dibagikan dengan pihak ketiga mana pun. Semua perhitungan dilakukan secara lokal di perangkat Anda.</p>
+      <p>Aplikasi ini mengumpulkan data lokasi geografis Anda (latitude dan longitude) hanya untuk tujuan menghitung waktu sholat yang akurat dan menentukan arah Kiblat. Data ini tidak pernah disimpan di server kami atau dibagikan dengan pihak ketiga mana pun. Semua perhitungan dilakukan secara lokal di perangkat Anda.</p>
       <br>
       <p><strong>Penyimpanan Lokal:</strong></p>
       <p>Kami menggunakan penyimpanan lokal (localStorage) di browser Anda untuk menyimpan preferensi seperti tema (mode malam), bahasa, dan data cache jadwal sholat untuk penggunaan offline. Data ini tetap berada di perangkat Anda dan tidak dikirim ke tempat lain.</p>
@@ -540,7 +702,7 @@
         <p>Dengan mengunduh atau menggunakan aplikasi Annur Islamic, Anda secara otomatis menyetujui ketentuan berikut:</p>
         <ul>
             <li style="margin-bottom: 1rem;">Anda tidak diizinkan untuk menyalin, atau memodifikasi aplikasi, bagian mana pun dari aplikasi, atau merek dagang kami dengan cara apa pun.</li>
-            <li style="margin-bottom: 1rem;">Aplikasi ini disediakan "sebagaimana adanya". Meskipun kami berusaha untuk memastikan keakuratan data (seperti waktu sholat dan konten Al-Qur'an), kami tidak memberikan jaminan atas keakuratannya. Pengguna disarankan untuk melakukan verifikasi silang dengan sumber tepercaya.</li>
+            <li style="margin-bottom: 1rem;">Aplikasi ini disediakan "sebagaimana adanya". Meskipun kami berusaha untuk memastikan keakuratan data (seperti waktu sholat, arah Kiblat, dan konten Al-Qur'an), kami tidak memberikan jaminan atas keakuratannya. Pengguna disarankan untuk melakukan verifikasi silang dengan sumber tepercaya dan melakukan kalibrasi sensor jika diperlukan.</li>
             <li style="margin-bottom: 1rem;">Kami berhak untuk mengubah ketentuan ini kapan saja. Penggunaan aplikasi secara berkelanjutan setelah perubahan akan dianggap sebagai penerimaan Anda terhadap ketentuan baru.</li>
         </ul>
     </div>
@@ -556,6 +718,7 @@
       <ul>
         <li><strong>Waktu Sholat:</strong> Menggunakan API dari Aladhan.com dengan metode kalkulasi ISNA (Islamic Society of North America).</li>
         <li><strong>Al-Qur'an:</strong> Teks, terjemahan, dan data surah diambil dari API publik Quran.gading.dev.</li>
+        <li><strong>Arah Kiblat:</strong> Dihitung menggunakan koordinat geografis perangkat dan data sensor (kompas/giroskop) dengan koreksi deklinasi magnetik.</li>
         <li><strong>Lokasi:</strong> Nama kota didapatkan melalui layanan Nominatim (OpenStreetMap).</li>
       </ul>
       <br>
@@ -628,8 +791,8 @@
         { id: 37, title: "Doa Masuk Pasar", subtitle: "Memohon kebaikan pasar", arabic: "لاَ إِلَهَ إِلاَّ اللَّهُ وَحْدَهُ لاَ شَرِيكَ لَهُ...", latin: "Laa ilaaha illallaah wahdahu laa syariika lah...", arti: "Tiada Tuhan selain Allah semata, tiada sekutu bagi-Nya..." },
         { id: 38, title: "Doa Ketika Tertimpa Musibah", subtitle: "Kalimat istirja'", arabic: "إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ", latin: "Innaa lillaahi wa innaa ilaihi raaji'uun", arti: "Sesungguhnya kami milik Allah dan kepada-Nya lah kami akan kembali." },
         { id: 39, title: "Doa untuk Pengantin Baru", subtitle: "Mendoakan keberkahan", arabic: "بَارَكَ اللَّهُ لَكَ وَبَارَكَ عَلَيْكَ وَجَمَعَ بَيْنَكُمَا فِي خَيْرٍ", latin: "Baarakallahu laka wa baaraka 'alaika wa jama'a bainakumaa fii khairin", arti: "Semoga Allah memberkahimu, dan memberkahi atasmu, dan mengumpulkan kalian berdua dalam kebaikan." },
-        { id: 40, title: "Doa Ziarah Kubur", subtitle: "Salam kepada ahli kubur", arabic: "السَّلاَمُ عَلَى أَهْلِ الدِّيَارِ مِنَ الْمُؤْمِنِينَ وَالْمُسْلِمِينَ...", latin: "Assalaamu 'ala ahlid diyaari minal mu'miniina wal muslimiin...", arti: "Keselamatan atas penghuni kubur dari kaum mukminin dan muslimin..." },
-        { id: 41, title: "Doa Melihat Hilal", subtitle: "Menyambut bulan baru", arabic: "اللَّهُ أَكْبَرُ، اللَّهُمَّ أَهِلَّهُ عَلَيْنَا بِالْيُمْنِ وَالإِيمَانِ وَالسَّلاَمَةِ وَالإِسْلاَمِ", latin: "Allahu Akbar, Allahumma ahillahu 'alainaa bil yumni wal iimaani wassalaamati wal islaam", arti: "Allah Maha Besar, ya Allah, tampakkanlah bulan itu kepada kami dengan membawa keberkahan dan keimanan, keselamatan dan Islam." },
+        { id: 40, title: "Doa Ziarah Kubur", subtitle: "Salam kepada ahli kubur", arabic: "السَّلاَمُ عَلَى أَهْلِ الدِّيَارِ مِنَ الْمُؤْمِنِينَ وَالْمُSْلِمِينَ...", latin: "Assalaamu 'ala ahlid diyaari minal mu'miniina wal muslimiin...", arti: "Keselamatan atas penghuni kubur dari kaum mukminin dan muslimin..." },
+        { id: 41, title: "Doa Melihat Hilal", subtitle: "Menyambut bulan baru", arabic: "اللَّهُ أَكْبَرُ، اللَّهُمَّ أَهِلَّهُ عَلَيْنَا بِالْYُمْنِ وَالإِيمَانِ وَالسَّلاَمَةِ وَالإِسْلاَمِ", latin: "Allahu Akbar, Allahumma ahillahu 'alainaa bil yumni wal iimaani wassalaamati wal islaam", arti: "Allah Maha Besar, ya Allah, tampakkanlah bulan itu kepada kami dengan membawa keberkahan dan keimanan, keselamatan dan Islam." },
         { id: 42, title: "Doa Agar Diberi Kesabaran", subtitle: "Memohon keteguhan", arabic: "رَبَّنَا أَفْرِغْ عَلَيْنَا صَبْرًا وَثَبِّتْ أَقْدَامَنَا", latin: "Rabbanaa afrigh 'alainaa shabran wa tsabbit aqdaamanaa", arti: "Ya Tuhan kami, limpahkanlah kesabaran kepada kami dan kukuhkanlah pendirian kami." },
         { id: 43, title: "Doa Mohon Petunjuk", subtitle: "Meminta bimbingan", arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْهُدَى وَالتُّقَى وَالْعَفَافَ وَالْغِنَى", latin: "Allahumma innii as'alukal hudaa wattuqaa wal 'afaafa wal ghinaa", arti: "Ya Allah, aku memohon kepada-Mu petunjuk, ketakwaan, kesucian diri, dan kecukupan." },
         { id: 44, title: "Doa Terhindar dari Sifat Malas", subtitle: "Memohon semangat", arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْعَجْزِ وَالْكَسَلِ", latin: "Allahumma innii a'uudzubika minal 'ajzi wal kasali", arti: "Ya Allah, aku berlindung kepada-Mu dari kelemahan dan kemalasan." },
@@ -645,7 +808,7 @@
         { id: 54, "title": "Doa Agar Terhindar dari Utang", "subtitle": "Memohon kecukupan", "arabic": "اللَّهُمَّ اكْفِنِي بِحَلاَلِكَ عَنْ حَرَامِكَ وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ", "latin": "Allahummak finii bihalaalika 'an haraamika wa aghninii bifadhlika 'amman siwaak", "arti": "Ya Allah, cukupkanlah aku dengan yang halal dan jauhkanlah aku dari yang haram, dan cukupkanlah aku dengan karunia-Mu dari bergantung pada selain-Mu." }
     ];
     const translations = {
-        'id': { 'nav_title': 'Menu Navigasi', 'nav_doa': '🤲 Doa Harian', 'nav_quran': '📖 Al-Qur\'an', 'nav_dzikir': '📿 Dzikir & Tasbih', 'nav_kiblat': '🧭 Kiblat', 'nav_settings': '⚙️ Pengaturan', 'remaining_time': 'Waktu Tersisa', 'settings_title': 'Pengaturan', 'settings_dark_mode': 'Mode Malam', 'settings_notifications': 'Aktifkan Notifikasi', 'settings_language': 'Bahasa', 'settings_about': 'Tentang Aplikasi', 'last_read': 'TERAKHIR DIBACA', 'no_last_read': 'Belum ada doa yang dibaca', 'all_doa': 'Semua Doa', 'bookmarked': 'Ditandai', 'Imsak': 'Imsak', 'Fajr': 'Subuh', 'Sunrise': 'Terbit', 'Dhuhr': 'Zuhur', 'Asr': 'Asar', 'Maghrib': 'Magrib', 'Isha': 'Isya\'', 'Imsak_desc': 'Notifikasi & Tanpa Suara Azan', 'Fajr_desc': 'Makkah #1 (Fajr)', 'Sunrise_desc': 'Notifikasi & Tanpa Suara Azan', 'Dhuhr_desc': 'Mishary Rashid', 'Asr_desc': 'Mishary Rashid', 'Maghrib_desc': 'Mishary Rashid', 'Isha_desc': 'Mishary Rashid' },
+        'id': { 'nav_title': 'Menu Navigasi', 'nav_doa': '🤲 Doa Harian', 'nav_quran': '📖 Al-Qur\'an', 'nav_dzikir': '📿 Dzikir & Tasbih', 'nav_kiblat': '🕋 Kiblat', 'nav_settings': '⚙️ Pengaturan', 'remaining_time': 'Waktu Tersisa', 'settings_title': 'Pengaturan', 'settings_dark_mode': 'Mode Malam', 'settings_notifications': 'Aktifkan Notifikasi', 'settings_language': 'Bahasa', 'settings_about': 'Tentang Aplikasi', 'last_read': 'TERAKHIR DIBACA', 'no_last_read': 'Belum ada doa yang dibaca', 'all_doa': 'Semua Doa', 'bookmarked': 'Ditandai', 'Imsak': 'Imsak', 'Fajr': 'Subuh', 'Sunrise': 'Terbit', 'Dhuhr': 'Zuhur', 'Asr': 'Asar', 'Maghrib': 'Magrib', 'Isha': 'Isya\'', 'Imsak_desc': 'Notifikasi & Tanpa Suara Azan', 'Fajr_desc': 'Makkah #1 (Fajr)', 'Sunrise_desc': 'Notifikasi & Tanpa Suara Azan', 'Dhuhr_desc': 'Mishary Rashid', 'Asr_desc': 'Mishary Rashid', 'Maghrib_desc': 'Mishary Rashid', 'Isha_desc': 'Mishary Rashid' },
         'en': { 'nav_title': 'Navigation Menu', 'nav_doa': '🤲 Daily Prayers', 'nav_quran': '📖 Al-Qur\'an', 'nav_dzikir': '📿 Dhikr & Tasbih', 'nav_kiblat': '🧭 Qibla', 'nav_settings': '⚙️ Settings', 'remaining_time': 'Time Remaining', 'settings_title': 'Settings', 'settings_dark_mode': 'Dark Mode', 'settings_notifications': 'Enable Notifications', 'settings_language': 'Language', 'settings_about': 'About App', 'last_read': 'LAST READ', 'no_last_read': 'No prayers have been read yet', 'all_doa': 'All Prayers', 'bookmarked': 'Bookmarked', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Sunrise', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha', 'Imsak_desc': 'Notification & No Adhan Sound', 'Fajr_desc': 'Makkah #1 (Fajr)', 'Sunrise_desc': 'Notification & No Adhan Sound', 'Dhuhr_desc': 'Mishary Rashid', 'Asr_desc': 'Mishary Rashid', 'Maghrib_desc': 'Mishary Rashid', 'Isha_desc': 'Mishary Rashid' },
         'ar': { 'nav_title': 'قائمة التنقل', 'nav_doa': '🤲 أدعية يومية', 'nav_quran': '📖 القرآن الكريم', 'nav_dzikir': '📿 ذكر وتسبيح', 'nav_kiblat': '🧭 القبلة', 'nav_settings': '⚙️ الإعدادات', 'remaining_time': 'الوقت المتبقي', 'settings_title': 'الإعدادات', 'settings_dark_mode': 'الوضع الداكن', 'settings_notifications': 'تفعيل الإشعارات', 'settings_language': 'اللغة', 'settings_about': 'حول التطبيق', 'last_read': 'آخر ما قرئ', 'no_last_read': 'لم يتم قراءة أي دعاء بعد', 'all_doa': 'كل الأدعية', 'bookmarked': 'المحفوظة', 'Imsak': 'إمساك', 'Fajr': 'الفجر', 'Sunrise': 'الشروق', 'Dhuhr': 'الظهر', 'Asr': 'العصر', 'Maghrib': 'المغرب', 'Isha': 'العشاء', 'Imsak_desc': 'إشعار وبدون صوت أذان', 'Fajr_desc': 'مكة #1 (الفجر)', 'Sunrise_desc': 'إشعار وبدون صوت أذان', 'Dhuhr_desc': 'مشاري راشد', 'Asr_desc': 'مشاري راشد', 'Maghrib_desc': 'مشاري راشد', 'Isha_desc': 'مشاري راشد' },
         'tr': { 'nav_title': 'Navigasyon Menüsü', 'nav_doa': '🤲 Günlük Dualar', 'nav_quran': '📖 Kur\'an-ı Kerim', 'nav_dzikir': '📿 Zikir & Tesbih', 'nav_kiblat': '🧭 Kıble', 'nav_settings': '⚙️ Ayarlar', 'remaining_time': 'Kalan Süre', 'settings_title': 'Ayarlar', 'settings_dark_mode': 'Karanlık Mod', 'settings_notifications': 'Bildirimleri Etkinleştir', 'settings_language': 'Dil', 'settings_about': 'Uygulama Hakkında', 'last_read': 'SON OKUNAN', 'no_last_read': 'Henüz okunmuş dua yok', 'all_doa': 'Tüm Dualar', 'bookmarked': 'İşaretli', 'Imsak': 'İmsak', 'Fajr': 'Sabah', 'Sunrise': 'Güneş', 'Dhuhr': 'Öğle', 'Asr': 'İkindi', 'Maghrib': 'Akşam', 'Isha': 'Yatsı', 'Imsak_desc': 'Bildirim & Ezan Sesi Yok', 'Fajr_desc': 'Mekke #1 (Sabah)', 'Sunrise_desc': 'Bildirim & Ezan Sesi Yok', 'Dhuhr_desc': 'Mishary Rashid', 'Asr_desc': 'Mishary Rashid', 'Maghrib_desc': 'Mishary Rashid', 'Isha_desc': 'Mishary Rashid' },
@@ -654,7 +817,7 @@
         'de': { 'nav_title': 'Navigationsmenü', 'nav_doa': '🤲 Tägliche Gebete', 'nav_quran': '📖 Al-Quran', 'nav_dzikir': '📿 Dhikr & Tasbih', 'nav_kiblat': '🧭 Qibla', 'nav_settings': '⚙️ Einstellungen', 'remaining_time': 'Verbleibende Zeit', 'settings_title': 'Einstellungen', 'settings_dark_mode': 'Dunkelmodus', 'settings_notifications': 'Benachrichtigungen aktivieren', 'settings_language': 'Sprache', 'settings_about': 'Über die App', 'last_read': 'ZULETZT GELESEN', 'no_last_read': 'Noch keine Gebete gelesen', 'all_doa': 'Alle Gebete', 'bookmarked': 'Gemerkt', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Sonnenaufgang', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha', 'Imsak_desc': 'Benachrichtigung & Kein Adhan-Ton', 'Fajr_desc': 'Mekka #1 (Fajr)', 'Sunrise_desc': 'Benachrichtigung & Kein Adhan-Ton', 'Dhuhr_desc': 'Mishary Rashid', 'Asr_desc': 'Mishary Rashid', 'Maghrib_desc': 'Mishary Rashid', 'Isha_desc': 'Mishary Rashid' },
         'ru': { 'nav_title': 'Навигационное меню', 'nav_doa': '🤲 Ежедневные молитвы', 'nav_quran': '📖 Аль-Коран', 'nav_dzikir': '📿 Зикр и Тасбих', 'nav_kiblat': '🧭 Кибла', 'nav_settings': '⚙️ Настройки', 'remaining_time': 'Оставшееся время', 'settings_title': 'Настройки', 'settings_dark_mode': 'Темный режим', 'settings_notifications': 'Включить уведомления', 'settings_language': 'Язык', 'settings_about': 'О приложении', 'last_read': 'ПОСЛЕДНЕЕ ПРОЧТЕНИЕ', 'no_last_read': 'Молитвы еще не читались', 'all_doa': 'Все молитвы', 'bookmarked': 'В закладках', 'Imsak': 'Имсак', 'Fajr': 'Фаджр', 'Sunrise': 'Восход', 'Dhuhr': 'Зухр', 'Asr': 'Аср', 'Maghrib': 'Магриб', 'Isha': 'Иша', 'Imsak_desc': 'Уведомление и без звука азана', 'Fajr_desc': 'Мекка #1 (Фаджр)', 'Sunrise_desc': 'Уведомление и без звука азана', 'Dhuhr_desc': 'Мишари Рашид', 'Asr_desc': 'Мишари Рашид', 'Maghrib_desc': 'Мишари Рашид', 'Isha_desc': 'Мишари Рашид' },
         'ur': { 'nav_title': 'نیویگیشن مینو', 'nav_doa': '🤲 روزانہ کی دعائیں', 'nav_quran': '📖 القرآن', 'nav_dzikir': '📿 ذکر و تسبیح', 'nav_kiblat': '🧭 قبلہ', 'nav_settings': '⚙️ ترتیبات', 'remaining_time': 'باقی وقت', 'settings_title': 'ترتیبات', 'settings_dark_mode': 'ڈارک موڈ', 'settings_notifications': 'اطلاعات کو فعال کریں', 'settings_language': 'زبان', 'settings_about': 'ایپ کے بارے میں', 'last_read': 'آخری بار پڑھا گیا', 'no_last_read': 'ابھی تک کوئی دعا نہیں پڑھی گئی', 'all_doa': 'تمام دعائیں', 'bookmarked': 'نشان زد', 'Imsak': 'امساک', 'Fajr': 'فجر', 'Sunrise': 'طلوع آفتاب', 'Dhuhr': 'ظہر', 'Asr': 'عصر', 'Maghrib': 'مغرب', 'Isha': 'عشاء', 'Imsak_desc': 'اطلاع اور اذان کی آواز نہیں', 'Fajr_desc': 'مکہ #1 (فجر)', 'Sunrise_desc': 'اطلاع اور اذان کی آواز نہیں', 'Dhuhr_desc': 'مشاری راشد', 'Asr_desc': 'مشاری راشد', 'Maghrib_desc': 'مشاری راشد', 'Isha_desc': 'مشاری راشد' },
-        'bn': { 'nav_title': 'নেভিগেশন মেনু', 'nav_doa': '🤲 দৈনিক দোয়া', 'nav_quran': '📖 আল-কুরআন', 'nav_dzikir': '📿 যিকির ও তাসবীহ', 'nav_kiblat': '🧭 কিবলা', 'nav_settings': '⚙️ সেটিংস', 'remaining_time': 'অবশিষ্ট সময়', 'settings_title': 'সেটিংস', 'settings_dark_mode': 'ডার্ক মোড', 'settings_notifications': 'নোটিফিকেশন সক্রিয় করুন', 'settings_language': 'ভাষা', 'settings_about': 'অ্যাপ সম্পর্কে', 'last_read': 'শেষ পঠিত', 'no_last_read': 'এখনও কোন দোয়া পড়া হয়নি', 'all_doa': 'সব দোয়া', 'bookmarked': 'বুকমার্ক করা', 'Imsak': 'ইمسাক', 'Fajr': 'ফজর', 'Sunrise': 'সূর্যোদয়', 'Dhuhr': 'যোহর', 'Asr': 'আসর', 'Maghrib': 'মাগরিব', 'Isha': 'ঈশা', 'Imsak_desc': 'নোটিফিকেশন এবং আযানের শব্দ নেই', 'Fajr_desc': 'মক্কা #1 (ফজর)', 'Sunrise_desc': 'নোটিফিকেশন এবং আযানের শব্দ নেই', 'Dhuhr_desc': 'মিשারি রশিদ', 'Asr_desc': 'মিশারি রশিদ', 'Maghrib_desc': 'মিশারি রশিদ', 'Isha_desc': 'মিشারি রশিদ' }
+        'bn': { 'nav_title': 'নেভিগেশন মেনু', 'nav_doa': '🤲 দৈনিক দোয়া', 'nav_quran': '📖 আল-কুরআন', 'nav_dzikir': '📿 যিকির ও তাসবীহ', 'nav_kiblat': '🧭 কিবলা', 'nav_settings': '⚙️ সেটিংস', 'remaining_time': 'অবশিষ্ট সময়', 'settings_title': 'সেটিংস', 'settings_dark_mode': 'ডার্ক মোড', 'settings_notifications': 'নোটিফিকেশন সক্রিয় করুন', 'settings_language': 'ভাষা', 'settings_about': 'অ্যাপ সম্পর্কে', 'last_read': 'শেষ পঠিত', 'no_last_read': 'এখনও কোন দোয়া পড়া হয়নি', 'all_doa': 'সব দোয়া', 'bookmarked': 'বুকমার্ক করা', 'Imsak': 'ইمسাক', 'Fajr': 'ফজর', 'Sunrise': 'সূর্যোদয়', 'Dhuhr': 'যোহর', 'Asr': 'আসর', 'Maghrib': 'মাগরিব', 'Isha': 'ঈশা', 'Imsak_desc': 'নোটিফিকেশন এবং আযানের শব্দ নেই', 'Fajr_desc': 'মক্কা #1 (ফজর)', 'Sunrise_desc': 'নোটিফিকেশন এবং আযানের শব্দ নেই', 'Dhuhr_desc': 'মিשারি রশিদ', 'Asr_desc': 'মিשারি রশিদ', 'Maghrib_desc': 'মিশারি রশিদ', 'Isha_desc': 'মিשারি রশিদ' }
     };
     const juzToSurahMap = { 1:[1,2],2:[2],3:[2,3],4:[3,4],5:[4],6:[4,5],7:[5,6],8:[6,7],9:[7,8],10:[8,9],11:[9,10,11],12:[11,12],13:[12,13,14,15],14:[16,17],15:[17,18],16:[18,19,20],17:[21,22],18:[23,24,25],19:[25,26,27],20:[27,28,29],21:[29,30,31,32,33],22:[33,34,35,36],23:[36,37,38,39],24:[39,40,41],25:[41,42,43,44,45],26:[46,47,48,49,50,51],27:[51,52,53,54,55,56,57],28:[58,59,60,61,62,63,64,65,66],29:[67,68,69,70,71,72,73,74,75,76,77],30:[78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114]};
     
@@ -711,18 +874,30 @@
           document.querySelectorAll('.main-view').forEach(v => v.style.display = 'none');
           const appContainer = document.querySelector('.app-container');
           const tasbihView = document.getElementById('tasbih-view');
+          const qiblaView = document.getElementById('qibla-view');
           const targetView = document.getElementById(viewId);
           
+          document.body.style.backgroundColor = ''; // Reset background
+          if(viewId === 'qibla-view') {
+              document.body.style.backgroundColor = '#000000';
+          }
+
           if (viewId === 'tasbih-view') {
               appContainer.style.display = 'none';
+              qiblaView.style.display = 'none';
               tasbihView.style.display = 'flex';
+          } else if (viewId === 'qibla-view') {
+              appContainer.style.display = 'none';
+              tasbihView.style.display = 'none';
+              qiblaView.style.display = 'flex';
           } else {
               appContainer.style.display = 'block';
               tasbihView.style.display = 'none';
+              qiblaView.style.display = 'none';
               if (targetView) targetView.style.display = 'block';
           }
           const prayerView = document.getElementById('prayer-times-view');
-          menuToggle.style.display = (prayerView.style.display === 'block') ? 'flex' : 'none';
+          menuToggle.style.display = (prayerView.style.display === 'block' && viewId !== 'qibla-view') ? 'flex' : 'none';
       }
       
       function closeSidebar() {
@@ -855,139 +1030,139 @@
       }
       
       function setupPrayerTimesWithOfflineCache() {
-        const CACHE_KEY_MONTHLY_TIMINGS = 'prayer_monthly_timings';
-        const CACHE_KEY_CITY = 'prayer_city_data';
+       const CACHE_KEY_MONTHLY_TIMINGS = 'prayer_monthly_timings';
+       const CACHE_KEY_CITY = 'prayer_city_data';
 
-        function loadPrayerDataFromCache() {
-            const cachedCity = localStorage.getItem(CACHE_KEY_CITY);
-            if (cachedCity) {
-                document.getElementById('city-name').textContent = cachedCity;
-            }
+       function loadPrayerDataFromCache() {
+           const cachedCity = localStorage.getItem(CACHE_KEY_CITY);
+           if (cachedCity) {
+               document.getElementById('city-name').textContent = cachedCity;
+           }
 
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = today.getMonth() + 1;
-            const day = today.getDate();
-            const cacheKey = `timings_${year}_${month}`;
+           const today = new Date();
+           const year = today.getFullYear();
+           const month = today.getMonth() + 1;
+           const day = today.getDate();
+           const cacheKey = `timings_${year}_${month}`;
 
-            const monthlyData = JSON.parse(localStorage.getItem(CACHE_KEY_MONTHLY_TIMINGS));
-            
-            if (monthlyData && monthlyData.key === cacheKey) {
-                console.log("Memuat jadwal sholat dari cache bulanan.");
-                const todayData = monthlyData.data[day - 1];
-                if(todayData) {
-                    const todayTimings = todayData.timings;
-                    const todayHijri = todayData.date.hijri;
-                    const hijriText = `${todayHijri.day} ${todayHijri.month.en} ${todayHijri.year} H`;
-                    
-                    hijriDateEl.textContent = hijriText;
-                    window.latestPrayerTimes = todayTimings;
-                    renderPrayerTimes(todayTimings);
-                    startCountdown(todayTimings);
-                } else {
-                    console.error("Data untuk hari ini tidak ditemukan di cache bulanan.");
-                }
-            } else {
-                console.log("Tidak ada data jadwal sholat di cache untuk bulan ini, akan coba fetch dari internet.");
-            }
-        }
-        
-        function fetchCityName(lat, lon) {
-            fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
-                .then(r => r.json())
-                .then(data => {
-                    const cityName = data.address.city || data.address.town || data.address.village || "Lokasi Tidak Diketahui";
-                    document.getElementById('city-name').textContent = cityName;
-                    localStorage.setItem(CACHE_KEY_CITY, cityName);
-                })
-                .catch(error => {
-                    console.error("Gagal mengambil nama kota:", error);
-                    const cachedCity = localStorage.getItem(CACHE_KEY_CITY);
-                    if (cachedCity) document.getElementById('city-name').textContent = cachedCity;
-                });
-        }
+           const monthlyData = JSON.parse(localStorage.getItem(CACHE_KEY_MONTHLY_TIMINGS));
+           
+           if (monthlyData && monthlyData.key === cacheKey) {
+               console.log("Memuat jadwal sholat dari cache bulanan.");
+               const todayData = monthlyData.data[day - 1];
+               if(todayData) {
+                   const todayTimings = todayData.timings;
+                   const todayHijri = todayData.date.hijri;
+                   const hijriText = `${todayHijri.day} ${todayHijri.month.en} ${todayHijri.year} H`;
+                   
+                   hijriDateEl.textContent = hijriText;
+                   window.latestPrayerTimes = todayTimings;
+                   renderPrayerTimes(todayTimings);
+                   startCountdown(todayTimings);
+               } else {
+                   console.error("Data untuk hari ini tidak ditemukan di cache bulanan.");
+               }
+           } else {
+               console.log("Tidak ada data jadwal sholat di cache untuk bulan ini, akan coba fetch dari internet.");
+           }
+       }
+       
+       function fetchCityName(lat, lon) {
+           fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
+               .then(r => r.json())
+               .then(data => {
+                   const cityName = data.address.city || data.address.town || data.address.village || "Lokasi Tidak Diketahui";
+                   document.getElementById('city-name').textContent = cityName;
+                   localStorage.setItem(CACHE_KEY_CITY, cityName);
+               })
+               .catch(error => {
+                   console.error("Gagal mengambil nama kota:", error);
+                   const cachedCity = localStorage.getItem(CACHE_KEY_CITY);
+                   if (cachedCity) document.getElementById('city-name').textContent = cachedCity;
+               });
+       }
 
-        function fetchPrayerTimings(lat, lon) {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = now.getMonth() + 1;
+       function fetchPrayerTimings(lat, lon) {
+           const now = new Date();
+           const year = now.getFullYear();
+           const month = now.getMonth() + 1;
 
-            fetch(`https://api.aladhan.com/v1/calendar/${year}/${month}?latitude=${lat}&longitude=${lon}&method=11`)
-                .then(r => r.json())
-                .then(j => {
-                    if (j.code === 200) {
-                        console.log("Berhasil mengambil data jadwal sholat baru untuk sebulan dari API.");
-                        const cacheKey = `timings_${year}_${month}`;
+           fetch(`https://api.aladhan.com/v1/calendar/${year}/${month}?latitude=${lat}&longitude=${lon}&method=11`)
+               .then(r => r.json())
+               .then(j => {
+                   if (j.code === 200) {
+                       console.log("Berhasil mengambil data jadwal sholat baru untuk sebulan dari API.");
+                       const cacheKey = `timings_${year}_${month}`;
 
-                        const adjustedData = j.data.map(dailyData => {
-                            const adjustedTimings = {};
-                            for (const key in dailyData.timings) {
-                                const timeString = dailyData.timings[key].split(' ')[0]; 
-                                const [h, m] = timeString.split(':').map(Number);
+                       const adjustedData = j.data.map(dailyData => {
+                           const adjustedTimings = {};
+                           for (const key in dailyData.timings) {
+                               const timeString = dailyData.timings[key].split(' ')[0]; 
+                               const [h, m] = timeString.split(':').map(Number);
 
-                                if (!isNaN(h) && !isNaN(m)) {
-                                    const date = new Date();
-                                    date.setHours(h, m + 2, 0, 0); 
-                                    adjustedTimings[key] = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
-                                } else {
-                                    adjustedTimings[key] = dailyData.timings[key];
-                                }
-                            }
-                            return { ...dailyData, timings: adjustedTimings };
-                        });
+                               if (!isNaN(h) && !isNaN(m)) {
+                                   const date = new Date();
+                                   date.setHours(h, m + 2, 0, 0); 
+                                   adjustedTimings[key] = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+                               } else {
+                                   adjustedTimings[key] = dailyData.timings[key];
+                               }
+                           }
+                           return { ...dailyData, timings: adjustedTimings };
+                       });
 
-                        const dataToStore = {
-                            key: cacheKey,
-                            data: adjustedData
-                        };
-                        
-                        localStorage.setItem(CACHE_KEY_MONTHLY_TIMINGS, JSON.stringify(dataToStore));
-                        console.log("Data jadwal sholat sebulan penuh telah disimpan ke cache.");
-                        
-                        loadPrayerDataFromCache(); 
-                    } else {
-                        console.error("API Aladhan mengembalikan error, menggunakan data cache jika ada.");
-                    }
-                })
-                .catch(error => {
-                    console.error("Gagal mengambil jadwal sholat (kemungkinan offline):", error);
-                });
-        }
+                       const dataToStore = {
+                           key: cacheKey,
+                           data: adjustedData
+                       };
+                       
+                       localStorage.setItem(CACHE_KEY_MONTHLY_TIMINGS, JSON.stringify(dataToStore));
+                       console.log("Data jadwal sholat sebulan penuh telah disimpan ke cache.");
+                       
+                       loadPrayerDataFromCache(); 
+                   } else {
+                       console.error("API Aladhan mengembalikan error, menggunakan data cache jika ada.");
+                   }
+               })
+               .catch(error => {
+                   console.error("Gagal mengambil jadwal sholat (kemungkinan offline):", error);
+               });
+       }
 
-        function getLocation() {
-            const fallbackLat = 3.5952;
-            const fallbackLon = 98.6722;
-            const fallbackCity = "Medan";
-            const handleLocationError = (error) => {
-                console.warn(`Tidak bisa mendapatkan lokasi: ${error.message}. Menggunakan lokasi fallback.`);
-                if (!localStorage.getItem(CACHE_KEY_MONTHLY_TIMINGS)) {
-                    fetchPrayerTimings(fallbackLat, fallbackLon);
-                }
-                if (!localStorage.getItem(CACHE_KEY_CITY)) {
-                    document.getElementById('city-name').textContent = fallbackCity;
-                    localStorage.setItem(CACHE_KEY_CITY, fallbackCity);
-                }
-            };
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        fetchPrayerTimings(position.coords.latitude, position.coords.longitude);
-                        fetchCityName(position.coords.latitude, position.coords.longitude);
-                    },
-                    handleLocationError, { timeout: 10000 }
-                );
-            } else {
-                handleLocationError({ message: "Geolocation tidak didukung" });
-            }
-        }
+       function getLocation() {
+           const fallbackLat = 3.5952;
+           const fallbackLon = 98.6722;
+           const fallbackCity = "Medan";
+           const handleLocationError = (error) => {
+               console.warn(`Tidak bisa mendapatkan lokasi: ${error.message}. Menggunakan lokasi fallback.`);
+               if (!localStorage.getItem(CACHE_KEY_MONTHLY_TIMINGS)) {
+                   fetchPrayerTimings(fallbackLat, fallbackLon);
+               }
+               if (!localStorage.getItem(CACHE_KEY_CITY)) {
+                   document.getElementById('city-name').textContent = fallbackCity;
+                   localStorage.setItem(CACHE_KEY_CITY, fallbackCity);
+               }
+           };
+           if (navigator.geolocation) {
+               navigator.geolocation.getCurrentPosition(
+                   (position) => {
+                       fetchPrayerTimings(position.coords.latitude, position.coords.longitude);
+                       fetchCityName(position.coords.latitude, position.coords.longitude);
+                   },
+                   handleLocationError, { timeout: 10000 }
+               );
+           } else {
+               handleLocationError({ message: "Geolocation tidak didukung" });
+           }
+       }
 
-        loadPrayerDataFromCache();
-        updateDates();
-        generateCalendar();
-        getLocation();
-        setInterval(() => {
-            if (window.latestPrayerTimes) renderPrayerTimes(window.latestPrayerTimes);
-        }, 60000);
+       loadPrayerDataFromCache();
+       updateDates();
+       generateCalendar();
+       getLocation();
+       setInterval(() => {
+           if (window.latestPrayerTimes) renderPrayerTimes(window.latestPrayerTimes);
+       }, 60000);
       }
       
       // --- DOA HARIAN FEATURE ---
@@ -1013,10 +1188,10 @@
               currentOpenDoaId = id;
               singleDoaModal.querySelector('#single-doa-modal-title').textContent = doa.title;
               singleDoaModal.querySelector('#single-doa-modal-body').innerHTML = `
-                                          <p class="single-item-arabic">${doa.arabic}</p>
-                                          <p class="single-item-latin">${doa.latin}</p>
-                                          <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
-                                          <p class="single-item-arti"><b>Artinya:</b> ${doa.arti}</p>`;
+                                              <p class="single-item-arabic">${doa.arabic}</p>
+                                              <p class="single-item-latin">${doa.latin}</p>
+                                              <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
+                                              <p class="single-item-arti"><b>Artinya:</b> ${doa.arti}</p>`;
               updateBookmarkIcon(); singleDoaModal.style.display = 'flex';
               localStorage.setItem('last_read_doa_id', id); lastReadDoaId = id; renderLastRead();
           }
@@ -1135,11 +1310,11 @@
                   surahViewTitle.textContent = `${surah.name.transliteration.id}`;
                   
                   let contentHtml = `
-                                  <div class="surah-detail-header">
-                                      <h2>${surah.name.long}</h2>
-                                      <p>${surah.name.translation.id}</p>
-                                      <div class="meta">${surah.revelation.id} • ${surah.numberOfVerses} VERSES</div>
-                                  </div>`;
+                                <div class="surah-detail-header">
+                                    <h2>${surah.name.long}</h2>
+                                    <p>${surah.name.translation.id}</p>
+                                    <div class="meta">${surah.revelation.id} • ${surah.numberOfVerses} VERSES</div>
+                                </div>`;
                   
                   if (surah.number !== 1 && surah.number !== 9) {
                       contentHtml += `
@@ -1243,12 +1418,12 @@
                   const item = document.createElement('div'); 
                   item.className = 'list-item';
                   item.innerHTML = `
-                                      <span class="num">📿</span>
-                                      <div class="details">
-                                          <div class="title">${d.title}</div>
-                                          <div class="subtitle">${d.subtitle}</div>
-                                      </div>
-                                      <span class="arabic">${d.arabic}</span>`;
+                          <span class="num">📿</span>
+                          <div class="details">
+                              <div class="title">${d.title}</div>
+                              <div class="subtitle">${d.subtitle}</div>
+                          </div>
+                          <span class="arabic">${d.arabic}</span>`;
                   item.addEventListener('click', () => showDzikirDetailModal(d.id));
                   dzikirListContainer.appendChild(item);
               });
@@ -1260,12 +1435,12 @@
               dzikirDetailModal.querySelector('#dzikir-detail-modal-title').textContent = dzikir.title;
               const modalBody = dzikirDetailModal.querySelector('#dzikir-detail-modal-body');
               modalBody.innerHTML = `
-                                          <p class="single-item-arabic">${dzikir.arabic}</p>
-                                          <p class="single-item-latin">${dzikir.latin}</p>
-                                          <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
-                                          <p class="single-item-arti"><b>Artinya:</b> ${dzikir.arti}</p>
-                                          <button id="start-dzikir-btn" class="modal-action-btn">Mulai Dzikir (Target: ${dzikir.target})</button>
-                                              `;
+                                              <p class="single-item-arabic">${dzikir.arabic}</p>
+                                              <p class="single-item-latin">${dzikir.latin}</p>
+                                              <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
+                                              <p class="single-item-arti"><b>Artinya:</b> ${dzikir.arti}</p>
+                                              <button id="start-dzikir-btn" class="modal-action-btn">Mulai Dzikir (Target: ${dzikir.target})</button>
+                                                  `;
               
               modalBody.querySelector('#start-dzikir-btn').addEventListener('click', () => {
                   dzikirDetailModal.style.display = 'none';
@@ -1322,6 +1497,171 @@
           });
       }
       
+      // --- [BARU & DIPERBARUI] QIBLA FEATURE DENGAN BANTUAN KALIBRASI ---
+      function setupQiblaFeature() {
+          const qiblaBtn = document.getElementById('qibla-btn');
+          const qiblaView = document.getElementById('qibla-view');
+          const backButton = qiblaView.querySelector('.back-button');
+          const compassCircleEl = document.getElementById('qibla-compass-circle');
+          const needleEl = document.getElementById('qibla-needle');
+          const permissionPromptEl = document.getElementById('qibla-permission-prompt');
+          const permissionBtn = document.getElementById('qibla-permission-btn');
+          const compassUiContainer = document.getElementById('qibla-compass-container');
+          const infoBoxEl = document.getElementById('qibla-info-box');
+          const degreeDisplayEl = infoBoxEl.querySelector('.direction-degree');
+          const recalibrateBtn = document.getElementById('qibla-recalibrate-btn');
+
+          let qiblaBearing = null;
+          let magneticDeclination = 0;
+          let isWatching = false;
+          let orientationHandlerRef = null;
+
+          const getMagneticDeclination = (latitude, longitude) => {
+              const toRad = (angle) => angle * (Math.PI / 180);
+              const toDeg = (angle) => angle * (180 / Math.PI);
+              const g10 = -29404.8, g11 = -1450.9, h11 = 4652.5;
+              const phi = toRad(latitude), lambda = toRad(longitude);
+              const cosPhi = Math.cos(phi), sinPhi = Math.sin(phi);
+              const cosLambda = Math.cos(lambda), sinLambda = Math.sin(lambda);
+              const X = g10 * cosPhi + (g11 * cosLambda + h11 * sinLambda) * sinPhi;
+              const Y = g11 * sinLambda - h11 * cosLambda;
+              return toDeg(Math.atan2(Y, X));
+          };
+
+          function createOrientationHandler() {
+              return function(event) {
+                  let magneticHeading = event.webkitCompassHeading;
+                  if (typeof magneticHeading === 'undefined' || magneticHeading === null) {
+                      magneticHeading = event.alpha;
+                  }
+                  if (magneticHeading === null || qiblaBearing === null) return;
+                  
+                  const trueHeading = magneticHeading + magneticDeclination;
+                  const needleRotation = qiblaBearing - trueHeading;
+                  needleEl.style.transform = `translateX(-50%) rotate(${needleRotation}deg)`;
+                  
+                  const alignmentCheck = Math.abs(needleRotation % 360);
+                  if (alignmentCheck < 2.5 || alignmentCheck > 357.5) {
+                      compassCircleEl.classList.add('aligned');
+                      if (navigator.vibrate) navigator.vibrate([50]);
+                  } else {
+                      compassCircleEl.classList.remove('aligned');
+                  }
+              };
+          }
+
+          function showUi(showCompass, message = '') {
+              if (showCompass) {
+                  permissionPromptEl.style.display = 'none';
+                  compassUiContainer.style.display = 'flex';
+                  infoBoxEl.style.display = 'block';
+              } else {
+                  permissionPromptEl.style.display = 'block';
+                  permissionPromptEl.querySelector('p').textContent = message || 'Fitur ini memerlukan izin lokasi & sensor gerak.';
+                  compassUiContainer.style.display = 'none';
+                  infoBoxEl.style.display = 'none';
+              }
+          }
+
+          function calculateQiblaBearing(lat, lon) {
+              const toRad = (deg) => deg * Math.PI / 180;
+              const kaabaLat = toRad(21.4225);
+              const userLat = toRad(lat);
+              const dLon = toRad(39.8262 - lon);
+              const y = Math.sin(dLon) * Math.cos(kaabaLat);
+              const x = Math.cos(userLat) * Math.sin(kaabaLat) - Math.sin(userLat) * Math.cos(kaabaLat) * Math.cos(dLon);
+              let bearing = Math.atan2(y, x) * (180 / Math.PI);
+              return (bearing + 360) % 360;
+          }
+
+          function stopCompass() {
+              if (orientationHandlerRef) {
+                  window.removeEventListener('deviceorientation', orientationHandlerRef);
+              }
+              compassCircleEl.classList.remove('aligned');
+              isWatching = false;
+              orientationHandlerRef = null;
+          }
+
+          async function startCompass() {
+              stopCompass(); // Selalu hentikan listener sebelumnya
+              isWatching = true;
+              showUi(true);
+              degreeDisplayEl.textContent = 'Mendapatkan lokasi & kalibrasi...';
+
+              try {
+                  const position = await new Promise((resolve, reject) => {
+                      navigator.geolocation.getCurrentPosition(resolve, reject, {
+                          enableHighAccuracy: true, timeout: 15000, maximumAge: 0
+                      });
+                  });
+                  
+                  const userLat = position.coords.latitude;
+                  const userLon = position.coords.longitude;
+                  
+                  qiblaBearing = calculateQiblaBearing(userLat, userLon);
+                  magneticDeclination = getMagneticDeclination(userLat, userLon);
+
+                  if (qiblaBearing !== null) {
+                      degreeDisplayEl.textContent = `Arah Kiblat: ${qiblaBearing.toFixed(1)}° dari Utara`;
+                      orientationHandlerRef = createOrientationHandler();
+                      window.addEventListener('deviceorientation', orientationHandlerRef);
+                  } else {
+                      throw new Error("Gagal menghitung arah kiblat.");
+                  }
+
+              } catch (error) {
+                  console.error("Qibla Error:", error.message);
+                  stopCompass();
+                  showUi(false, 'Gagal mendapatkan lokasi. Pastikan GPS aktif dan coba lagi.');
+              }
+          }
+          
+          async function requestAndStart() {
+              if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+                  try {
+                      const permissionState = await DeviceOrientationEvent.requestPermission();
+                      if (permissionState !== 'granted') {
+                          showUi(false, 'Izin sensor gerak ditolak. Fitur ini memerlukannya.');
+                          return;
+                      }
+                  } catch (error) {
+                      showUi(false, 'Gagal meminta izin sensor gerak.');
+                      return;
+                  }
+              }
+              await startCompass();
+          }
+
+          async function initializeQibla() {
+              if (!navigator.geolocation || typeof window.DeviceOrientationEvent === "undefined") {
+                  showUi(false, 'Browser Anda tidak mendukung fitur ini.');
+                  return;
+              }
+              try {
+                  const locationPermission = await navigator.permissions.query({ name: 'geolocation' });
+                  if (locationPermission.state === 'granted') {
+                      await requestAndStart();
+                  } else {
+                      showUi(false);
+                  }
+              } catch (e) {
+                  showUi(false);
+              }
+          }
+
+          qiblaBtn.addEventListener('click', (e) => {
+              e.preventDefault();
+              showView('qibla-view');
+              closeSidebar();
+              initializeQibla();
+          });
+
+          permissionBtn.addEventListener('click', requestAndStart);
+          recalibrateBtn.addEventListener('click', startCompass); // Tombol kalibrasi menjalankan ulang proses
+          backButton.addEventListener('click', stopCompass);
+      }
+
       // --- SETTINGS & LANGUAGE ---
       function setupSettings() {
           const darkModeToggle = document.getElementById('dark-mode-toggle');
@@ -1443,6 +1783,7 @@
       setupDoaHarian();
       setupQuranFeature();
       setupDzikir();
+      setupQiblaFeature(); // Fungsi ini sekarang berisi kode yang sudah diperbarui
       setupAppDetailPages();
       setupPrayerTimesWithOfflineCache();
       
