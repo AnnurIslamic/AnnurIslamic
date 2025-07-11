@@ -113,13 +113,22 @@
     #prayer-times-view .day.today .day-number { background-color: var(--header-bg); color: var(--header-text); }
     #prayer-times-view .prayer-list-section { padding: 0 1rem; }
     #prayer-times-view .prayer-item { display: flex; align-items: center; justify-content: space-between; background-color: var(--card-bg); padding: 1rem; border-radius: var(--radius); margin-bottom: 0.75rem; box-shadow: 0 2px 5px var(--card-shadow); transition: transform var(--transition), background-color var(--transition); }
-    #prayer-times-view .prayer-item .icon-status { font-size: 1.5rem; color: var(--header-bg); margin-right: 1rem; }
     #prayer-times-view .prayer-details { flex-grow: 1; min-width: 0; }
     #prayer-times-view .prayer-details .prayer-name { font-weight: 600; font-size: 1rem; }
-    #prayer-times-view .prayer-details .prayer-desc { font-size: 0.75rem; color: var(--text-light); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #prayer-times-view .prayer-details .prayer-time { font-size: 0.9rem; color: var(--text-light); margin-top: 0.25rem; }
     #prayer-times-view .prayer-time-action { display: flex; align-items: center; gap: 0.75rem; margin-left: 0.5rem; }
-    #prayer-times-view .prayer-time { font-size: 1.1rem; font-weight: 600; }
-    #prayer-times-view .prayer-action { font-size: 1.25rem; color: #aaa; }
+    #prayer-times-view .prayer-audio-select {
+        font-family: 'Poppins', sans-serif;
+        padding: 0.3rem 0.5rem;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        background-color: var(--card-bg);
+        color: var(--text-color);
+        font-size: 0.8rem;
+        max-width: 120px;
+    }
+    body.dark-mode #prayer-times-view .prayer-audio-select { border-color: #555; }
+
 
     /* --- GENERIC LIST VIEW STYLES (DOA, QURAN, DZIKIR) --- */
     .generic-list-view { padding-top: 1.5rem; padding-bottom: 2rem; }
@@ -760,7 +769,7 @@
       </div>
       <div class="content-body">
           <div class="content-card">
-              <p><strong>Pembaruan Terakhir: 10 Juli 2025</strong></p>
+              <p><strong>Pembaruan Terakhir: 11 Juli 2025</strong></p>
               <p>Aplikasi <strong>Annur Islamic</strong> ("kami") berkomitmen untuk melindungi privasi Anda. Kebijakan ini menjelaskan bagaimana kami mengumpulkan, menggunakan, dan melindungi informasi Anda.</p>
           </div>
 
@@ -771,7 +780,7 @@
 
           <div class="content-card">
               <h3 class="content-title"><span class="content-title-icon">💾</span>Penyimpanan Lokal</h3>
-              <p>Kami menggunakan penyimpanan lokal (localStorage) di browser Anda untuk menyimpan preferensi seperti tema (mode malam), bahasa, dan data cache jadwal sholat untuk penggunaan offline. Data ini sepenuhnya tetap berada di perangkat Anda dan tidak dikirim ke mana pun.</p>
+              <p>Kami menggunakan penyimpanan lokal (localStorage) di browser Anda untuk menyimpan preferensi seperti tema (mode malam), bahasa, pengaturan suara azan, dan data cache jadwal sholat untuk penggunaan offline. Data ini sepenuhnya tetap berada di perangkat Anda dan tidak dikirim ke mana pun.</p>
           </div>
       </div>
   </div>
@@ -831,6 +840,9 @@
       </div>
   </div>
 
+  <audio id="audio-notification" src="https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/notifikasi.mp3" preload="auto"></audio>
+  <audio id="audio-adhan-fajr" src="https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/adzansubuh.mp3" preload="auto"></audio>
+  <audio id="audio-adhan-mishary" src="https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/mishary.mp3" preload="auto"></audio>
   <script>
     // --- DATA (Dzikir, Doa, Translations) ---
     const dzikirData = [
@@ -899,16 +911,16 @@
         { id: 54, "title": "Doa Agar Terhindar dari Utang", "subtitle": "Memohon kecukupan", "arabic": "اللَّهُمَّ اكْفِنِي بِحَلاَلِكَ عَنْ حَرَامِكَ وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ", "latin": "Allahummak finii bihalaalika 'an haraamika wa aghninii bifadhlika 'amman siwaak", "arti": "Ya Allah, cukupkanlah aku dengan yang halal dan jauhkanlah aku dari yang haram, dan cukupkanlah aku dengan karunia-Mu dari bergantung pada selain-Mu." }
     ];
     const translations = {
-        'id': { 'nav_title': 'Menu Navigasi', 'nav_doa': '🤲 Doa Harian', 'nav_quran': '📖 Al-Qur\'an', 'nav_dzikir': '📿 Dzikir & Tasbih', 'nav_kiblat': '🕋 Kiblat', 'nav_settings': '⚙️ Pengaturan', 'remaining_time': 'Waktu Tersisa', 'settings_title': 'Pengaturan', 'settings_dark_mode': 'Mode Malam', 'settings_notifications': 'Aktifkan Notifikasi', 'settings_language': 'Bahasa', 'settings_about': 'Tentang Aplikasi', 'last_read': 'TERAKHIR DIBACA', 'no_last_read': 'Belum ada doa yang dibaca', 'all_doa': 'Semua Doa', 'bookmarked': 'Ditandai', 'Imsak': 'Imsak', 'Fajr': 'Subuh', 'Sunrise': 'Terbit', 'Dhuhr': 'Zuhur', 'Asr': 'Asar', 'Maghrib': 'Magrib', 'Isha': 'Isya\'', 'Imsak_desc': 'Notifikasi & Tanpa Suara Azan', 'Fajr_desc': 'Makkah #1 (Fajr)', 'Sunrise_desc': 'Notifikasi & Tanpa Suara Azan', 'Dhuhr_desc': 'Mishary Rashid', 'Asr_desc': 'Mishary Rashid', 'Maghrib_desc': 'Mishary Rashid', 'Isha_desc': 'Mishary Rashid' },
-        'en': { 'nav_title': 'Navigation Menu', 'nav_doa': '🤲 Daily Prayers', 'nav_quran': '📖 Al-Qur\'an', 'nav_dzikir': '📿 Dhikr & Tasbih', 'nav_kiblat': '🧭 Qibla', 'nav_settings': '⚙️ Settings', 'remaining_time': 'Time Remaining', 'settings_title': 'Settings', 'settings_dark_mode': 'Dark Mode', 'settings_notifications': 'Enable Notifications', 'settings_language': 'Language', 'settings_about': 'About App', 'last_read': 'LAST READ', 'no_last_read': 'No prayers have been read yet', 'all_doa': 'All Prayers', 'bookmarked': 'Bookmarked', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Sunrise', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha', 'Imsak_desc': 'Notification & No Adhan Sound', 'Fajr_desc': 'Makkah #1 (Fajr)', 'Sunrise_desc': 'Notification & No Adhan Sound', 'Dhuhr_desc': 'Mishary Rashid', 'Asr_desc': 'Mishary Rashid', 'Maghrib_desc': 'Mishary Rashid', 'Isha_desc': 'Mishary Rashid' },
-        'ar': { 'nav_title': 'قائمة التنقل', 'nav_doa': '🤲 أدعية يومية', 'nav_quran': '📖 القرآن الكريم', 'nav_dzikir': '📿 ذكر وتسبيح', 'nav_kiblat': '🧭 القبلة', 'nav_settings': '⚙️ الإعدادات', 'remaining_time': 'الوقت المتبقي', 'settings_title': 'الإعدادات', 'settings_dark_mode': 'الوضع الداكن', 'settings_notifications': 'تفعيل الإشعارات', 'settings_language': 'اللغة', 'settings_about': 'حول التطبيق', 'last_read': 'آخر ما قرئ', 'no_last_read': 'لم يتم قراءة أي دعاء بعد', 'all_doa': 'كل الأدعية', 'bookmarked': 'المحفوظة', 'Imsak': 'إمساك', 'Fajr': 'الفجر', 'Sunrise': 'الشروق', 'Dhuhr': 'الظهر', 'Asr': 'العصر', 'Maghrib': 'المغرب', 'Isha': 'العشاء', 'Imsak_desc': 'إشعار وبدون صوت أذان', 'Fajr_desc': 'مكة #1 (الفجر)', 'Sunrise_desc': 'إشعار وبدون صوت أذان', 'Dhuhr_desc': 'مشاري راشد', 'Asr_desc': 'مشاري راشد', 'Maghrib_desc': 'مشاري راشد', 'Isha_desc': 'مشاري راشد' },
-        'tr': { 'nav_title': 'Navigasyon Menüsü', 'nav_doa': '🤲 Günlük Dualar', 'nav_quran': '📖 Kur\'an-ı Kerim', 'nav_dzikir': '📿 Zikir & Tesbih', 'nav_kiblat': '🧭 Kıble', 'nav_settings': '⚙️ Ayarlar', 'remaining_time': 'Kalan Süre', 'settings_title': 'Ayarlar', 'settings_dark_mode': 'Karanlık Mod', 'settings_notifications': 'Bildirimleri Etkinleştir', 'settings_language': 'Dil', 'settings_about': 'Uygulama Hakkında', 'last_read': 'SON OKUNAN', 'no_last_read': 'Henüz okunmuş dua yok', 'all_doa': 'Tüm Dualar', 'bookmarked': 'İşaretli', 'Imsak': 'İmsak', 'Fajr': 'Sabah', 'Sunrise': 'Güneş', 'Dhuhr': 'Öğle', 'Asr': 'İkindi', 'Maghrib': 'Akşam', 'Isha': 'Yatsı', 'Imsak_desc': 'Bildirim & Ezan Sesi Yok', 'Fajr_desc': 'Mekke #1 (Sabah)', 'Sunrise_desc': 'Bildirim & Ezan Sesi Yok', 'Dhuhr_desc': 'Mishary Rashid', 'Asr_desc': 'Mishary Rashid', 'Maghrib_desc': 'Mishary Rashid', 'Isha_desc': 'Mishary Rashid' },
-        'fr': { 'nav_title': 'Menu de navigation', 'nav_doa': '🤲 Prières quotidiennes', 'nav_quran': '📖 Al-Coran', 'nav_dzikir': '📿 Dhikr & Tasbih', 'nav_kiblat': '🧭 Qibla', 'nav_settings': '⚙️ Paramètres', 'remaining_time': 'Temps restant', 'settings_title': 'Paramètres', 'settings_dark_mode': 'Mode sombre', 'settings_notifications': 'Activer les notifications', 'settings_language': 'Langue', 'settings_about': 'À propos de l\'application', 'last_read': 'DERNIÈRE LECTURE', 'no_last_read': 'Aucune prière n\'a encore été lue', 'all_doa': 'Toutes les prières', 'bookmarked': 'Marqué', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Lever du soleil', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha', 'Imsak_desc': 'Notification & Pas de son Adhan', 'Fajr_desc': 'Makkah #1 (Fajr)', 'Sunrise_desc': 'Notification & Pas de son Adhan', 'Dhuhr_desc': 'Mishary Rashid', 'Asr_desc': 'Mishary Rashid', 'Maghrib_desc': 'Mishary Rashid', 'Isha_desc': 'Mishary Rashid' },
-        'es': { 'nav_title': 'Menú de Navegación', 'nav_doa': '🤲 Oraciones Diarias', 'nav_quran': '📖 Al-Corán', 'nav_dzikir': '📿 Dhikr y Tasbih', 'nav_kiblat': '🧭 Quibla', 'nav_settings': '⚙️ Ajustes', 'remaining_time': 'Tiempo restante', 'settings_title': 'Ajustes', 'settings_dark_mode': 'Modo Oscuro', 'settings_notifications': 'Activar Notificaciones', 'settings_language': 'Idioma', 'settings_about': 'Acerca de la App', 'last_read': 'ÚLTIMA LECTURA', 'no_last_read': 'Aún no se han leído oraciones', 'all_doa': 'Todas las Oraciones', 'bookmarked': 'Marcado', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Amanecer', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha', 'Imsak_desc': 'Notificación y sin sonido de Adhan', 'Fajr_desc': 'Makkah #1 (Fajr)', 'Sunrise_desc': 'Notificación y sin sonido de Adhan', 'Dhuhr_desc': 'Mishary Rashid', 'Asr_desc': 'Mishary Rashid', 'Maghrib_desc': 'Mishary Rashid', 'Isha_desc': 'Mishary Rashid' },
-        'de': { 'nav_title': 'Navigationsmenü', 'nav_doa': '🤲 Tägliche Gebete', 'nav_quran': '📖 Al-Quran', 'nav_dzikir': '📿 Dhikr & Tasbih', 'nav_kiblat': '🧭 Qibla', 'nav_settings': '⚙️ Einstellungen', 'remaining_time': 'Verbleibende Zeit', 'settings_title': 'Einstellungen', 'settings_dark_mode': 'Dunkelmodus', 'settings_notifications': 'Benachrichtigungen aktivieren', 'settings_language': 'Sprache', 'settings_about': 'Über die App', 'last_read': 'ZULETZT GELESEN', 'no_last_read': 'Noch keine Gebete gelesen', 'all_doa': 'Alle Gebete', 'bookmarked': 'Gemerkt', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Sonnenaufgang', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha', 'Imsak_desc': 'Benachrichtigung & Kein Adhan-Ton', 'Fajr_desc': 'Mekka #1 (Fajr)', 'Sunrise_desc': 'Benachrichtigung & Kein Adhan-Ton', 'Dhuhr_desc': 'Mishary Rashid', 'Asr_desc': 'Mishary Rashid', 'Maghrib_desc': 'Mishary Rashid', 'Isha_desc': 'Mishary Rashid' },
-        'ru': { 'nav_title': 'Навигационное меню', 'nav_doa': '🤲 Ежедневные молитвы', 'nav_quran': '📖 Аль-Коран', 'nav_dzikir': '📿 Зикр и Тасбих', 'nav_kiblat': '🧭 Кибла', 'nav_settings': '⚙️ Настройки', 'remaining_time': 'Оставшееся время', 'settings_title': 'Настройки', 'settings_dark_mode': 'Темный режим', 'settings_notifications': 'Включить уведомления', 'settings_language': 'Язык', 'settings_about': 'О приложении', 'last_read': 'ПОСЛЕДНЕЕ ПРОЧТЕНИЕ', 'no_last_read': 'Молитвы еще не читались', 'all_doa': 'Все молитвы', 'bookmarked': 'В закладках', 'Imsak': 'Имсак', 'Fajr': 'Фаджр', 'Sunrise': 'Восход', 'Dhuhr': 'Зухр', 'Asr': 'Аср', 'Maghrib': 'Магриб', 'Isha': 'Иша', 'Imsak_desc': 'Уведомление и без звука азана', 'Fajr_desc': 'Мекка #1 (Фаджр)', 'Sunrise_desc': 'Уведомление и без звука азана', 'Dhuhr_desc': 'Мишари Рашид', 'Asr_desc': 'Мишари Рашид', 'Maghrib_desc': 'Мишари Рашид', 'Isha_desc': 'Мишари Рашид' },
-        'ur': { 'nav_title': 'نیویگیشن مینو', 'nav_doa': '🤲 روزانہ کی دعائیں', 'nav_quran': '📖 القرآن', 'nav_dzikir': '📿 ذکر و تسبیح', 'nav_kiblat': '🧭 قبلہ', 'nav_settings': '⚙️ ترتیبات', 'remaining_time': 'باقی وقت', 'settings_title': 'ترتیبات', 'settings_dark_mode': 'ڈارک موڈ', 'settings_notifications': 'اطلاعات کو فعال کریں', 'settings_language': 'زبان', 'settings_about': 'ایپ کے بارے میں', 'last_read': 'آخری بار پڑھا گیا', 'no_last_read': 'ابھی تک کوئی دعا نہیں پڑھی گئی', 'all_doa': 'تمام دعائیں', 'bookmarked': 'نشان زد', 'Imsak': 'امساک', 'Fajr': 'فجر', 'Sunrise': 'طلوع آفتاب', 'Dhuhr': 'ظہر', 'Asr': 'عصر', 'Maghrib': 'مغرب', 'Isha': 'عشاء', 'Imsak_desc': 'اطلاع اور اذان کی آواز نہیں', 'Fajr_desc': 'مکہ #1 (فجر)', 'Sunrise_desc': 'اطلاع اور اذان کی آواز نہیں', 'Dhuhr_desc': 'مشاری راشد', 'Asr_desc': 'مشاری راشد', 'Maghrib_desc': 'مشاری راشد', 'Isha_desc': 'مشاری راشد' },
-        'bn': { 'nav_title': 'নেভিগেশন মেনু', 'nav_doa': '🤲 দৈনিক দোয়া', 'nav_quran': '📖 আল-কুরআন', 'nav_dzikir': '📿 যিকির ও তাসবীহ', 'nav_kiblat': '🧭 কিবলা', 'nav_settings': '⚙️ সেটিংস', 'remaining_time': 'অবশিষ্ট সময়', 'settings_title': 'সেটিংস', 'settings_dark_mode': 'ডার্ক মোড', 'settings_notifications': 'নোটিফিকেশন সক্রিয় করুন', 'settings_language': 'ভাষা', 'settings_about': 'অ্যাপ সম্পর্কে', 'last_read': 'শেষ পঠিত', 'no_last_read': 'এখনও কোন দোয়া পড়া হয়নি', 'all_doa': 'সব দোয়া', 'bookmarked': 'বুকমার্ক করা', 'Imsak': 'ইمسাক', 'Fajr': 'ফজর', 'Sunrise': 'সূর্যোদয়', 'Dhuhr': 'যোহর', 'Asr': 'আসর', 'Maghrib': 'মাগরিব', 'Isha': 'ঈশা', 'Imsak_desc': 'নোটিফিকেশন এবং আযানের শব্দ নেই', 'Fajr_desc': 'মক্কা #1 (ফজর)', 'Sunrise_desc': 'নোটিফিকেশন এবং আযানের শব্দ নেই', 'Dhuhr_desc': 'মিשারি রশিদ', 'Asr_desc': 'মিשারি রশিদ', 'Maghrib_desc': 'মিשারি রশিদ', 'Isha_desc': 'মিשারি রশিদ' }
+        'id': { 'nav_title': 'Menu Navigasi', 'nav_doa': '🤲 Doa Harian', 'nav_quran': '📖 Al-Qur\'an', 'nav_dzikir': '📿 Dzikir & Tasbih', 'nav_kiblat': '🕋 Kiblat', 'nav_settings': '⚙️ Pengaturan', 'remaining_time': 'Waktu Tersisa', 'settings_title': 'Pengaturan', 'settings_dark_mode': 'Mode Malam', 'settings_notifications': 'Aktifkan Notifikasi', 'settings_language': 'Bahasa', 'settings_about': 'Tentang Aplikasi', 'last_read': 'TERAKHIR DIBACA', 'no_last_read': 'Belum ada doa yang dibaca', 'all_doa': 'Semua Doa', 'bookmarked': 'Ditandai', 'Imsak': 'Imsak', 'Fajr': 'Subuh', 'Sunrise': 'Terbit', 'Dhuhr': 'Zuhur', 'Asr': 'Asar', 'Maghrib': 'Magrib', 'Isha': 'Isya\''},
+        'en': { 'nav_title': 'Navigation Menu', 'nav_doa': '🤲 Daily Prayers', 'nav_quran': '📖 Al-Qur\'an', 'nav_dzikir': '📿 Dhikr & Tasbih', 'nav_kiblat': '🧭 Qibla', 'nav_settings': '⚙️ Settings', 'remaining_time': 'Time Remaining', 'settings_title': 'Settings', 'settings_dark_mode': 'Dark Mode', 'settings_notifications': 'Enable Notifications', 'settings_language': 'Language', 'settings_about': 'About App', 'last_read': 'LAST READ', 'no_last_read': 'No prayers have been read yet', 'all_doa': 'All Prayers', 'bookmarked': 'Bookmarked', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Sunrise', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha'},
+        'ar': { 'nav_title': 'قائمة التنقل', 'nav_doa': '🤲 أدعية يومية', 'nav_quran': '📖 القرآن الكريم', 'nav_dzikir': '📿 ذكر وتسبيح', 'nav_kiblat': '🧭 القبلة', 'nav_settings': '⚙️ الإعدادات', 'remaining_time': 'الوقت المتبقي', 'settings_title': 'الإعدادات', 'settings_dark_mode': 'الوضع الداكن', 'settings_notifications': 'تفعيل الإشعارات', 'settings_language': 'اللغة', 'settings_about': 'حول التطبيق', 'last_read': 'آخر ما قرئ', 'no_last_read': 'لم يتم قراءة أي دعاء بعد', 'all_doa': 'كل الأدعية', 'bookmarked': 'المحفوظة', 'Imsak': 'إمساك', 'Fajr': 'الفجر', 'Sunrise': 'الشروق', 'Dhuhr': 'الظهر', 'Asr': 'العصر', 'Maghrib': 'المغرب', 'Isha': 'العشاء'},
+        'tr': { 'nav_title': 'Navigasyon Menüsü', 'nav_doa': '🤲 Günlük Dualar', 'nav_quran': '📖 Kur\'an-ı Kerim', 'nav_dzikir': '📿 Zikir & Tesbih', 'nav_kiblat': '🧭 Kıble', 'nav_settings': '⚙️ Ayarlar', 'remaining_time': 'Kalan Süre', 'settings_title': 'Ayarlar', 'settings_dark_mode': 'Karanlık Mod', 'settings_notifications': 'Bildirimleri Etkinleştir', 'settings_language': 'Dil', 'settings_about': 'Uygulama Hakkında', 'last_read': 'SON OKUNAN', 'no_last_read': 'Henüz okunmuş dua yok', 'all_doa': 'Tüm Dualar', 'bookmarked': 'İşaretli', 'Imsak': 'İmsak', 'Fajr': 'Sabah', 'Sunrise': 'Güneş', 'Dhuhr': 'Öğle', 'Asr': 'İkindi', 'Maghrib': 'Akşam', 'Isha': 'Yatsı'},
+        'fr': { 'nav_title': 'Menu de navigation', 'nav_doa': '🤲 Prières quotidiennes', 'nav_quran': '📖 Al-Coran', 'nav_dzikir': '📿 Dhikr & Tasbih', 'nav_kiblat': '🧭 Qibla', 'nav_settings': '⚙️ Paramètres', 'remaining_time': 'Temps restant', 'settings_title': 'Paramètres', 'settings_dark_mode': 'Mode sombre', 'settings_notifications': 'Activer les notifications', 'settings_language': 'Langue', 'settings_about': 'À propos de l\'application', 'last_read': 'DERNIÈRE LECTURE', 'no_last_read': 'Aucune prière n\'a encore été lue', 'all_doa': 'Toutes les prières', 'bookmarked': 'Marqué', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Lever du soleil', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha' },
+        'es': { 'nav_title': 'Menú de Navegación', 'nav_doa': '🤲 Oraciones Diarias', 'nav_quran': '📖 Al-Corán', 'nav_dzikir': '📿 Dhikr y Tasbih', 'nav_kiblat': '🧭 Quibla', 'nav_settings': '⚙️ Ajustes', 'remaining_time': 'Tiempo restante', 'settings_title': 'Ajustes', 'settings_dark_mode': 'Modo Oscuro', 'settings_notifications': 'Activar Notificaciones', 'settings_language': 'Idioma', 'settings_about': 'Acerca de la App', 'last_read': 'ÚLTIMA LECTURA', 'no_last_read': 'Aún no se han leído oraciones', 'all_doa': 'Todas las Oraciones', 'bookmarked': 'Marcado', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Amanecer', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha' },
+        'de': { 'nav_title': 'Navigationsmenü', 'nav_doa': '🤲 Tägliche Gebete', 'nav_quran': '📖 Al-Quran', 'nav_dzikir': '📿 Dhikr & Tasbih', 'nav_kiblat': '🧭 Qibla', 'nav_settings': '⚙️ Einstellungen', 'remaining_time': 'Verbleibende Zeit', 'settings_title': 'Einstellungen', 'settings_dark_mode': 'Dunkelmodus', 'settings_notifications': 'Benachrichtigungen aktivieren', 'settings_language': 'Sprache', 'settings_about': 'Über die App', 'last_read': 'ZULETZT GELESEN', 'no_last_read': 'Noch keine Gebete gelesen', 'all_doa': 'Alle Gebete', 'bookmarked': 'Gemerkt', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Sonnenaufgang', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha' },
+        'ru': { 'nav_title': 'Навигационное меню', 'nav_doa': '🤲 Ежедневные молитвы', 'nav_quran': '📖 Аль-Коран', 'nav_dzikir': '📿 Зикр и Тасбих', 'nav_kiblat': '🧭 Кибла', 'nav_settings': '⚙️ Настройки', 'remaining_time': 'Оставшееся время', 'settings_title': 'Настройки', 'settings_dark_mode': 'Темный режим', 'settings_notifications': 'Включить уведомления', 'settings_language': 'Язык', 'settings_about': 'О приложении', 'last_read': 'ПОСЛЕДНЕЕ ПРОЧТЕНИЕ', 'no_last_read': 'Молитвы еще не читались', 'all_doa': 'Все молитвы', 'bookmarked': 'В закладках', 'Imsak': 'Имсак', 'Fajr': 'Фаджр', 'Sunrise': 'Восход', 'Dhuhr': 'Зухр', 'Asr': 'Аср', 'Maghrib': 'Магриб', 'Isha': 'Иша' },
+        'ur': { 'nav_title': 'نیویگیشن مینو', 'nav_doa': '🤲 روزانہ کی دعائیں', 'nav_quran': '📖 القرآن', 'nav_dzikir': '📿 ذکر و تسبیح', 'nav_kiblat': '🧭 قبلہ', 'nav_settings': '⚙️ ترتیبات', 'remaining_time': 'باقی وقت', 'settings_title': 'ترتیبات', 'settings_dark_mode': 'ڈارک موڈ', 'settings_notifications': 'اطلاعات کو فعال کریں', 'settings_language': 'زبان', 'settings_about': 'ایپ کے بارے میں', 'last_read': 'آخری بار پڑھا گیا', 'no_last_read': 'ابھی تک کوئی دعا نہیں پڑھی گئی', 'all_doa': 'تمام دعائیں', 'bookmarked': 'نشان زد', 'Imsak': 'امساک', 'Fajr': 'فجر', 'Sunrise': 'طلوع آفتاب', 'Dhuhr': 'ظہر', 'Asr': 'عصر', 'Maghrib': 'مغرب', 'Isha': 'عشاء' },
+        'bn': { 'nav_title': 'নেভিগেশন মেনু', 'nav_doa': '🤲 দৈনিক দোয়া', 'nav_quran': '📖 আল-কুরআন', 'nav_dzikir': '📿 যিকির ও তাসবীহ', 'nav_kiblat': '🧭 কিবলা', 'nav_settings': '⚙️ সেটিংস', 'remaining_time': 'অবশিষ্ট সময়', 'settings_title': 'সেটিংস', 'settings_dark_mode': 'ডার্ক মোড', 'settings_notifications': 'নোটিফিকেশন সক্রিয় করুন', 'settings_language': 'ভাষা', 'settings_about': 'অ্যাপ সম্পর্কে', 'last_read': 'শেষ পঠিত', 'no_last_read': 'এখনও কোন দোয়া পড়া হয়নি', 'all_doa': 'সব দোয়া', 'bookmarked': 'বুকমার্ক করা', 'Imsak': 'ইمسাক', 'Fajr': 'ফজর', 'Sunrise': 'সূর্যোদয়', 'Dhuhr': 'যোহর', 'Asr': 'আসর', 'Maghrib': 'মাগরিব', 'Isha': 'ঈশা' }
     };
     const juzToSurahMap = { 1:[1,2],2:[2],3:[2,3],4:[3,4],5:[4],6:[4,5],7:[5,6],8:[6,7],9:[7,8],10:[8,9],11:[9,10,11],12:[11,12],13:[12,13,14,15],14:[16,17],15:[17,18],16:[18,19,20],17:[21,22],18:[23,24,25],19:[25,26,27],20:[27,28,29],21:[29,30,31,32,33],22:[33,34,35,36],23:[36,37,38,39],24:[39,40,41],25:[41,42,43,44,45],26:[46,47,48,49,50,51],27:[51,52,53,54,55,56,57],28:[58,59,60,61,62,63,64,65,66],29:[67,68,69,70,71,72,73,74,75,76,77],30:[78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114]};
     
@@ -947,6 +959,17 @@
       let bookmarkedSurahs = JSON.parse(localStorage.getItem('bookmarked_surahs')) || [];
       let lastReadSurah = JSON.parse(localStorage.getItem('last_read_surah'));
       let currentOpenSurahNumber = null;
+
+      // [BARU] Pengaturan audio dan daftar pilihan azan
+      const adhanOptions = {
+        'none': { name: 'Tanpa Suara' },
+        'notification': { name: 'Notifikasi', audioId: 'audio-notification' },
+        'mishary': { name: 'Azan 1 (Mishary)', audioId: 'audio-adhan-mishary' },
+        'fajr': { name: 'Azan 2 (Subuh)', audioId: 'audio-adhan-fajr' },
+      };
+      let prayerAudioSettings = JSON.parse(localStorage.getItem('prayerAudioSettings')) || {
+          Imsak: 'notification', Fajr: 'fajr', Sunrise: 'none', Dhuhr: 'mishary', Asr: 'mishary', Maghrib: 'mishary', Isha: 'mishary'
+      };
       
       // --- ELEMENT SELECTORS ---
       const sidebar = document.getElementById('sidebar');
@@ -1021,40 +1044,97 @@
       }
       
       // --- PRAYER TIMES FEATURE ---
-      function showPrayerNotification(prayerName) {
+
+      // [BARU] Fungsi untuk memainkan audio azan berdasarkan pengaturan
+      function playPrayerAudio(prayerName) {
+        const setting = prayerAudioSettings[prayerName];
+        if (!setting || setting === 'none') {
+            console.log(`Audio untuk ${prayerName} di-nonaktifkan.`);
+            return;
+        }
+
+        const option = adhanOptions[setting];
+        if (option && option.audioId) {
+            const audioElement = document.getElementById(option.audioId);
+            if (audioElement) {
+                audioElement.currentTime = 0;
+                const playPromise = audioElement.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        console.error(`Gagal memutar audio untuk ${prayerName}:`, error);
+                        // Fallback ke notifikasi standar jika audio gagal
+                        showPrayerNotification(translations[currentLanguage][prayerName] || prayerName, 'Gagal memutar azan. Pastikan interaksi halaman sudah dilakukan.');
+                    });
+                }
+            }
+        }
+      }
+
+      function showPrayerNotification(prayerName, customBody = null) {
        if (Notification.permission !== 'granted') return;
        const notificationTitle = `Waktunya Sholat ${prayerName}`;
        const notificationOptions = {
-            body: `Sekarang telah masuk waktu sholat ${prayerName}.`,
-            icon: 'https://cdn-icons-png.flaticon.com/512/30/30709.png'
+            body: customBody || `Sekarang telah masuk waktu sholat ${prayerName}.`,
+            icon: 'logo-annur.jpg', // Menggunakan logo aplikasi
+            tag: 'prayer-time-notification' // Mencegah notifikasi menumpuk
        };
        const notification = new Notification(notificationTitle, notificationOptions);
        setTimeout(() => notification.close(), 15000);
       }
       
+      // [MODIFIKASI] Fungsi renderPrayerTimes untuk menampilkan dropdown pilihan azan
       function renderPrayerTimes(prayerTimes) {
           if (!prayerListContainerEl) return;
-          const prayerUIData = { Imsak: { icon: '—', checkable: false }, Fajr: { icon: '—', checkable: true }, Sunrise: { icon: '—', checkable: false }, Dhuhr: { icon: '—', checkable: true }, Asr: { icon: '—', checkable: true }, Maghrib: { icon: '—', checkable: true }, Isha: { icon: '—', checkable: true } };
           prayerListContainerEl.innerHTML = '';
-          let prayerHtml = '';
+          
           const prayerOrder = ['Imsak', 'Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-          const now = new Date();
-          const isAfterResetTime = now.getHours() >= 22;
+
           prayerOrder.forEach(key => {
               if (prayerTimes[key]) {
-                  const ui = prayerUIData[key];
-                  const prayerDate = new Date(`${now.toDateString()} ${prayerTimes[key]}`);
-                  let iconToShow = ui.icon;
-                  if (ui.checkable) {
-                      if (isAfterResetTime) iconToShow = '—';
-                      else if (now > prayerDate) iconToShow = '✔';
+                  const prayerName = translations[currentLanguage][key] || key;
+                  const prayerTime = prayerTimes[key];
+
+                  // Membuat dropdown untuk pilihan suara
+                  let optionsHtml = '';
+                  for (const optionKey in adhanOptions) {
+                      const selected = prayerAudioSettings[key] === optionKey ? 'selected' : '';
+                      optionsHtml += `<option value="${optionKey}" ${selected}>${adhanOptions[optionKey].name}</option>`;
                   }
-                  prayerHtml += `<div class="prayer-item"><span class="icon-status">${iconToShow}</span><div class="prayer-details"><div class="prayer-name">${translations[currentLanguage][key] || key}</div><div class="prayer-desc">${translations[currentLanguage][`${key}_desc`] || key}</div></div><div class="prayer-time-action"><div class="prayer-time">${prayerTimes[key]}</div><div class="prayer-action">🔊</div></div></div>`;
+
+                  const selectElement = `
+                      <select class="prayer-audio-select" data-prayer="${key}">
+                          ${optionsHtml}
+                      </select>
+                  `;
+
+                  const prayerItemHtml = `
+                      <div class="prayer-item">
+                          <div class="prayer-details">
+                              <div class="prayer-name">${prayerName}</div>
+                              <div class="prayer-time">${prayerTime}</div>
+                          </div>
+                          <div class="prayer-time-action">
+                             ${selectElement}
+                          </div>
+                      </div>`;
+                  
+                  prayerListContainerEl.innerHTML += prayerItemHtml;
               }
           });
-          prayerListContainerEl.innerHTML = prayerHtml;
+
+          // Menambahkan event listener ke semua dropdown yang baru dibuat
+          document.querySelectorAll('.prayer-audio-select').forEach(select => {
+              select.addEventListener('change', (event) => {
+                  const prayer = event.target.dataset.prayer;
+                  const newSetting = event.target.value;
+                  prayerAudioSettings[prayer] = newSetting;
+                  localStorage.setItem('prayerAudioSettings', JSON.stringify(prayerAudioSettings));
+                  console.log(`Pengaturan audio untuk ${prayer} diubah menjadi ${newSetting}`);
+              });
+          });
       }
       
+      // [MODIFIKASI] Fungsi startCountdown untuk memicu audio
       function startCountdown(prayerTimes) {
           if (countdownInterval) clearInterval(countdownInterval);
           const prayerOrder = ['Imsak', 'Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
@@ -1078,13 +1158,17 @@
               }
               const diff = nextPrayerTime - now;
               if (diff < 0) return;
+
+              // Pemicu audio dan notifikasi
               if (diff > 0 && diff < 1000) {
-                  const prayersWithAlarm = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-                  if (prayersWithAlarm.includes(nextPrayerName)) {
-                      showPrayerNotification(translations[currentLanguage][nextPrayerName] || nextPrayerName);
-                  }
+                  const translatedPrayerName = translations[currentLanguage][nextPrayerName] || nextPrayerName;
+                  showPrayerNotification(translatedPrayerName); // Selalu tampilkan notifikasi visual
+                  playPrayerAudio(nextPrayerName); // Mainkan audio sesuai pengaturan
+                  
+                  // Perbarui daftar sholat untuk menandai yang sudah lewat (jika ada logic seperti itu)
                   if (window.latestPrayerTimes) renderPrayerTimes(window.latestPrayerTimes);
               }
+              
               const h = String(Math.floor(diff / 3600000)).padStart(2, '0');
               const m = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
               const s = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
@@ -1193,7 +1277,7 @@
 
                                 if (!isNaN(h) && !isNaN(m)) {
                                     const date = new Date();
-                                    date.setHours(h, m + 2, 0, 0); 
+                                    date.setHours(h, m, 0, 0); // Dihilangkan penambahan 2 menit agar sesuai jadwal
                                     adjustedTimings[key] = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
                                 } else {
                                     adjustedTimings[key] = dailyData.timings[key];
@@ -1251,9 +1335,7 @@
        updateDates();
        generateCalendar();
        getLocation();
-       setInterval(() => {
-            if (window.latestPrayerTimes) renderPrayerTimes(window.latestPrayerTimes);
-       }, 60000);
+       // Hapus interval render ulang, karena sudah ditangani oleh countdown
       }
       
       // --- DOA HARIAN FEATURE ---
