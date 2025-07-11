@@ -115,19 +115,8 @@
     #prayer-times-view .prayer-item { display: flex; align-items: center; justify-content: space-between; background-color: var(--card-bg); padding: 1rem; border-radius: var(--radius); margin-bottom: 0.75rem; box-shadow: 0 2px 5px var(--card-shadow); transition: transform var(--transition), background-color var(--transition); }
     #prayer-times-view .prayer-details { flex-grow: 1; min-width: 0; }
     #prayer-times-view .prayer-details .prayer-name { font-weight: 600; font-size: 1rem; }
-    #prayer-times-view .prayer-details .prayer-time { font-size: 0.9rem; color: var(--text-light); margin-top: 0.25rem; }
-    #prayer-times-view .prayer-time-action { display: flex; align-items: center; gap: 0.75rem; margin-left: 0.5rem; }
-    #prayer-times-view .prayer-audio-select {
-        font-family: 'Poppins', sans-serif;
-        padding: 0.3rem 0.5rem;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-        background-color: var(--card-bg);
-        color: var(--text-color);
-        font-size: 0.8rem;
-        max-width: 120px;
-    }
-    body.dark-mode #prayer-times-view .prayer-audio-select { border-color: #555; }
+    #prayer-times-view .prayer-time-value { font-size: 1.1rem; font-weight: 600; }
+    
 
 
     /* --- GENERIC LIST VIEW STYLES (DOA, QURAN, DZIKIR) --- */
@@ -194,19 +183,22 @@
     .settings-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid #eee; }
     body.dark-mode .settings-item { border-bottom-color: #333; }
     .settings-item:last-child { border-bottom: none; }
-    .settings-item label { font-weight: 500; }
+    .settings-item label { font-weight: 500; flex-shrink: 0; margin-right: 1rem; }
     .switch { position: relative; display: inline-block; width: 50px; height: 28px; }
     .switch input { opacity: 0; width: 0; height: 0; }
     .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; border-radius: 28px; transition: var(--transition); }
     .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; border-radius: 50%; transition: var(--transition); }
     input:checked + .slider { background-color: var(--header-bg); }
     input:checked + .slider:before { transform: translateX(22px); }
-    .language-select, #enable-notifications-btn {
+    .custom-select, #enable-notifications-btn {
         padding: 0.5rem; border-radius: 8px; border: 1px solid #ccc; background-color: var(--card-bg); color: var(--text-color);
+        font-family: 'Poppins', sans-serif;
     }
+    .custom-select { flex-grow: 1; max-width: 180px; } 
+    
     #enable-notifications-btn { cursor: pointer; }
     #enable-notifications-btn:disabled { cursor: not-allowed; opacity: 0.6; }
-    body.dark-mode .language-select, body.dark-mode #enable-notifications-btn { border-color: #555; }
+    body.dark-mode .custom-select, body.dark-mode #enable-notifications-btn { border-color: #555; }
     .single-item-arabic { font-size: 2rem; line-height: 3rem; text-align: right; direction: rtl; margin-bottom: 1.5rem; }
     .single-item-latin { font-size: 1rem; font-style: italic; color: #666; line-height: 1.6rem; margin-bottom: 1rem; }
     .single-item-arti { font-size: 0.9rem; color: #666; line-height: 1.5rem; }
@@ -220,7 +212,24 @@
     }
     .modal-action-btn:active { transform: scale(0.98); }
 
-    /* --- STYLE UNTUK MENU DETAIL APLIKASI --- */
+    /* STYLE UNTUK GRUP PENGATURAN */
+    .settings-group {
+        margin-top: 1.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid #ddd;
+    }
+    body.dark-mode .settings-group { border-top-color: #444; }
+    .settings-group h4 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--header-bg);
+        margin-bottom: 0.5rem;
+    }
+    body.dark-mode .settings-group h4 { color: var(--accent-color); }
+    .settings-group .settings-item { padding: 0.8rem 0; }
+
+
+    /* STYLE UNTUK MENU DETAIL APLIKASI */
     .settings-menu-item {
       display: flex;
       justify-content: space-between;
@@ -253,7 +262,7 @@
       color: var(--text-light);
     }
     
-    /* --- CSS UNTUK TOMBOL PLAY STORE --- */
+    /* CSS UNTUK TOMBOL PLAY STORE */
     .playstore-btn {
         display: flex;
         align-items: center;
@@ -282,7 +291,7 @@
     }
 
 
-    /* --- STYLE UNTUK TOMBOL DETAIL APLIKASI --- */
+    /* STYLE UNTUK TOMBOL DETAIL APLIKASI */
     .detail-app-container {
       text-align: center;
       padding: 1.5rem 0 0.5rem 0;
@@ -310,9 +319,9 @@
         color: var(--text-color);
     }
 
-    /* --- STYLE UNTUK KONTEN HALAMAN DETAIL (DIPERBARUI) --- */
+    /* STYLE UNTUK KONTEN HALAMAN DETAIL (DIPERBARUI) */
     .content-body {
-        padding: 0 1rem 1.5rem 1rem; /* Penyesuaian padding */
+        padding: 0 1rem 1.5rem 1rem; 
     }
 
     .content-card {
@@ -325,7 +334,7 @@
     }
 
     .content-card p, .content-card li {
-        line-height: 1.7; /* Meningkatkan jarak antar baris */
+        line-height: 1.7; 
         color: var(--text-color);
         opacity: 0.9;
         margin-bottom: 1rem;
@@ -376,7 +385,7 @@
     }
 
     ul.styled-list li::before {
-        content: '✓'; /* Tanda centang sebagai bullet point */
+        content: '✓'; 
         position: absolute;
         left: 0;
         top: 2px;
@@ -669,12 +678,12 @@
           <label class="switch"><input type="checkbox" id="dark-mode-toggle"><span class="slider"></span></label>
         </div>
         <div class="settings-item">
-            <label for="enable-notifications-btn" data-key="settings_notifications">Aktifkan Notifikasi</label>
+            <label for="enable-notifications-btn" data-key="settings_notifications">Notifikasi Adzan</label>
             <button id="enable-notifications-btn">Aktifkan</button>
         </div>
         <div class="settings-item">
           <label for="language-select" data-key="settings_language">Bahasa</label>
-          <select name="language" id="language-select" class="language-select">
+          <select name="language" id="language-select" class="custom-select">
             <option value="id">Bahasa Indonesia</option>
             <option value="en">English</option>
             <option value="ar">العربية (Arabic)</option>
@@ -688,13 +697,18 @@
           </select>
         </div>
         
-        <div class="settings-item">
-          <label data-key="settings_about">Tentang Aplikasi</label>
-          <span>v18.02.22 (Beta)</span>
-        </div>
+        <div class="settings-group" id="adhan-settings-container">
+            <h4 data-key="settings_adhan_sound">Pengaturan Suara Adzan</h4>
+            </div>
 
-        <div class="detail-app-container">
-            <button id="detail-app-btn">Detail Aplikasi</button>
+        <div class="settings-group">
+            <div class="settings-item">
+                <label data-key="settings_about">Tentang Aplikasi</label>
+                <span>v18.02.22 (Beta)</span>
+            </div>
+            <div class="detail-app-container">
+                <button id="detail-app-btn">Detail Aplikasi</button>
+            </div>
         </div>
       </div>
     </div>
@@ -834,7 +848,7 @@
               <h3 class="content-title"><span class="content-title-icon">💌</span>Hubungi Kami</h3>
               <p>Kami sangat menghargai saran dan masukan dari Anda untuk membuat aplikasi ini menjadi lebih baik. Silakan kirimkan ide, laporan bug, atau masukan lainnya melalui email kepada pengembang.</p>
               <div class="email-link-wrapper">
-                   <a href="mailto:annuislamic60@gmail.com?subject=Masukan untuk Aplikasi Annur Islamic" class="modal-action-btn" style="text-decoration: none; display: inline-block; width: auto; padding: 0.8rem 1.5rem;">Kirim Email</a>
+                  <a href="mailto:annuislamic60@gmail.com?subject=Masukan untuk Aplikasi Annur Islamic" class="modal-action-btn" style="text-decoration: none; display: inline-block; width: auto; padding: 0.8rem 1.5rem;">Kirim Email</a>
               </div>
           </div>
       </div>
@@ -843,6 +857,8 @@
   <audio id="audio-notification" src="https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/notifikasi.mp3" preload="auto"></audio>
   <audio id="audio-adhan-fajr" src="https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/adzansubuh.mp3" preload="auto"></audio>
   <audio id="audio-adhan-mishary" src="https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/mishary.mp3" preload="auto"></audio>
+  <audio id="audio-adhan-madinah" src="https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/adzankota.mp3" preload="auto"></audio>
+  
   <script>
     // --- DATA (Dzikir, Doa, Translations) ---
     const dzikirData = [
@@ -911,16 +927,16 @@
         { id: 54, "title": "Doa Agar Terhindar dari Utang", "subtitle": "Memohon kecukupan", "arabic": "اللَّهُمَّ اكْفِنِي بِحَلاَلِكَ عَنْ حَرَامِكَ وَأَغْنِنِي بِفَضْلِكَ عَمَّنْ سِوَاكَ", "latin": "Allahummak finii bihalaalika 'an haraamika wa aghninii bifadhlika 'amman siwaak", "arti": "Ya Allah, cukupkanlah aku dengan yang halal dan jauhkanlah aku dari yang haram, dan cukupkanlah aku dengan karunia-Mu dari bergantung pada selain-Mu." }
     ];
     const translations = {
-        'id': { 'nav_title': 'Menu Navigasi', 'nav_doa': '🤲 Doa Harian', 'nav_quran': '📖 Al-Qur\'an', 'nav_dzikir': '📿 Dzikir & Tasbih', 'nav_kiblat': '🕋 Kiblat', 'nav_settings': '⚙️ Pengaturan', 'remaining_time': 'Waktu Tersisa', 'settings_title': 'Pengaturan', 'settings_dark_mode': 'Mode Malam', 'settings_notifications': 'Aktifkan Notifikasi', 'settings_language': 'Bahasa', 'settings_about': 'Tentang Aplikasi', 'last_read': 'TERAKHIR DIBACA', 'no_last_read': 'Belum ada doa yang dibaca', 'all_doa': 'Semua Doa', 'bookmarked': 'Ditandai', 'Imsak': 'Imsak', 'Fajr': 'Subuh', 'Sunrise': 'Terbit', 'Dhuhr': 'Zuhur', 'Asr': 'Asar', 'Maghrib': 'Magrib', 'Isha': 'Isya\''},
-        'en': { 'nav_title': 'Navigation Menu', 'nav_doa': '🤲 Daily Prayers', 'nav_quran': '📖 Al-Qur\'an', 'nav_dzikir': '📿 Dhikr & Tasbih', 'nav_kiblat': '🧭 Qibla', 'nav_settings': '⚙️ Settings', 'remaining_time': 'Time Remaining', 'settings_title': 'Settings', 'settings_dark_mode': 'Dark Mode', 'settings_notifications': 'Enable Notifications', 'settings_language': 'Language', 'settings_about': 'About App', 'last_read': 'LAST READ', 'no_last_read': 'No prayers have been read yet', 'all_doa': 'All Prayers', 'bookmarked': 'Bookmarked', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Sunrise', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha'},
-        'ar': { 'nav_title': 'قائمة التنقل', 'nav_doa': '🤲 أدعية يومية', 'nav_quran': '📖 القرآن الكريم', 'nav_dzikir': '📿 ذكر وتسبيح', 'nav_kiblat': '🧭 القبلة', 'nav_settings': '⚙️ الإعدادات', 'remaining_time': 'الوقت المتبقي', 'settings_title': 'الإعدادات', 'settings_dark_mode': 'الوضع الداكن', 'settings_notifications': 'تفعيل الإشعارات', 'settings_language': 'اللغة', 'settings_about': 'حول التطبيق', 'last_read': 'آخر ما قرئ', 'no_last_read': 'لم يتم قراءة أي دعاء بعد', 'all_doa': 'كل الأدعية', 'bookmarked': 'المحفوظة', 'Imsak': 'إمساك', 'Fajr': 'الفجر', 'Sunrise': 'الشروق', 'Dhuhr': 'الظهر', 'Asr': 'العصر', 'Maghrib': 'المغرب', 'Isha': 'العشاء'},
-        'tr': { 'nav_title': 'Navigasyon Menüsü', 'nav_doa': '🤲 Günlük Dualar', 'nav_quran': '📖 Kur\'an-ı Kerim', 'nav_dzikir': '📿 Zikir & Tesbih', 'nav_kiblat': '🧭 Kıble', 'nav_settings': '⚙️ Ayarlar', 'remaining_time': 'Kalan Süre', 'settings_title': 'Ayarlar', 'settings_dark_mode': 'Karanlık Mod', 'settings_notifications': 'Bildirimleri Etkinleştir', 'settings_language': 'Dil', 'settings_about': 'Uygulama Hakkında', 'last_read': 'SON OKUNAN', 'no_last_read': 'Henüz okunmuş dua yok', 'all_doa': 'Tüm Dualar', 'bookmarked': 'İşaretli', 'Imsak': 'İmsak', 'Fajr': 'Sabah', 'Sunrise': 'Güneş', 'Dhuhr': 'Öğle', 'Asr': 'İkindi', 'Maghrib': 'Akşam', 'Isha': 'Yatsı'},
-        'fr': { 'nav_title': 'Menu de navigation', 'nav_doa': '🤲 Prières quotidiennes', 'nav_quran': '📖 Al-Coran', 'nav_dzikir': '📿 Dhikr & Tasbih', 'nav_kiblat': '🧭 Qibla', 'nav_settings': '⚙️ Paramètres', 'remaining_time': 'Temps restant', 'settings_title': 'Paramètres', 'settings_dark_mode': 'Mode sombre', 'settings_notifications': 'Activer les notifications', 'settings_language': 'Langue', 'settings_about': 'À propos de l\'application', 'last_read': 'DERNIÈRE LECTURE', 'no_last_read': 'Aucune prière n\'a encore été lue', 'all_doa': 'Toutes les prières', 'bookmarked': 'Marqué', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Lever du soleil', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha' },
-        'es': { 'nav_title': 'Menú de Navegación', 'nav_doa': '🤲 Oraciones Diarias', 'nav_quran': '📖 Al-Corán', 'nav_dzikir': '📿 Dhikr y Tasbih', 'nav_kiblat': '🧭 Quibla', 'nav_settings': '⚙️ Ajustes', 'remaining_time': 'Tiempo restante', 'settings_title': 'Ajustes', 'settings_dark_mode': 'Modo Oscuro', 'settings_notifications': 'Activar Notificaciones', 'settings_language': 'Idioma', 'settings_about': 'Acerca de la App', 'last_read': 'ÚLTIMA LECTURA', 'no_last_read': 'Aún no se han leído oraciones', 'all_doa': 'Todas las Oraciones', 'bookmarked': 'Marcado', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Amanecer', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha' },
-        'de': { 'nav_title': 'Navigationsmenü', 'nav_doa': '🤲 Tägliche Gebete', 'nav_quran': '📖 Al-Quran', 'nav_dzikir': '📿 Dhikr & Tasbih', 'nav_kiblat': '🧭 Qibla', 'nav_settings': '⚙️ Einstellungen', 'remaining_time': 'Verbleibende Zeit', 'settings_title': 'Einstellungen', 'settings_dark_mode': 'Dunkelmodus', 'settings_notifications': 'Benachrichtigungen aktivieren', 'settings_language': 'Sprache', 'settings_about': 'Über die App', 'last_read': 'ZULETZT GELESEN', 'no_last_read': 'Noch keine Gebete gelesen', 'all_doa': 'Alle Gebete', 'bookmarked': 'Gemerkt', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Sonnenaufgang', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha' },
-        'ru': { 'nav_title': 'Навигационное меню', 'nav_doa': '🤲 Ежедневные молитвы', 'nav_quran': '📖 Аль-Коран', 'nav_dzikir': '📿 Зикр и Тасбих', 'nav_kiblat': '🧭 Кибла', 'nav_settings': '⚙️ Настройки', 'remaining_time': 'Оставшееся время', 'settings_title': 'Настройки', 'settings_dark_mode': 'Темный режим', 'settings_notifications': 'Включить уведомления', 'settings_language': 'Язык', 'settings_about': 'О приложении', 'last_read': 'ПОСЛЕДНЕЕ ПРОЧТЕНИЕ', 'no_last_read': 'Молитвы еще не читались', 'all_doa': 'Все молитвы', 'bookmarked': 'В закладках', 'Imsak': 'Имсак', 'Fajr': 'Фаджр', 'Sunrise': 'Восход', 'Dhuhr': 'Зухр', 'Asr': 'Аср', 'Maghrib': 'Магриб', 'Isha': 'Иша' },
-        'ur': { 'nav_title': 'نیویگیشن مینو', 'nav_doa': '🤲 روزانہ کی دعائیں', 'nav_quran': '📖 القرآن', 'nav_dzikir': '📿 ذکر و تسبیح', 'nav_kiblat': '🧭 قبلہ', 'nav_settings': '⚙️ ترتیبات', 'remaining_time': 'باقی وقت', 'settings_title': 'ترتیبات', 'settings_dark_mode': 'ڈارک موڈ', 'settings_notifications': 'اطلاعات کو فعال کریں', 'settings_language': 'زبان', 'settings_about': 'ایپ کے بارے میں', 'last_read': 'آخری بار پڑھا گیا', 'no_last_read': 'ابھی تک کوئی دعا نہیں پڑھی گئی', 'all_doa': 'تمام دعائیں', 'bookmarked': 'نشان زد', 'Imsak': 'امساک', 'Fajr': 'فجر', 'Sunrise': 'طلوع آفتاب', 'Dhuhr': 'ظہر', 'Asr': 'عصر', 'Maghrib': 'مغرب', 'Isha': 'عشاء' },
-        'bn': { 'nav_title': 'নেভিগেশন মেনু', 'nav_doa': '🤲 দৈনিক দোয়া', 'nav_quran': '📖 আল-কুরআন', 'nav_dzikir': '📿 যিকির ও তাসবীহ', 'nav_kiblat': '🧭 কিবলা', 'nav_settings': '⚙️ সেটিংস', 'remaining_time': 'অবশিষ্ট সময়', 'settings_title': 'সেটিংস', 'settings_dark_mode': 'ডার্ক মোড', 'settings_notifications': 'নোটিফিকেশন সক্রিয় করুন', 'settings_language': 'ভাষা', 'settings_about': 'অ্যাপ সম্পর্কে', 'last_read': 'শেষ পঠিত', 'no_last_read': 'এখনও কোন দোয়া পড়া হয়নি', 'all_doa': 'সব দোয়া', 'bookmarked': 'বুকমার্ক করা', 'Imsak': 'ইمسাক', 'Fajr': 'ফজর', 'Sunrise': 'সূর্যোদয়', 'Dhuhr': 'যোহর', 'Asr': 'আসর', 'Maghrib': 'মাগরিব', 'Isha': 'ঈশা' }
+        'id': { 'nav_title': 'Menu Navigasi', 'nav_doa': '🤲 Doa Harian', 'nav_quran': '📖 Al-Qur\'an', 'nav_dzikir': '📿 Dzikir & Tasbih', 'nav_kiblat': '🕋 Kiblat', 'nav_settings': '⚙️ Pengaturan', 'remaining_time': 'Waktu Tersisa', 'settings_title': 'Pengaturan', 'settings_dark_mode': 'Mode Malam', 'settings_notifications': 'Notifikasi Adzan', 'settings_language': 'Bahasa', 'settings_about': 'Tentang Aplikasi', 'settings_adhan_sound': 'Pengaturan Suara Adzan', 'last_read': 'TERAKHIR DIBACA', 'no_last_read': 'Belum ada doa yang dibaca', 'all_doa': 'Semua Doa', 'bookmarked': 'Ditandai', 'Imsak': 'Imsak', 'Fajr': 'Subuh', 'Sunrise': 'Terbit', 'Dhuhr': 'Zuhur', 'Asr': 'Asar', 'Maghrib': 'Magrib', 'Isha': 'Isya\''},
+        'en': { 'nav_title': 'Navigation Menu', 'nav_doa': '🤲 Daily Prayers', 'nav_quran': '📖 Al-Qur\'an', 'nav_dzikir': '📿 Dhikr & Tasbih', 'nav_kiblat': '🧭 Qibla', 'nav_settings': '⚙️ Settings', 'remaining_time': 'Time Remaining', 'settings_title': 'Settings', 'settings_dark_mode': 'Dark Mode', 'settings_notifications': 'Adhan Notifications', 'settings_language': 'Language', 'settings_about': 'About App', 'settings_adhan_sound': 'Adhan Sound Settings', 'last_read': 'LAST READ', 'no_last_read': 'No prayers have been read yet', 'all_doa': 'All Prayers', 'bookmarked': 'Bookmarked', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Sunrise', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha'},
+        'ar': { 'nav_title': 'قائمة التنقل', 'nav_doa': '🤲 أدعية يومية', 'nav_quran': '📖 القرآن الكريم', 'nav_dzikir': '📿 ذكر وتسبيح', 'nav_kiblat': '🧭 القبلة', 'nav_settings': '⚙️ الإعدادات', 'remaining_time': 'الوقت المتبقي', 'settings_title': 'الإعدادات', 'settings_dark_mode': 'الوضع الداكن', 'settings_notifications': 'إشعارات الأذان', 'settings_language': 'اللغة', 'settings_about': 'حول التطبيق', 'settings_adhan_sound': 'إعدادات صوت الأذان', 'last_read': 'آخر ما قرئ', 'no_last_read': 'لم يتم قراءة أي دعاء بعد', 'all_doa': 'كل الأدعية', 'bookmarked': 'المحفوظة', 'Imsak': 'إمساك', 'Fajr': 'الفجر', 'Sunrise': 'الشروق', 'Dhuhr': 'الظهر', 'Asr': 'العصر', 'Maghrib': 'المغرب', 'Isha': 'العشاء'},
+        'tr': { 'nav_title': 'Navigasyon Menüsü', 'nav_doa': '🤲 Günlük Dualar', 'nav_quran': '📖 Kur\'an-ı Kerim', 'nav_dzikir': '📿 Zikir & Tesbih', 'nav_kiblat': '🧭 Kıble', 'nav_settings': '⚙️ Ayarlar', 'remaining_time': 'Kalan Süre', 'settings_title': 'Ayarlar', 'settings_dark_mode': 'Karanlık Mod', 'settings_notifications': 'Ezan Bildirimleri', 'settings_language': 'Dil', 'settings_about': 'Uygulama Hakkında', 'settings_adhan_sound': 'Ezan Sesi Ayarları', 'last_read': 'SON OKUNAN', 'no_last_read': 'Henüz okunmuş dua yok', 'all_doa': 'Tüm Dualar', 'bookmarked': 'İşaretli', 'Imsak': 'İmsak', 'Fajr': 'Sabah', 'Sunrise': 'Güneş', 'Dhuhr': 'Öğle', 'Asr': 'İkindi', 'Maghrib': 'Akşam', 'Isha': 'Yatsı'},
+        'fr': { 'nav_title': 'Menu de navigation', 'nav_doa': '🤲 Prières quotidiennes', 'nav_quran': '📖 Al-Coran', 'nav_dzikir': '📿 Dhikr & Tasbih', 'nav_kiblat': '🧭 Qibla', 'nav_settings': '⚙️ Paramètres', 'remaining_time': 'Temps restant', 'settings_title': 'Paramètres', 'settings_dark_mode': 'Mode sombre', 'settings_notifications': 'Notifications d\'Adhan', 'settings_language': 'Langue', 'settings_about': 'À propos de l\'application', 'settings_adhan_sound': 'Paramètres Sonores de l\'Adhan', 'last_read': 'DERNIÈRE LECTURE', 'no_last_read': 'Aucune prière n\'a encore été lue', 'all_doa': 'Toutes les prières', 'bookmarked': 'Marqué', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Lever du soleil', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha' },
+        'es': { 'nav_title': 'Menú de Navegación', 'nav_doa': '🤲 Oraciones Diarias', 'nav_quran': '📖 Al-Corán', 'nav_dzikir': '📿 Dhikr y Tasbih', 'nav_kiblat': '🧭 Quibla', 'nav_settings': '⚙️ Ajustes', 'remaining_time': 'Tiempo restante', 'settings_title': 'Ajustes', 'settings_dark_mode': 'Modo Oscuro', 'settings_notifications': 'Notificaciones de Adhan', 'settings_language': 'Idioma', 'settings_about': 'Acerca de la App', 'settings_adhan_sound': 'Ajustes de Sonido del Adhan', 'last_read': 'ÚLTIMA LECTURA', 'no_last_read': 'Aún no se han leído oraciones', 'all_doa': 'Todas las Oraciones', 'bookmarked': 'Marcado', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Amanecer', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha' },
+        'de': { 'nav_title': 'Navigationsmenü', 'nav_doa': '🤲 Tägliche Gebete', 'nav_quran': '📖 Al-Quran', 'nav_dzikir': '📿 Dhikr & Tasbih', 'nav_kiblat': '🧭 Qibla', 'nav_settings': '⚙️ Einstellungen', 'remaining_time': 'Verbleibende Zeit', 'settings_title': 'Einstellungen', 'settings_dark_mode': 'Dunkelmodus', 'settings_notifications': 'Adhan-Benachrichtigungen', 'settings_language': 'Sprache', 'settings_about': 'Über die App', 'settings_adhan_sound': 'Adhan-Toneinstellungen', 'last_read': 'ZULETZT GELESEN', 'no_last_read': 'Noch keine Gebete gelesen', 'all_doa': 'Alle Gebete', 'bookmarked': 'Gemerkt', 'Imsak': 'Imsak', 'Fajr': 'Fajr', 'Sunrise': 'Sonnenaufgang', 'Dhuhr': 'Dhuhr', 'Asr': 'Asr', 'Maghrib': 'Maghrib', 'Isha': 'Isha' },
+        'ru': { 'nav_title': 'Навигационное меню', 'nav_doa': '🤲 Ежедневные молитвы', 'nav_quran': '📖 Аль-Коран', 'nav_dzikir': '📿 Зикр и Тасбих', 'nav_kiblat': '🧭 Кибла', 'nav_settings': '⚙️ Настройки', 'remaining_time': 'Оставшееся время', 'settings_title': 'Настройки', 'settings_dark_mode': 'Темный режим', 'settings_notifications': 'Уведомления о Азане', 'settings_language': 'Язык', 'settings_about': 'О приложении', 'settings_adhan_sound': 'Настройки звука Азана', 'last_read': 'ПОСЛЕДНЕЕ ПРОЧТЕНИЕ', 'no_last_read': 'Молитвы еще не читались', 'all_doa': 'Все молитвы', 'bookmarked': 'В закладках', 'Imsak': 'Имсак', 'Fajr': 'Фаджр', 'Sunrise': 'Восход', 'Dhuhr': 'Зухр', 'Asr': 'Аср', 'Maghrib': 'Магриб', 'Isha': 'Иша' },
+        'ur': { 'nav_title': 'نیویگیشن مینو', 'nav_doa': '🤲 روزانہ کی دعائیں', 'nav_quran': '📖 القرآن', 'nav_dzikir': '📿 ذکر و تسبیح', 'nav_kiblat': '🧭 قبلہ', 'nav_settings': '⚙️ ترتیبات', 'remaining_time': 'باقی وقت', 'settings_title': 'ترتیبات', 'settings_dark_mode': 'ڈارک موڈ', 'settings_notifications': 'اذان کی اطلاعات', 'settings_language': 'زبان', 'settings_about': 'ایپ کے بارے میں', 'settings_adhan_sound': 'اذان کی آواز کی ترتیبات', 'last_read': 'آخری بار پڑھا گیا', 'no_last_read': 'ابھی تک کوئی دعا نہیں پڑھی گئی', 'all_doa': 'تمام دعائیں', 'bookmarked': 'نشان زد', 'Imsak': 'امساک', 'Fajr': 'فجر', 'Sunrise': 'طلوع آفتاب', 'Dhuhr': 'ظہر', 'Asr': 'عصر', 'Maghrib': 'مغرب', 'Isha': 'عشاء' },
+        'bn': { 'nav_title': 'নেভিগেশন মেনু', 'nav_doa': '🤲 দৈনিক দোয়া', 'nav_quran': '📖 আল-কুরআন', 'nav_dzikir': '📿 যিকির ও তাসবীহ', 'nav_kiblat': '🧭 কিবলা', 'nav_settings': '⚙️ সেটিংস', 'remaining_time': 'অবশিষ্ট সময়', 'settings_title': 'সেটিংস', 'settings_dark_mode': 'ডার্ক মোড', 'settings_notifications': 'আযানের নোটিফিকেশন', 'settings_language': 'ভাষা', 'settings_about': 'অ্যাপ সম্পর্কে', 'settings_adhan_sound': 'আযানের শব্দ সেটিংস', 'last_read': 'শেষ পঠিত', 'no_last_read': 'এখনও কোন দোয়া পড়া হয়নি', 'all_doa': 'সব দোয়া', 'bookmarked': 'বুকমার্ক করা', 'Imsak': 'ইمسাক', 'Fajr': 'ফজর', 'Sunrise': 'সূর্যোদয়', 'Dhuhr': 'যোহর', 'Asr': 'আসর', 'Maghrib': 'মাগরিব', 'Isha': 'ঈশা' }
     };
     const juzToSurahMap = { 1:[1,2],2:[2],3:[2,3],4:[3,4],5:[4],6:[4,5],7:[5,6],8:[6,7],9:[7,8],10:[8,9],11:[9,10,11],12:[11,12],13:[12,13,14,15],14:[16,17],15:[17,18],16:[18,19,20],17:[21,22],18:[23,24,25],19:[25,26,27],20:[27,28,29],21:[29,30,31,32,33],22:[33,34,35,36],23:[36,37,38,39],24:[39,40,41],25:[41,42,43,44,45],26:[46,47,48,49,50,51],27:[51,52,53,54,55,56,57],28:[58,59,60,61,62,63,64,65,66],29:[67,68,69,70,71,72,73,74,75,76,77],30:[78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114]};
     
@@ -960,15 +976,22 @@
       let lastReadSurah = JSON.parse(localStorage.getItem('last_read_surah'));
       let currentOpenSurahNumber = null;
 
-      // [BARU] Pengaturan audio dan daftar pilihan azan
+      // [MODIFIED] Pengaturan audio dan daftar pilihan azan
       const adhanOptions = {
         'none': { name: 'Tanpa Suara' },
         'notification': { name: 'Notifikasi', audioId: 'audio-notification' },
         'mishary': { name: 'Azan 1 (Mishary)', audioId: 'audio-adhan-mishary' },
         'fajr': { name: 'Azan 2 (Subuh)', audioId: 'audio-adhan-fajr' },
+        'madinah': { name: 'Azan 3 (Madinah)', audioId: 'audio-adhan-madinah' }
       };
       let prayerAudioSettings = JSON.parse(localStorage.getItem('prayerAudioSettings')) || {
-          Imsak: 'notification', Fajr: 'fajr', Sunrise: 'none', Dhuhr: 'mishary', Asr: 'mishary', Maghrib: 'mishary', Isha: 'mishary'
+          Imsak: 'notification', 
+          Fajr: 'fajr', 
+          Sunrise: 'none', 
+          Dhuhr: 'mishary', 
+          Asr: 'mishary', 
+          Maghrib: 'mishary', 
+          Isha: 'mishary'
       };
       
       // --- ELEMENT SELECTORS ---
@@ -991,7 +1014,7 @@
           const qiblaView = document.getElementById('qibla-view');
           const targetView = document.getElementById(viewId);
           
-          document.body.style.backgroundColor = ''; // Reset background
+          document.body.style.backgroundColor = ''; 
           if(viewId === 'qibla-view') {
               document.body.style.backgroundColor = '#000000';
           }
@@ -1024,7 +1047,12 @@
           document.getElementById('doa-harian-btn').addEventListener('click', (e) => { e.preventDefault(); showView('doa-view'); renderDoaListView('all'); closeSidebar(); });
           document.getElementById('quran-btn').addEventListener('click', (e) => { e.preventDefault(); showView('quran-view'); renderQuranView('surah'); closeSidebar(); });
           document.getElementById('dzikir-btn').addEventListener('click', (e) => { e.preventDefault(); showView('dzikir-view'); renderDzikirList(); closeSidebar(); });
-          document.getElementById('settings-btn').addEventListener('click', (e) => { e.preventDefault(); document.getElementById('settings-modal').style.display = 'flex'; closeSidebar(); });
+          document.getElementById('settings-btn').addEventListener('click', (e) => { 
+              e.preventDefault(); 
+              renderAdhanSettings();
+              document.getElementById('settings-modal').style.display = 'flex'; 
+              closeSidebar(); 
+          });
           
           document.querySelectorAll('.back-button').forEach(btn => {
               btn.addEventListener('click', () => {
@@ -1045,7 +1073,6 @@
       
       // --- PRAYER TIMES FEATURE ---
 
-      // [BARU] Fungsi untuk memainkan audio azan berdasarkan pengaturan
       function playPrayerAudio(prayerName) {
         const setting = prayerAudioSettings[prayerName];
         if (!setting || setting === 'none') {
@@ -1062,7 +1089,6 @@
                 if (playPromise !== undefined) {
                     playPromise.catch(error => {
                         console.error(`Gagal memutar audio untuk ${prayerName}:`, error);
-                        // Fallback ke notifikasi standar jika audio gagal
                         showPrayerNotification(translations[currentLanguage][prayerName] || prayerName, 'Gagal memutar azan. Pastikan interaksi halaman sudah dilakukan.');
                     });
                 }
@@ -1075,14 +1101,13 @@
        const notificationTitle = `Waktunya Sholat ${prayerName}`;
        const notificationOptions = {
             body: customBody || `Sekarang telah masuk waktu sholat ${prayerName}.`,
-            icon: 'logo-annur.jpg', // Menggunakan logo aplikasi
-            tag: 'prayer-time-notification' // Mencegah notifikasi menumpuk
+            icon: 'logo-annur.jpg',
+            tag: 'prayer-time-notification'
        };
        const notification = new Notification(notificationTitle, notificationOptions);
        setTimeout(() => notification.close(), 15000);
       }
       
-      // [MODIFIKASI] Fungsi renderPrayerTimes untuk menampilkan dropdown pilihan azan
       function renderPrayerTimes(prayerTimes) {
           if (!prayerListContainerEl) return;
           prayerListContainerEl.innerHTML = '';
@@ -1094,47 +1119,19 @@
                   const prayerName = translations[currentLanguage][key] || key;
                   const prayerTime = prayerTimes[key];
 
-                  // Membuat dropdown untuk pilihan suara
-                  let optionsHtml = '';
-                  for (const optionKey in adhanOptions) {
-                      const selected = prayerAudioSettings[key] === optionKey ? 'selected' : '';
-                      optionsHtml += `<option value="${optionKey}" ${selected}>${adhanOptions[optionKey].name}</option>`;
-                  }
-
-                  const selectElement = `
-                      <select class="prayer-audio-select" data-prayer="${key}">
-                          ${optionsHtml}
-                      </select>
-                  `;
-
                   const prayerItemHtml = `
                       <div class="prayer-item">
                           <div class="prayer-details">
                               <div class="prayer-name">${prayerName}</div>
-                              <div class="prayer-time">${prayerTime}</div>
                           </div>
-                          <div class="prayer-time-action">
-                             ${selectElement}
-                          </div>
+                          <div class="prayer-time-value">${prayerTime}</div>
                       </div>`;
                   
                   prayerListContainerEl.innerHTML += prayerItemHtml;
               }
           });
-
-          // Menambahkan event listener ke semua dropdown yang baru dibuat
-          document.querySelectorAll('.prayer-audio-select').forEach(select => {
-              select.addEventListener('change', (event) => {
-                  const prayer = event.target.dataset.prayer;
-                  const newSetting = event.target.value;
-                  prayerAudioSettings[prayer] = newSetting;
-                  localStorage.setItem('prayerAudioSettings', JSON.stringify(prayerAudioSettings));
-                  console.log(`Pengaturan audio untuk ${prayer} diubah menjadi ${newSetting}`);
-              });
-          });
       }
       
-      // [MODIFIKASI] Fungsi startCountdown untuk memicu audio
       function startCountdown(prayerTimes) {
           if (countdownInterval) clearInterval(countdownInterval);
           const prayerOrder = ['Imsak', 'Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
@@ -1159,13 +1156,11 @@
               const diff = nextPrayerTime - now;
               if (diff < 0) return;
 
-              // Pemicu audio dan notifikasi
               if (diff > 0 && diff < 1000) {
                   const translatedPrayerName = translations[currentLanguage][nextPrayerName] || nextPrayerName;
-                  showPrayerNotification(translatedPrayerName); // Selalu tampilkan notifikasi visual
-                  playPrayerAudio(nextPrayerName); // Mainkan audio sesuai pengaturan
+                  showPrayerNotification(translatedPrayerName);
+                  playPrayerAudio(nextPrayerName);
                   
-                  // Perbarui daftar sholat untuk menandai yang sudah lewat (jika ada logic seperti itu)
                   if (window.latestPrayerTimes) renderPrayerTimes(window.latestPrayerTimes);
               }
               
@@ -1277,7 +1272,7 @@
 
                                 if (!isNaN(h) && !isNaN(m)) {
                                     const date = new Date();
-                                    date.setHours(h, m, 0, 0); // Dihilangkan penambahan 2 menit agar sesuai jadwal
+                                    date.setHours(h, m + 2, 0, 0); 
                                     adjustedTimings[key] = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
                                 } else {
                                     adjustedTimings[key] = dailyData.timings[key];
@@ -1335,7 +1330,6 @@
        updateDates();
        generateCalendar();
        getLocation();
-       // Hapus interval render ulang, karena sudah ditangani oleh countdown
       }
       
       // --- DOA HARIAN FEATURE ---
@@ -1361,10 +1355,10 @@
               currentOpenDoaId = id;
               singleDoaModal.querySelector('#single-doa-modal-title').textContent = doa.title;
               singleDoaModal.querySelector('#single-doa-modal-body').innerHTML = `
-                                                  <p class="single-item-arabic">${doa.arabic}</p>
-                                                  <p class="single-item-latin">${doa.latin}</p>
-                                                  <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
-                                                  <p class="single-item-arti"><b>Artinya:</b> ${doa.arti}</p>`;
+                                              <p class="single-item-arabic">${doa.arabic}</p>
+                                              <p class="single-item-latin">${doa.latin}</p>
+                                              <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
+                                              <p class="single-item-arti"><b>Artinya:</b> ${doa.arti}</p>`;
               updateBookmarkIcon(); singleDoaModal.style.display = 'flex';
               localStorage.setItem('last_read_doa_id', id); lastReadDoaId = id; renderLastRead();
           }
@@ -1430,12 +1424,12 @@
                   const item = document.createElement('div');
                   item.className = 'list-item';
                   item.innerHTML = `
-                                          <span class="num">${surah.number}</span>
-                                          <div class="details">
-                                              <div class="title">${surah.name.transliteration.id}</div>
-                                              <div class="subtitle">${surah.name.translation.id} (${surah.numberOfVerses} verses)</div>
-                                          </div>
-                                          <span class="arabic">${surah.name.short}</span>`;
+                                      <span class="num">${surah.number}</span>
+                                      <div class="details">
+                                          <div class="title">${surah.name.transliteration.id}</div>
+                                          <div class="subtitle">${surah.name.translation.id} (${surah.numberOfVerses} verses)</div>
+                                      </div>
+                                      <span class="arabic">${surah.name.short}</span>`;
                   item.addEventListener('click', () => showSurahDetail(surah.number, backTarget));
                   container.appendChild(item);
               });
@@ -1483,11 +1477,11 @@
                   surahViewTitle.textContent = `${surah.name.transliteration.id}`;
                   
                   let contentHtml = `
-                                       <div class="surah-detail-header">
-                                           <h2>${surah.name.long}</h2>
-                                           <p>${surah.name.translation.id}</p>
-                                           <div class="meta">${surah.revelation.id} • ${surah.numberOfVerses} VERSES</div>
-                                       </div>`;
+                                      <div class="surah-detail-header">
+                                          <h2>${surah.name.long}</h2>
+                                          <p>${surah.name.translation.id}</p>
+                                          <div class="meta">${surah.revelation.id} • ${surah.numberOfVerses} VERSES</div>
+                                      </div>`;
                   
                   if (surah.number !== 1 && surah.number !== 9) {
                       contentHtml += `
@@ -1591,12 +1585,12 @@
                   const item = document.createElement('div'); 
                   item.className = 'list-item';
                   item.innerHTML = `
-                          <span class="num">📿</span>
-                          <div class="details">
-                              <div class="title">${d.title}</div>
-                              <div class="subtitle">${d.subtitle}</div>
-                          </div>
-                          <span class="arabic">${d.arabic}</span>`;
+                                <span class="num">📿</span>
+                                <div class="details">
+                                    <div class="title">${d.title}</div>
+                                    <div class="subtitle">${d.subtitle}</div>
+                                </div>
+                                <span class="arabic">${d.arabic}</span>`;
                   item.addEventListener('click', () => showDzikirDetailModal(d.id));
                   dzikirListContainer.appendChild(item);
               });
@@ -1613,7 +1607,7 @@
                                                   <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
                                                   <p class="single-item-arti"><b>Artinya:</b> ${dzikir.arti}</p>
                                                   <button id="start-dzikir-btn" class="modal-action-btn">Mulai Dzikir (Target: ${dzikir.target})</button>
-                                                          `;
+                                                                    `;
               
               modalBody.querySelector('#start-dzikir-btn').addEventListener('click', () => {
                   dzikirDetailModal.style.display = 'none';
@@ -1670,7 +1664,7 @@
           });
       }
       
-      // --- [BARU & DIPERBARUI] QIBLA FEATURE DENGAN BANTUAN KALIBRASI ---
+      // --- QIBLA FEATURE ---
       function setupQiblaFeature() {
           const qiblaBtn = document.getElementById('qibla-btn');
           const qiblaView = document.getElementById('qibla-view');
@@ -1757,7 +1751,7 @@
           }
 
           async function startCompass() {
-              stopCompass(); // Selalu hentikan listener sebelumnya
+              stopCompass(); 
               isWatching = true;
               showUi(true);
               degreeDisplayEl.textContent = 'Mendapatkan lokasi & kalibrasi...';
@@ -1831,10 +1825,76 @@
           });
 
           permissionBtn.addEventListener('click', requestAndStart);
-          recalibrateBtn.addEventListener('click', startCompass); // Tombol kalibrasi menjalankan ulang proses
+          recalibrateBtn.addEventListener('click', startCompass);
           backButton.addEventListener('click', stopCompass);
       }
 
+      // [MODIFIED] FUNGSI UNTUK MERENDER PENGATURAN ADZAN DI MODAL
+      function renderAdhanSettings() {
+          const container = document.getElementById('adhan-settings-container');
+          if (!container) return;
+          
+          while (container.children.length > 1) {
+              container.removeChild(container.lastChild);
+          }
+          
+          const createSettingItem = (label, prayerKey, options) => {
+              const settingItem = document.createElement('div');
+              settingItem.className = 'settings-item';
+
+              const labelEl = document.createElement('label');
+              labelEl.textContent = label;
+              
+              const select = document.createElement('select');
+              select.className = 'custom-select';
+              select.dataset.prayer = prayerKey;
+
+              for (const optionKey in options) {
+                  const option = document.createElement('option');
+                  option.value = optionKey;
+                  option.textContent = options[optionKey].name;
+                  
+                  const settingsValue = prayerKey === 'dhuhr_to_isha' ? prayerAudioSettings['Dhuhr'] : prayerAudioSettings[prayerKey];
+                  if (settingsValue === optionKey) {
+                      option.selected = true;
+                  }
+                  select.appendChild(option);
+              }
+              
+              select.addEventListener('change', (event) => {
+                  const key = event.target.dataset.prayer;
+                  const newSetting = event.target.value;
+
+                  if (key === 'dhuhr_to_isha') {
+                      prayerAudioSettings['Dhuhr'] = newSetting;
+                      prayerAudioSettings['Asr'] = newSetting;
+                      prayerAudioSettings['Maghrib'] = newSetting;
+                      prayerAudioSettings['Isha'] = newSetting;
+                      console.log(`Pengaturan suara untuk Zuhur-Isya diubah menjadi ${newSetting}`);
+                  } else {
+                      prayerAudioSettings[key] = newSetting;
+                      console.log(`Pengaturan suara untuk ${key} diubah menjadi ${newSetting}`);
+                  }
+                  localStorage.setItem('prayerAudioSettings', JSON.stringify(prayerAudioSettings));
+              });
+
+              settingItem.appendChild(labelEl);
+              settingItem.appendChild(select);
+              container.appendChild(settingItem);
+          };
+
+          const fullOptions = adhanOptions;
+          const limitedOptions = {
+              'none': { name: 'Tanpa Suara' },
+              'notification': { name: 'Notifikasi' }
+          };
+
+          createSettingItem(`Suara ${translations[currentLanguage]['Imsak'] || 'Imsak'}`, 'Imsak', fullOptions);
+          createSettingItem(`Suara ${translations[currentLanguage]['Fajr'] || 'Subuh'}`, 'Fajr', fullOptions);
+          createSettingItem(`Suara ${translations[currentLanguage]['Sunrise'] || 'Terbit'}`, 'Sunrise', limitedOptions);
+          createSettingItem(`Suara Zuhur - Isya`, 'dhuhr_to_isha', fullOptions);
+      }
+      
       // --- SETTINGS & LANGUAGE ---
       function setupSettings() {
           const darkModeToggle = document.getElementById('dark-mode-toggle');
@@ -1854,30 +1914,30 @@
               }
               switch(Notification.permission) {
                   case 'granted':
-                      enableNotificationsBtn.textContent = 'Enabled';
+                      enableNotificationsBtn.textContent = 'Diizinkan';
                       enableNotificationsBtn.disabled = true;
                       break;
                   case 'denied':
-                      enableNotificationsBtn.textContent = 'Blocked';
+                      enableNotificationsBtn.textContent = 'Diblokir';
                       enableNotificationsBtn.disabled = true;
                       break;
                   default:
-                      enableNotificationsBtn.textContent = 'Enable';
+                      enableNotificationsBtn.textContent = 'Aktifkan';
                       enableNotificationsBtn.disabled = false;
               }
           }
           
           function requestNotificationPermission() {
               if (!("Notification" in window)) {
-                  alert("This browser does not support desktop notifications.");
+                  alert("Browser ini tidak mendukung notifikasi desktop.");
                   updateNotificationButtonState();
                   return;
               }
               if (Notification.permission !== 'denied') {
                   Notification.requestPermission().then(permission => {
                       if (permission === "granted") {
-                          new Notification("Notifications Enabled!", {
-                              body: "You will now receive notifications for prayer times.",
+                          new Notification("Notifikasi Diaktifkan!", {
+                              body: "Anda akan menerima notifikasi waktu sholat.",
                           });
                       }
                       updateNotificationButtonState();
@@ -1907,6 +1967,7 @@
                   renderPrayerTimes(window.latestPrayerTimes);
                   startCountdown(window.latestPrayerTimes);
               }
+              renderAdhanSettings();
           };
       
           langSelect.addEventListener('change', () => { 
@@ -1928,18 +1989,15 @@
           
           if (!detailAppBtn) return;
 
-          // Saat tombol "Detail Aplikasi" di modal Pengaturan diklik
           detailAppBtn.addEventListener('click', () => {
-              settingsModal.style.display = 'none'; // Sembunyikan modal pengaturan
-              showView('app-detail-view'); // Tampilkan halaman detail
+              settingsModal.style.display = 'none';
+              showView('app-detail-view');
           });
 
-          // Saat tombol kembali di halaman Detail Aplikasi diklik
           detailViewBackBtn.addEventListener('click', () => {
-              showView('prayer-times-view'); // Kembali ke halaman utama
+              showView('prayer-times-view'); 
           });
 
-          // Menambahkan event klik ke semua item menu di halaman detail
           document.querySelectorAll('#app-detail-view .settings-menu-item').forEach(item => {
               item.addEventListener('click', () => {
                   const targetViewId = item.getAttribute('data-target-view');
@@ -1956,7 +2014,7 @@
       setupDoaHarian();
       setupQuranFeature();
       setupDzikir();
-      setupQiblaFeature(); // Fungsi ini sekarang berisi kode yang sudah diperbarui
+      setupQiblaFeature();
       setupAppDetailPages();
       setupPrayerTimesWithOfflineCache();
       
