@@ -776,6 +776,15 @@
             </div>
         </div>
 
+        <div class="settings-group" style="padding: 1rem; margin-top: 1rem;">
+            <h4 style="font-size: 1rem; color: var(--header-bg); margin-bottom: 0.75rem; padding-bottom: 0; border: none;">Notifikasi Terlambat?</h4>
+            <p style="font-size: 0.85rem; color: var(--text-light); line-height: 1.5; margin-bottom: 1rem;">
+                Beberapa merk HP membatasi aplikasi di latar belakang. Jika notifikasi tidak tepat waktu, coba optimalkan.
+            </p>
+            <button onclick="Android.requestBatteryOptimization()" class="modal-action-btn" style="width: 100%; margin-top: 0;">
+                Optimalkan Notifikasi
+            </button>
+        </div>
         <div class="settings-group" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #ddd;">
             <div class="settings-item">
                 <label data-key="settings_about">Tentang Aplikasi</label>
@@ -1126,6 +1135,76 @@
       const gregorianDateEl = document.getElementById('gregorian-date-display');
       const hijriDateEl = document.getElementById('hijri-date-display');
       
+      // --- CUSTOM PERMISSION HANDLING ---
+      function setupCustomPermissions() {
+          const locationModal = document.getElementById('custom-location-modal');
+          const allowLocationBtn = document.getElementById('allow-location-btn');
+          const denyLocationBtn = document.getElementById('deny-location-btn');
+
+          const notificationModal = document.getElementById('custom-notification-modal');
+          const allowNotificationBtn = document.getElementById('allow-notification-btn');
+          const denyNotificationBtn = document.getElementById('deny-notification-btn');
+
+          // Fungsi untuk meminta lokasi
+          window.requestLocationPermission = function() {
+              return new Promise((resolve, reject) => {
+                  if (navigator.geolocation) {
+                      // Gunakan Permissions API untuk memeriksa status izin
+                      navigator.permissions.query({ name: 'geolocation' }).then(permissionStatus => {
+                          if (permissionStatus.state === 'granted') {
+                              // Izin sudah diberikan, langsung dapatkan lokasi
+                              navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
+                          } else if (permissionStatus.state === 'prompt') {
+                              // Izin belum ditentukan, tampilkan modal kustom kita
+                              locationModal.style.display = 'flex';
+                              allowLocationBtn.onclick = () => {
+                                  locationModal.style.display = 'none';
+                                  // Setelah user klik "Izinkan" di modal kita, baru tampilkan prompt asli browser
+                                  navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
+                              };
+                              denyLocationBtn.onclick = () => {
+                                  locationModal.style.display = 'none';
+                                  reject({ code: 1, message: "User denied the request from custom modal." });
+                              };
+                          } else { // 'denied'
+                              // Izin sudah ditolak sebelumnya
+                              reject({ code: 1, message: "User has previously denied location access." });
+                          }
+                      });
+                  } else {
+                      reject({ code: 2, message: "Geolocation is not supported by this browser." });
+                  }
+              });
+          }
+
+          // Fungsi untuk meminta notifikasi
+          window.requestNotificationPermission = function() {
+              return new Promise((resolve, reject) => {
+                  if ('Notification' in window) {
+                      if (Notification.permission === 'granted') {
+                          resolve('granted');
+                      } else if (Notification.permission === 'default') {
+                          // Tampilkan modal kustom
+                          notificationModal.style.display = 'flex';
+                          allowNotificationBtn.onclick = () => {
+                              notificationModal.style.display = 'none';
+                              // Minta izin asli browser setelah user setuju
+                              Notification.requestPermission().then(resolve);
+                          };
+                          denyNotificationBtn.onclick = () => {
+                              notificationModal.style.display = 'none';
+                              reject('denied_by_custom_modal');
+                          };
+                      } else { // 'denied'
+                          reject('denied_previously');
+                      }
+                  } else {
+                      reject('not_supported');
+                  }
+              });
+          }
+      }
+      
       // --- CORE APP LOGIC ---
       function showView(viewId) {
           document.querySelectorAll('.main-view').forEach(v => v.style.display = 'none');
@@ -1466,24 +1545,14 @@
                     document.getElementById('city-name').textContent = "Medan (Fallback)";
                 }
             };
-
-            if (navigator.geolocation) {
-                // MODIFIED: Requesting high accuracy and fresh data
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        fetchPrayerTimings(position.coords.latitude, position.coords.longitude);
-                        fetchCityName(position.coords.latitude, position.coords.longitude);
-                    },
-                    handleLocationError,
-                    { 
-                        enableHighAccuracy: true, // Crucial for accuracy
-                        timeout: 15000,           // Increased timeout
-                        maximumAge: 0             // Force fresh data
-                    }
-                );
-            } else {
-                handleLocationError({ message: "Geolocation is not supported by this browser." });
-            }
+            
+            // [MODIFIKASI] Gunakan fungsi custom permission yang baru
+            window.requestLocationPermission()
+                .then(position => {
+                    fetchPrayerTimings(position.coords.latitude, position.coords.longitude);
+                    fetchCityName(position.coords.latitude, position.coords.longitude);
+                })
+                .catch(handleLocationError);
         }
         
         if (!loadPrayerDataFromCache()) {
@@ -1516,10 +1585,10 @@
               currentOpenDoaId = id;
               singleDoaModal.querySelector('#single-doa-modal-title').textContent = doa.title;
               singleDoaModal.querySelector('#single-doa-modal-body').innerHTML = `
-                                            <p class="single-item-arabic">${doa.arabic}</p>
-                                            <p class="single-item-latin">${doa.latin}</p>
-                                            <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
-                                            <p class="single-item-arti"><b>Artinya:</b> ${doa.arti}</p>`;
+                                              <p class="single-item-arabic">${doa.arabic}</p>
+                                              <p class="single-item-latin">${doa.latin}</p>
+                                              <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
+                                              <p class="single-item-arti"><b>Artinya:</b> ${doa.arti}</p>`;
               updateBookmarkIcon(); singleDoaModal.style.display = 'flex';
               localStorage.setItem('last_read_doa_id', id); lastReadDoaId = id; renderLastRead();
           }
@@ -1585,12 +1654,12 @@
                   const item = document.createElement('div');
                   item.className = 'list-item';
                   item.innerHTML = `
-                                            <span class="num">${surah.number}</span>
-                                            <div class="details">
-                                                <div class="title">${surah.name.transliteration.id}</div>
-                                                <div class="subtitle">${surah.name.translation.id} (${surah.numberOfVerses} verses)</div>
-                                            </div>
-                                            <span class="arabic">${surah.name.short}</span>`;
+                                              <span class="num">${surah.number}</span>
+                                              <div class="details">
+                                                  <div class="title">${surah.name.transliteration.id}</div>
+                                                  <div class="subtitle">${surah.name.translation.id} (${surah.numberOfVerses} verses)</div>
+                                              </div>
+                                              <span class="arabic">${surah.name.short}</span>`;
                   item.addEventListener('click', () => showSurahDetail(surah.number, backTarget));
                   container.appendChild(item);
               });
@@ -1602,9 +1671,9 @@
                   const item = document.createElement('div');
                   item.className = 'list-item';
                   item.innerHTML = `
-                                                    <span class="num">${i}</span>
-                                                    <div class="details"><div class="title">Juz ${i}</div></div>
-                                                    <span class="arabic">الجزء ${i}</span>`;
+                                                  <span class="num">${i}</span>
+                                                  <div class="details"><div class="title">Juz ${i}</div></div>
+                                                  <span class="arabic">الجزء ${i}</span>`;
                   item.addEventListener('click', () => showSurahsInJuz(i));
                   quranListContainer.appendChild(item);
               }
@@ -1638,28 +1707,28 @@
                   surahViewTitle.textContent = `${surah.name.transliteration.id}`;
                   
                   let contentHtml = `
-                                            <div class="surah-detail-header">
-                                                <h2>${surah.name.long}</h2>
-                                                <p>${surah.name.translation.id}</p>
-                                                <div class="meta">${surah.revelation.id} • ${surah.numberOfVerses} VERSES</div>
-                                            </div>`;
+                                              <div class="surah-detail-header">
+                                                  <h2>${surah.name.long}</h2>
+                                                  <p>${surah.name.translation.id}</p>
+                                                  <div class="meta">${surah.revelation.id} • ${surah.numberOfVerses} VERSES</div>
+                                              </div>`;
                   
                   if (surah.number !== 1 && surah.number !== 9) {
                       contentHtml += `
-                                                <div class="basmala">
-                                                    <p class="basmala-arabic">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
-                                                    <p class="basmala-translation">Dengan menyebut nama Allah Yang Maha Pengasih, lagi Maha Penyayang</p>
-                                                </div>`;
+                                                  <div class="basmala">
+                                                      <p class="basmala-arabic">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
+                                                      <p class="basmala-translation">Dengan menyebut nama Allah Yang Maha Pengasih, lagi Maha Penyayang</p>
+                                                  </div>`;
                   }
       
                   surah.verses.forEach(ayah => {
                       contentHtml += `
-                                                <div class="ayah-item">
-                                                    <div class="ayah-header"><span class="ayah-number">${surah.number}:${ayah.number.inSurah}</span></div>
-                                                    <p class="ayah-arabic">${ayah.text.arab}</p>
-                                                    <p class="ayah-latin">${ayah.text.transliteration.en}</p>
-                                                    <p class="ayah-translation"><b>Artinya:</b> ${ayah.translation.id}</p>
-                                                </div>`;
+                                                  <div class="ayah-item">
+                                                      <div class="ayah-header"><span class="ayah-number">${surah.number}:${ayah.number.inSurah}</span></div>
+                                                      <p class="ayah-arabic">${ayah.text.arab}</p>
+                                                      <p class="ayah-latin">${ayah.text.transliteration.en}</p>
+                                                      <p class="ayah-translation"><b>Artinya:</b> ${ayah.translation.id}</p>
+                                                  </div>`;
                   });
                   surahViewBody.innerHTML = contentHtml;
       
@@ -1763,12 +1832,12 @@
               dzikirDetailModal.querySelector('#dzikir-detail-modal-title').textContent = dzikir.title;
               const modalBody = dzikirDetailModal.querySelector('#dzikir-detail-modal-body');
               modalBody.innerHTML = `
-                                            <p class="single-item-arabic">${dzikir.arabic}</p>
-                                            <p class="single-item-latin">${dzikir.latin}</p>
-                                            <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
-                                            <p class="single-item-arti"><b>Artinya:</b> ${dzikir.arti}</p>
-                                            <button id="start-dzikir-btn" class="modal-action-btn">Mulai Dzikir (Target: ${dzikir.target})</button>
-                                                                            `;
+                                              <p class="single-item-arabic">${dzikir.arabic}</p>
+                                              <p class="single-item-latin">${dzikir.latin}</p>
+                                              <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
+                                              <p class="single-item-arti"><b>Artinya:</b> ${dzikir.arti}</p>
+                                              <button id="start-dzikir-btn" class="modal-action-btn">Mulai Dzikir (Target: ${dzikir.target})</button>
+                                                                                              `;
               
               modalBody.querySelector('#start-dzikir-btn').addEventListener('click', () => {
                   dzikirDetailModal.style.display = 'none';
@@ -2136,7 +2205,6 @@
           darkModeToggle.addEventListener('change', () => { const theme = darkModeToggle.checked ? 'dark' : 'light'; localStorage.setItem('theme', theme); applyTheme(theme); });
           applyTheme(localStorage.getItem('theme') || 'light');
       
-          // [DISEMPURNAKAN] Logika Notifikasi diubah
           window.updateNotificationButtonState = function() {
               if (!("Notification" in window) || !("serviceWorker" in navigator)) {
                   enableNotificationsBtn.textContent = 'Tidak Didukung';
@@ -2158,21 +2226,24 @@
               }
           }
           
-          // Fungsi ini sekarang hanya untuk tombol manual jika user menolak izin otomatis
-          function requestManualNotificationPermission() {
-              if (Notification.permission !== 'denied') {
-                  Notification.requestPermission().then(permission => {
-                      if (permission === "granted") {
-                          new Notification("Notifikasi Diaktifkan!", {
-                              body: "Anda akan menerima notifikasi waktu sholat.", icon: 'logo-annur.jpg'
-                          });
-                      }
-                      updateNotificationButtonState();
-                  });
-              }
-          }
-          enableNotificationsBtn.addEventListener('click', requestManualNotificationPermission);
-          updateNotificationButtonState(); // Tetap panggil untuk set state awal
+          // [MODIFIKASI] Tombol notifikasi sekarang menggunakan alur custom
+          enableNotificationsBtn.addEventListener('click', () => {
+              window.requestNotificationPermission()
+                .then(permission => {
+                    if (permission === "granted") {
+                        new Notification("Notifikasi Diaktifkan!", {
+                            body: "Anda akan menerima notifikasi waktu sholat.",
+                            icon: 'logo-annur.jpg'
+                        });
+                    }
+                    updateNotificationButtonState();
+                })
+                .catch(error => {
+                    console.log('Permintaan notifikasi ditolak dari modal kustom:', error);
+                    updateNotificationButtonState();
+                });
+          });
+          updateNotificationButtonState(); 
       
           function renderAdhanTriggerButton() {
              adhanSettingsContainer.innerHTML = `
@@ -2181,11 +2252,11 @@
                       <span>Atur Suara & Volume untuk Tiap Waktu</span>
                       <span class="arrow">&rsaquo;</span>
                   </div>`;
-              document.getElementById('open-adhan-settings-btn').addEventListener('click', () => {
-                  settingsModal.style.display = 'none';
-                  showView('adhan-settings-view');
-                  renderFullAdhanSettingsPage();
-              });
+             document.getElementById('open-adhan-settings-btn').addEventListener('click', () => {
+                 settingsModal.style.display = 'none';
+                 showView('adhan-settings-view');
+                 renderFullAdhanSettingsPage();
+             });
           }
           
           const setLanguage = (lang) => {
@@ -2219,34 +2290,6 @@
           setLanguage(savedLang);
       
           settingsModal.querySelector('.close-button').addEventListener('click', () => settingsModal.style.display = 'none');
-      }
-
-      // [BARU] Fungsi untuk meminta izin notifikasi saat load
-      function requestInitialNotificationPermission() {
-        if (!("Notification" in window) || !("serviceWorker" in navigator)) {
-            console.log("Notifikasi tidak didukung oleh browser ini.");
-            return;
-        }
-
-        // Hanya minta izin jika statusnya 'default' (belum ditanya sama sekali)
-        if (Notification.permission === 'default') {
-            setTimeout(() => {
-                console.log("Meminta izin notifikasi awal...");
-                Notification.requestPermission().then(permission => {
-                    console.log("Status Izin Notifikasi:", permission);
-                    // Setelah user memilih, update state tombol di pengaturan
-                    if(window.updateNotificationButtonState) {
-                       updateNotificationButtonState(); 
-                    }
-                    if (permission === 'granted') {
-                         new Notification("Notifikasi Telah Diaktifkan!", {
-                             body: "Anda akan menerima notifikasi waktu sholat.",
-                             icon: 'logo-annur.jpg'
-                         });
-                    }
-                });
-            }, 3000); // Tunda 3 detik agar tidak terlalu mengganggu saat awal buka
-        }
       }
 
       // --- FUNGSI UNTUK HALAMAN DETAIL APLIKASI ---
@@ -2286,9 +2329,18 @@
       setupAppDetailPages();
       setupAdhanSettingsPage();
       setupPrayerTimesWithOfflineCache();
+      setupCustomPermissions(); // [BARU] Inisialisasi logika izin kustom
       
       showView('prayer-times-view');
-      requestInitialNotificationPermission(); // Panggil fungsi izin notifikasi otomatis
+
+      // [MODIFIKASI] Panggil permintaan notifikasi setelah beberapa saat jika belum diatur
+      setTimeout(() => {
+        if (Notification.permission === 'default') {
+            window.requestNotificationPermission()
+            .then(p => { console.log('Izin Notifikasi:', p); window.updateNotificationButtonState(); })
+            .catch(e => { console.log('Permintaan notifikasi ditunda:', e); });
+        }
+      }, 5000);
 
     });
 
