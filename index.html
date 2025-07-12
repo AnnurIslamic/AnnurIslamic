@@ -213,7 +213,7 @@
 
     /* STYLE UNTUK GRUP PENGATURAN */
     .settings-group {
-        margin-bottom: 1.5rem; /* Ganti dari margin-top */
+        margin-bottom: 1.5rem;
         padding: 1rem;
         background-color: var(--card-bg);
         border-radius: var(--radius);
@@ -224,12 +224,12 @@
     }
     body.dark-mode .settings-group { border-top-color: #444; }
     .settings-group h4 {
-        font-size: 1.1rem; /* Perbesar sedikit */
+        font-size: 1.1rem;
         font-weight: 600;
         color: var(--header-bg);
-        margin-bottom: 1rem; /* Tambah jarak bawah */
-        padding-bottom: 0.75rem; /* Tambah padding bawah */
-        border-bottom: 1px solid #eee; /* Beri garis batas */
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid #eee;
     }
     body.dark-mode .settings-group h4 { color: var(--accent-color); border-bottom-color: #444;}
 
@@ -253,29 +253,89 @@
     .settings-menu-item span:first-child { font-weight: 500; }
     .settings-menu-item .arrow { font-size: 1.5rem; font-weight: 400; color: var(--text-light); }
     
-    /* STYLE UNTUK MODAL PEMILIHAN SUARA ADZAN (DI HALAMAN BARU) */
-    .selection-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.9rem 0.5rem; /* Sesuaikan padding */
-      border-bottom: 1px solid #eee;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
+    /* --- Style Pengaturan Suara Adzan --- */
+    .selection-item-wrapper {
+        padding: 0.2rem 0.5rem;
+        border-bottom: 1px solid #eee;
+        transition: background-color 0.2s ease;
     }
-    body.dark-mode .selection-item { border-bottom-color: #333; }
-    .selection-item:hover { background-color: rgba(0, 0, 0, 0.03); }
-    body.dark-mode .selection-item:hover { background-color: rgba(255, 255, 255, 0.05); }
-    .selection-item:last-child { border-bottom: none; }
+    .selection-item-wrapper:last-child {
+        border-bottom: none;
+    }
+    body.dark-mode .selection-item-wrapper {
+        border-bottom-color: #333;
+    }
+    .selection-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.7rem 0;
+        cursor: pointer;
+    }
+    .selection-item:hover {
+        background-color: rgba(0, 0, 0, 0.03);
+    }
+    body.dark-mode .selection-item:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
     .selection-item span:first-child { font-weight: 500; }
     .selection-item .checkmark {
-      font-size: 1.2rem;
-      color: var(--header-bg);
-      font-weight: bold;
-      visibility: hidden; /* Sembunyikan secara default */
+        font-size: 1.2rem;
+        color: var(--header-bg);
+        font-weight: bold;
+        visibility: hidden;
     }
     body.dark-mode .selection-item .checkmark { color: var(--accent-color); }
-    .selection-item.selected .checkmark { visibility: visible; } /* Tampilkan jika terpilih */
+    .selection-item.selected .checkmark { visibility: visible; }
+
+    /* --- Style untuk Volume Control & Tombol Test --- */
+    .volume-control-container {
+        display: none;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 0.5rem 0 0.8rem 0;
+        animation: fadeIn 0.3s ease;
+    }
+    .volume-control-container.active {
+        display: flex;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-5px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .volume-control-container .volume-icon {
+        font-size: 1.2rem;
+        color: var(--text-light);
+    }
+    .volume-slider {
+        -webkit-appearance: none; appearance: none;
+        flex-grow: 1; height: 6px;
+        background: #ddd; outline: none;
+        border-radius: 3px; opacity: 0.9;
+        transition: opacity .2s;
+    }
+    .volume-slider:hover { opacity: 1; }
+    .volume-slider::-webkit-slider-thumb {
+        -webkit-appearance: none; appearance: none;
+        width: 18px; height: 18px;
+        background: var(--header-bg); cursor: pointer;
+        border-radius: 50%;
+    }
+    .volume-slider::-moz-range-thumb {
+        width: 18px; height: 18px;
+        background: var(--header-bg); cursor: pointer;
+        border-radius: 50%; border: none;
+    }
+    .test-sound-btn {
+        background: none; border: none;
+        font-size: 1.5rem; color: var(--header-bg);
+        cursor: pointer; padding: 0.2rem;
+        line-height: 1;
+    }
+    body.dark-mode .volume-slider { background: #444; }
+    body.dark-mode .volume-slider::-webkit-slider-thumb { background: var(--accent-color); }
+    body.dark-mode .volume-slider::-moz-range-thumb { background: var(--accent-color); }
+    body.dark-mode .test-sound-btn { color: var(--accent-color); }
     
     /* CSS UNTUK TOMBOL PLAY STORE */
     .playstore-btn {
@@ -334,7 +394,7 @@
         color: var(--text-color);
     }
 
-    /* STYLE UNTUK KONTEN HALAMAN DETAIL (DIPERBARUI) */
+    /* STYLE UNTUK KONTEN HALAMAN DETAIL */
     .content-body {
         padding: 0 1rem 1.5rem 1rem; 
     }
@@ -501,18 +561,17 @@
     #qibla-needle {
         position: absolute;
         width: 4px;
-        height: 120px; /* Length of the needle */
+        height: 120px;
         background-color: #333333;
-        top: 30px; /* Start below the lubber line */
+        top: 30px;
         left: 50%;
         transform-origin: bottom center;
-        transform: translateX(-50%) rotate(0deg); /* Initial position */
+        transform: translateX(-50%) rotate(0deg);
         transition: transform 0.2s linear;
         border-radius: 2px;
         z-index: 2;
     }
     
-    /* --- [BARU] Info box di Kiblat --- */
     #qibla-info-box {
       margin-top: 2rem;
       text-align: center;
@@ -808,7 +867,7 @@
       </div>
       <div class="content-body">
           <div class="content-card">
-              <p><strong>Pembaruan Terakhir: 11 Juli 2025</strong></p>
+              <p><strong>Pembaruan Terakhir: 12 Juli 2025</strong></p>
               <p>Aplikasi <strong>Annur Islamic</strong> ("kami") berkomitmen untuk melindungi privasi Anda. Kebijakan ini menjelaskan bagaimana kami mengumpulkan, menggunakan, dan melindungi informasi Anda.</p>
           </div>
 
@@ -857,7 +916,7 @@
               </ul>
           </div>
           <div class="content-card">
-               <h3 class="content-title"><span class="content-title-icon">❤️</span>Proyek Non-Komersial</h3>
+              <h3 class="content-title"><span class="content-title-icon">❤️</span>Proyek Non-Komersial</h3>
               <p>Aplikasi ini adalah proyek non-komersial, dibuat untuk membantu umat Muslim dalam ibadah sehari-hari. Aplikasi ini sepenuhnya <strong>gratis dan tidak mengandung iklan</strong>.</p>
           </div>
       </div>
@@ -869,7 +928,7 @@
           <h2>Saran & Masukan</h2>
       </div>
       <div class="content-body">
-           <div class="content-card">
+          <div class="content-card">
               <h3 class="content-title"><span class="content-title-icon">💌</span>Hubungi Kami</h3>
               <p>Kami sangat menghargai saran dan masukan dari Anda untuk membuat aplikasi ini menjadi lebih baik. Silakan kirimkan ide, laporan bug, atau masukan lainnya melalui email kepada pengembang.</p>
               <div class="email-link-wrapper">
@@ -885,7 +944,7 @@
   <audio id="audio-adhan-madinah" src="https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/adzankota.mp3" preload="auto"></audio>
   
   <script>
-    // --- DATA (Dzikir, Doa, Translations) ---
+    // --- DATA ---
     const dzikirData = [
       { id: 'dzikir_1', title: 'Tasbih', subtitle: 'Menyucikan Allah', arabic: 'سُبْحَانَ اللَّهِ', latin: 'Subhanallah', arti: 'Maha Suci Allah', target: 33 },
       { id: 'dzikir_2', title: 'Tahmid', subtitle: 'Memuji Allah', arabic: 'الْحَمْدُ لِلَّهِ', latin: 'Alhamdulillah', arti: 'Segala Puji Bagi Allah', target: 33 },
@@ -982,8 +1041,7 @@
       }
     }
 
-
-    // --- SCRIPT UTAMA, MENUNGGU HALAMAN SIAP ---
+    // --- SCRIPT UTAMA ---
     document.addEventListener('DOMContentLoaded', () => {
       // --- GLOBAL VARIABLES & STATE ---
       let currentLanguage = 'id';
@@ -994,6 +1052,7 @@
       let dzikirState = JSON.parse(localStorage.getItem('dzikir_state')) || {};
       let currentDzikirId = null;
       window.latestPrayerTimes = null;
+      let lastCheckedDate = new Date().getDate();
       
       // Quran State
       let allSurahsData = [];
@@ -1001,17 +1060,17 @@
       let lastReadSurah = JSON.parse(localStorage.getItem('last_read_surah'));
       let currentOpenSurahNumber = null;
 
-      // [REVISED] Pengaturan audio dan daftar pilihan azan
+      // Pengaturan audio
       const adhanSoundFiles = {
         'none': { name: 'Tanpa Suara' },
         'notification': { name: 'Notifikasi', audioId: 'audio-notification' },
         'fajr': { name: 'Muazin Subuh', audioId: 'audio-adhan-fajr' },
         'mishary': { name: 'Muazin Makkah (Mishary)', audioId: 'audio-adhan-mishary' },
         'madinah': { name: 'Muazin Madinah', audioId: 'audio-adhan-madinah' },
-        'al_afasy': { name: 'Muazin Al-Afasy', audioId: 'audio-adhan-mishary' }, // Menggunakan file audio yang sama sebagai contoh
-        'abdul_basit': { name: 'Muazin Abdul Basit', audioId: 'audio-adhan-madinah' } // Menggunakan file audio yang sama sebagai contoh
+        'al_afasy': { name: 'Muazin Al-Afasy', audioId: 'audio-adhan-mishary' },
+        'abdul_basit': { name: 'Muazin Abdul Basit', audioId: 'audio-adhan-madinah' } 
       };
-      // [REVISED] Peta opsi suara untuk setiap waktu sholat
+
       const adhanOptionsMap = {
           Imsak: ['none', 'notification', 'mishary', 'madinah'],
           Fajr: ['none', 'notification', 'fajr', 'mishary', 'madinah', 'al_afasy', 'abdul_basit'],
@@ -1021,21 +1080,45 @@
           Maghrib: ['none', 'notification', 'mishary', 'madinah', 'al_afasy', 'abdul_basit'],
           Isha: ['none', 'notification', 'mishary', 'madinah', 'al_afasy', 'abdul_basit']
       };
-      let prayerAudioSettings = JSON.parse(localStorage.getItem('prayerAudioSettings')) || {
-          Imsak: 'notification', 
-          Fajr: 'fajr', 
-          Sunrise: 'none', 
-          Dhuhr: 'mishary', 
-          Asr: 'mishary', 
-          Maghrib: 'mishary', 
-          Isha: 'mishary'
+
+      function migrateAudioSettings(settings) {
+          const newSettings = {};
+          let needsUpdate = false;
+          for (const key in settings) {
+              const value = settings[key];
+              if (typeof value === 'string') {
+                  newSettings[key] = { sound: value, volume: 1.0 };
+                  needsUpdate = true;
+              } else if (typeof value === 'object' && value !== null && 'sound' in value && 'volume' in value) {
+                  newSettings[key] = value;
+              } else {
+                  newSettings[key] = { sound: 'none', volume: 1.0 };
+                  needsUpdate = true;
+              }
+          }
+          if (needsUpdate) {
+              console.log("Migrating audio settings to new format.");
+              localStorage.setItem('prayerAudioSettings', JSON.stringify(newSettings));
+          }
+          return newSettings;
+      }
+
+      const defaultAudioSettings = {
+          Imsak:   { sound: 'notification', volume: 1.0 }, 
+          Fajr:    { sound: 'fajr',         volume: 1.0 }, 
+          Sunrise: { sound: 'none',         volume: 1.0 }, 
+          Dhuhr:   { sound: 'mishary',      volume: 0.8 }, 
+          Asr:     { sound: 'mishary',      volume: 0.8 }, 
+          Maghrib: { sound: 'mishary',      volume: 0.8 }, 
+          Isha:    { sound: 'mishary',      volume: 0.8 }
       };
+
+      let prayerAudioSettings = JSON.parse(localStorage.getItem('prayerAudioSettings')) || defaultAudioSettings;
+      prayerAudioSettings = migrateAudioSettings(prayerAudioSettings);
       
       // --- ELEMENT SELECTORS ---
       const sidebar = document.getElementById('sidebar');
       const menuToggle = document.getElementById('menu-toggle');
-      
-      // Prayer Times UI
       const prayerListContainerEl = document.getElementById('prayer-list-container');
       const countdownTimerEl = document.getElementById('countdown-timer');
       const nextPrayerNameEl = document.getElementById('next-prayer-name');
@@ -1056,13 +1139,12 @@
               document.body.style.backgroundColor = '#000000';
           }
 
-          // Handle special flexbox views
           if (viewId === 'tasbih-view' || viewId === 'qibla-view') {
-              appContainer.style.display = 'none'; // Sembunyikan container utama
+              appContainer.style.display = 'none';
               if (viewId === 'tasbih-view') tasbihView.style.display = 'flex';
               if (viewId === 'qibla-view') qiblaView.style.display = 'flex';
           } else {
-              appContainer.style.display = 'block'; // Tampilkan container utama
+              appContainer.style.display = 'block';
               tasbihView.style.display = 'none';
               qiblaView.style.display = 'none';
               if (targetView) targetView.style.display = 'block';
@@ -1106,24 +1188,34 @@
       }
       
       // --- PRAYER TIMES FEATURE ---
+      function stopAllAdhanAudio() {
+        document.querySelectorAll('audio[id^="audio-adhan-"], audio[id^="audio-notification"]').forEach(audio => {
+            if (!audio.paused) {
+                audio.pause();
+                audio.currentTime = 0;
+            }
+        });
+      }
 
       function playPrayerAudio(prayerName) {
         const setting = prayerAudioSettings[prayerName];
-        if (!setting || setting === 'none') {
+        if (!setting || setting.sound === 'none') {
             console.log(`Audio untuk ${prayerName} di-nonaktifkan.`);
             return;
         }
 
-        const option = adhanSoundFiles[setting];
+        const option = adhanSoundFiles[setting.sound];
         if (option && option.audioId) {
             const audioElement = document.getElementById(option.audioId);
             if (audioElement) {
+                stopAllAdhanAudio();
+                audioElement.volume = setting.volume; 
                 audioElement.currentTime = 0;
                 const playPromise = audioElement.play();
                 if (playPromise !== undefined) {
                     playPromise.catch(error => {
                         console.error(`Gagal memutar audio untuk ${prayerName}:`, error);
-                        showPrayerNotification(translations[currentLanguage][prayerName] || prayerName, 'Gagal memutar azan. Pastikan interaksi halaman sudah dilakukan.');
+                        showPrayerNotification(translations[currentLanguage][prayerName] || prayerName, 'Gagal memutar adzan otomatis. Pastikan interaksi halaman sudah dilakukan.');
                     });
                 }
             }
@@ -1136,10 +1228,12 @@
        const notificationOptions = {
             body: customBody || `Sekarang telah masuk waktu sholat ${prayerName}.`,
             icon: 'logo-annur.jpg',
-            tag: 'prayer-time-notification'
+            tag: 'prayer-time-notification',
+            renotify: true
        };
-       const notification = new Notification(notificationTitle, notificationOptions);
-       setTimeout(() => notification.close(), 15000);
+       navigator.serviceWorker.ready.then(registration => {
+            registration.showNotification(notificationTitle, notificationOptions);
+       });
       }
       
       function renderPrayerTimes(prayerTimes) {
@@ -1169,33 +1263,44 @@
       function startCountdown(prayerTimes) {
           if (countdownInterval) clearInterval(countdownInterval);
           const prayerOrder = ['Imsak', 'Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-          
+          let triggeredPrayers = [];
+
           function update() {
+              checkForDateChangeAndRefetch();
               const now = new Date();
               let nextPrayerTime, nextPrayerName;
+              
               for (const name of prayerOrder) {
                   const prayerDate = new Date(`${now.toDateString()} ${prayerTimes[name]}`);
-                  if (prayerDate > now) {
+                  if (prayerDate > now && !triggeredPrayers.includes(name)) {
                       nextPrayerTime = prayerDate;
                       nextPrayerName = name;
                       break;
                   }
               }
+
               if (!nextPrayerTime) {
                   const tomorrow = new Date(now);
                   tomorrow.setDate(now.getDate() + 1);
                   nextPrayerTime = new Date(`${tomorrow.toDateString()} ${prayerTimes['Imsak']}`);
                   nextPrayerName = 'Imsak';
+                  triggeredPrayers = [];
               }
+
               const diff = nextPrayerTime - now;
               if (diff < 0) return;
 
-              if (diff > 0 && diff < 1000) {
+              if (diff <= 1000 && !triggeredPrayers.includes(nextPrayerName)) {
                   const translatedPrayerName = translations[currentLanguage][nextPrayerName] || nextPrayerName;
                   showPrayerNotification(translatedPrayerName);
                   playPrayerAudio(nextPrayerName);
+                  triggeredPrayers.push(nextPrayerName); 
                   
-                  if (window.latestPrayerTimes) renderPrayerTimes(window.latestPrayerTimes);
+                  setTimeout(() => {
+                    if (window.latestPrayerTimes) {
+                      startCountdown(window.latestPrayerTimes);
+                    }
+                  }, 2000);
               }
               
               const h = String(Math.floor(diff / 3600000)).padStart(2, '0');
@@ -1204,8 +1309,16 @@
               countdownTimerEl.textContent = `${h}:${m}:${s}`;
               nextPrayerNameEl.textContent = translations[currentLanguage][nextPrayerName] || nextPrayerName;
           }
+
           update();
           countdownInterval = setInterval(update, 1000);
+          
+          document.addEventListener("visibilitychange", () => {
+            if (document.visibilityState === "visible") {
+                console.log("Tab is visible again, syncing countdown...");
+                update();
+            }
+          });
       }
       
       function generateCalendar() {
@@ -1234,136 +1347,143 @@
       }
       
       function setupPrayerTimesWithOfflineCache() {
-        const CACHE_KEY_MONTHLY_TIMINGS = 'prayer_monthly_timings';
-        const CACHE_KEY_CITY = 'prayer_city_data';
+       const CACHE_KEY_MONTHLY_TIMINGS = 'prayer_monthly_timings';
+       const CACHE_KEY_CITY = 'prayer_city_data';
+       const CACHE_KEY_COORDS = 'prayer_coords';
 
-        function loadPrayerDataFromCache() {
-            const cachedCity = localStorage.getItem(CACHE_KEY_CITY);
-            if (cachedCity) {
-                document.getElementById('city-name').textContent = cachedCity;
-            }
+       function loadPrayerDataFromCache() {
+           const cachedCity = localStorage.getItem(CACHE_KEY_CITY);
+           if (cachedCity) {
+               document.getElementById('city-name').textContent = cachedCity;
+           }
 
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = today.getMonth() + 1;
-            const day = today.getDate();
-            const cacheKey = `timings_${year}_${month}`;
+           const today = new Date();
+           const year = today.getFullYear();
+           const month = today.getMonth() + 1;
+           const day = today.getDate();
+           const cacheKey = `timings_${year}_${month}`;
 
-            const monthlyData = JSON.parse(localStorage.getItem(CACHE_KEY_MONTHLY_TIMINGS));
-            
-            if (monthlyData && monthlyData.key === cacheKey) {
-                console.log("Memuat jadwal sholat dari cache bulanan.");
-                const todayData = monthlyData.data[day - 1];
-                if(todayData) {
-                    const todayTimings = todayData.timings;
-                    const todayHijri = todayData.date.hijri;
-                    const hijriText = `${todayHijri.day} ${todayHijri.month.en} ${todayHijri.year} H`;
-                    
-                    hijriDateEl.textContent = hijriText;
-                    window.latestPrayerTimes = todayTimings;
-                    renderPrayerTimes(todayTimings);
-                    startCountdown(todayTimings);
-                } else {
-                    console.error("Data untuk hari ini tidak ditemukan di cache bulanan.");
-                }
-            } else {
-                console.log("Tidak ada data jadwal sholat di cache untuk bulan ini, akan coba fetch dari internet.");
-            }
-        }
-        
-        function fetchCityName(lat, lon) {
-            fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
-                .then(r => r.json())
-                .then(data => {
-                    const cityName = data.address.city || data.address.town || data.address.village || "Lokasi Tidak Diketahui";
-                    document.getElementById('city-name').textContent = cityName;
-                    localStorage.setItem(CACHE_KEY_CITY, cityName);
-                })
-                .catch(error => {
-                    console.error("Gagal mengambil nama kota:", error);
-                    const cachedCity = localStorage.getItem(CACHE_KEY_CITY);
-                    if (cachedCity) document.getElementById('city-name').textContent = cachedCity;
-                });
-        }
+           const monthlyData = JSON.parse(localStorage.getItem(CACHE_KEY_MONTHLY_TIMINGS));
+           
+           if (monthlyData && monthlyData.key === cacheKey) {
+               console.log("Memuat jadwal sholat dari cache bulanan.");
+               const todayData = monthlyData.data[day - 1];
+               if(todayData) {
+                   const todayTimings = todayData.timings;
+                   const todayHijri = todayData.date.hijri;
+                   const hijriText = `${todayHijri.day} ${todayHijri.month.en} ${todayHijri.year} H`;
+                   
+                   hijriDateEl.textContent = hijriText;
+                   window.latestPrayerTimes = todayTimings;
+                   renderPrayerTimes(todayTimings);
+                   startCountdown(todayTimings);
+                   return true;
+               }
+           }
+           console.log("Cache tidak valid atau tidak tersedia untuk hari ini.");
+           return false;
+       }
+       
+       function fetchCityName(lat, lon) {
+           fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
+               .then(r => r.json())
+               .then(data => {
+                   const cityName = data.address.city || data.address.town || data.address.village || "Lokasi Tidak Diketahui";
+                   document.getElementById('city-name').textContent = cityName;
+                   localStorage.setItem(CACHE_KEY_CITY, cityName);
+               })
+               .catch(error => {
+                   console.error("Gagal mengambil nama kota:", error);
+                   const cachedCity = localStorage.getItem(CACHE_KEY_CITY);
+                   if (cachedCity) document.getElementById('city-name').textContent = cachedCity;
+               });
+       }
 
-        function fetchPrayerTimings(lat, lon) {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = now.getMonth() + 1;
+       function fetchPrayerTimings(lat, lon) {
+           const now = new Date();
+           const year = now.getFullYear();
+           const month = now.getMonth() + 1;
 
-            fetch(`https://api.aladhan.com/v1/calendar/${year}/${month}?latitude=${lat}&longitude=${lon}&method=11`)
-                .then(r => r.json())
-                .then(j => {
-                    if (j.code === 200) {
-                        console.log("Berhasil mengambil data jadwal sholat baru untuk sebulan dari API.");
-                        const cacheKey = `timings_${year}_${month}`;
+           fetch(`https://api.aladhan.com/v1/calendar/${year}/${month}?latitude=${lat}&longitude=${lon}&method=11`)
+               .then(r => r.json())
+               .then(j => {
+                   if (j.code === 200) {
+                       console.log("Berhasil mengambil data jadwal sholat baru untuk sebulan dari API.");
+                       localStorage.setItem(CACHE_KEY_COORDS, JSON.stringify({lat, lon}));
+                       const cacheKey = `timings_${year}_${month}`;
 
-                        const adjustedData = j.data.map(dailyData => {
-                            const adjustedTimings = {};
-                            for (const key in dailyData.timings) {
-                                const timeString = dailyData.timings[key].split(' ')[0]; 
-                                const [h, m] = timeString.split(':').map(Number);
+                       const adjustedData = j.data.map(dailyData => {
+                           const adjustedTimings = {};
+                           for (const key in dailyData.timings) {
+                               const timeString = dailyData.timings[key].split(' ')[0]; 
+                               const [h, m] = timeString.split(':').map(Number);
 
-                                if (!isNaN(h) && !isNaN(m)) {
-                                    const date = new Date();
-                                    date.setHours(h, m + 2, 0, 0); 
-                                    adjustedTimings[key] = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
-                                } else {
-                                    adjustedTimings[key] = dailyData.timings[key];
-                                }
-                            }
-                            return { ...dailyData, timings: adjustedTimings };
-                        });
+                               if (!isNaN(h) && !isNaN(m)) {
+                                   const date = new Date();
+                                   date.setHours(h, m + 2, 0, 0); 
+                                   adjustedTimings[key] = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+                               } else {
+                                   adjustedTimings[key] = dailyData.timings[key];
+                               }
+                           }
+                           return { ...dailyData, timings: adjustedTimings };
+                       });
 
-                        const dataToStore = {
-                            key: cacheKey,
-                            data: adjustedData
-                        };
-                        
-                        localStorage.setItem(CACHE_KEY_MONTHLY_TIMINGS, JSON.stringify(dataToStore));
-                        console.log("Data jadwal sholat sebulan penuh telah disimpan ke cache.");
-                        
-                        loadPrayerDataFromCache(); 
-                    } else {
-                        console.error("API Aladhan mengembalikan error, menggunakan data cache jika ada.");
-                    }
-                })
-                .catch(error => {
-                    console.error("Gagal mengambil jadwal sholat (kemungkinan offline):", error);
-                });
-        }
+                       const dataToStore = { key: cacheKey, data: adjustedData };
+                       localStorage.setItem(CACHE_KEY_MONTHLY_TIMINGS, JSON.stringify(dataToStore));
+                       console.log("Data jadwal sholat sebulan penuh telah disimpan ke cache.");
+                       
+                       loadPrayerDataFromCache(); 
+                   } else {
+                       console.error("API Aladhan mengembalikan error.");
+                   }
+               })
+               .catch(error => {
+                   console.error("Gagal mengambil jadwal sholat (kemungkinan offline):", error);
+               });
+       }
 
-        function getLocation() {
-            const fallbackLat = 3.5952;
-            const fallbackLon = 98.6722;
-            const fallbackCity = "Medan";
-            const handleLocationError = (error) => {
-                console.warn(`Tidak bisa mendapatkan lokasi: ${error.message}. Menggunakan lokasi fallback.`);
-                if (!localStorage.getItem(CACHE_KEY_MONTHLY_TIMINGS)) {
-                    fetchPrayerTimings(fallbackLat, fallbackLon);
-                }
-                if (!localStorage.getItem(CACHE_KEY_CITY)) {
-                    document.getElementById('city-name').textContent = fallbackCity;
-                    localStorage.setItem(CACHE_KEY_CITY, fallbackCity);
-                }
-            };
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        fetchPrayerTimings(position.coords.latitude, position.coords.longitude);
-                        fetchCityName(position.coords.latitude, position.coords.longitude);
-                    },
-                    handleLocationError, { timeout: 10000 }
-                );
-            } else {
-                handleLocationError({ message: "Geolocation tidak didukung" });
-            }
-        }
+       window.checkForDateChangeAndRefetch = function() {
+          const currentDate = new Date().getDate();
+          if (currentDate !== lastCheckedDate) {
+              console.log("Pergantian hari terdeteksi, memuat ulang jadwal sholat...");
+              lastCheckedDate = currentDate;
+              const coords = JSON.parse(localStorage.getItem(CACHE_KEY_COORDS));
+              if(coords) {
+                  fetchPrayerTimings(coords.lat, coords.lon);
+              }
+              updateDates();
+          }
+       }
 
-        loadPrayerDataFromCache();
-        updateDates();
-        generateCalendar();
-        getLocation();
+       function initializeLocation() {
+          const handleLocationError = (error) => {
+              console.warn(`Tidak bisa mendapatkan lokasi: ${error.message}.`);
+              if (!loadPrayerDataFromCache()) {
+                  console.warn("Cache juga gagal. Menggunakan lokasi fallback (Medan).");
+                  fetchPrayerTimings(3.5952, 98.6722);
+                  document.getElementById('city-name').textContent = "Medan (Fallback)";
+              }
+          };
+
+          if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(
+                  (position) => {
+                      fetchPrayerTimings(position.coords.latitude, position.coords.longitude);
+                      fetchCityName(position.coords.latitude, position.coords.longitude);
+                  },
+                  handleLocationError, { timeout: 10000, enableHighAccuracy: true }
+              );
+          } else {
+              handleLocationError({ message: "Geolocation tidak didukung" });
+          }
+       }
+       
+       if (!loadPrayerDataFromCache()) {
+           initializeLocation();
+       }
+       updateDates();
+       generateCalendar();
       }
       
       // --- DOA HARIAN FEATURE ---
@@ -1458,12 +1578,12 @@
                   const item = document.createElement('div');
                   item.className = 'list-item';
                   item.innerHTML = `
-                                        <span class="num">${surah.number}</span>
-                                        <div class="details">
-                                            <div class="title">${surah.name.transliteration.id}</div>
-                                            <div class="subtitle">${surah.name.translation.id} (${surah.numberOfVerses} verses)</div>
-                                        </div>
-                                        <span class="arabic">${surah.name.short}</span>`;
+                                              <span class="num">${surah.number}</span>
+                                              <div class="details">
+                                                  <div class="title">${surah.name.transliteration.id}</div>
+                                                  <div class="subtitle">${surah.name.translation.id} (${surah.numberOfVerses} verses)</div>
+                                              </div>
+                                              <span class="arabic">${surah.name.short}</span>`;
                   item.addEventListener('click', () => showSurahDetail(surah.number, backTarget));
                   container.appendChild(item);
               });
@@ -1511,28 +1631,28 @@
                   surahViewTitle.textContent = `${surah.name.transliteration.id}`;
                   
                   let contentHtml = `
-                                      <div class="surah-detail-header">
-                                          <h2>${surah.name.long}</h2>
-                                          <p>${surah.name.translation.id}</p>
-                                          <div class="meta">${surah.revelation.id} • ${surah.numberOfVerses} VERSES</div>
-                                      </div>`;
+                                        <div class="surah-detail-header">
+                                            <h2>${surah.name.long}</h2>
+                                            <p>${surah.name.translation.id}</p>
+                                            <div class="meta">${surah.revelation.id} • ${surah.numberOfVerses} VERSES</div>
+                                        </div>`;
                   
                   if (surah.number !== 1 && surah.number !== 9) {
                       contentHtml += `
-                                          <div class="basmala">
-                                              <p class="basmala-arabic">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
-                                              <p class="basmala-translation">Dengan menyebut nama Allah Yang Maha Pengasih, lagi Maha Penyayang</p>
-                                          </div>`;
+                                            <div class="basmala">
+                                                <p class="basmala-arabic">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
+                                                <p class="basmala-translation">Dengan menyebut nama Allah Yang Maha Pengasih, lagi Maha Penyayang</p>
+                                            </div>`;
                   }
       
                   surah.verses.forEach(ayah => {
                       contentHtml += `
-                                          <div class="ayah-item">
-                                              <div class="ayah-header"><span class="ayah-number">${surah.number}:${ayah.number.inSurah}</span></div>
-                                              <p class="ayah-arabic">${ayah.text.arab}</p>
-                                              <p class="ayah-latin">${ayah.text.transliteration.en}</p>
-                                              <p class="ayah-translation"><b>Artinya:</b> ${ayah.translation.id}</p>
-                                          </div>`;
+                                              <div class="ayah-item">
+                                                  <div class="ayah-header"><span class="ayah-number">${surah.number}:${ayah.number.inSurah}</span></div>
+                                                  <p class="ayah-arabic">${ayah.text.arab}</p>
+                                                  <p class="ayah-latin">${ayah.text.transliteration.en}</p>
+                                                  <p class="ayah-translation"><b>Artinya:</b> ${ayah.translation.id}</p>
+                                              </div>`;
                   });
                   surahViewBody.innerHTML = contentHtml;
       
@@ -1641,7 +1761,7 @@
                                               <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
                                               <p class="single-item-arti"><b>Artinya:</b> ${dzikir.arti}</p>
                                               <button id="start-dzikir-btn" class="modal-action-btn">Mulai Dzikir (Target: ${dzikir.target})</button>
-                                                                        `;
+                                                                            `;
               
               modalBody.querySelector('#start-dzikir-btn').addEventListener('click', () => {
                   dzikirDetailModal.style.display = 'none';
@@ -1863,13 +1983,11 @@
           backButton.addEventListener('click', stopCompass);
       }
 
-      // --- [REVISED] PENGATURAN SUARA ADZAN ---
-      
+      // --- Pengaturan Suara Adzan ---
       function renderFullAdhanSettingsPage() {
           const body = document.getElementById('adhan-settings-body');
-          body.innerHTML = ''; // Kosongkan konten sebelumnya
-          
-          // [UPDATED] Peta pengaturan sekarang menyertakan Imsak
+          body.innerHTML = ''; 
+
           const prayerSettingsMap = [
               { key: 'Imsak',   label: translations[currentLanguage]['Imsak'] || 'Imsak' },
               { key: 'Fajr',    label: translations[currentLanguage]['Fajr'] || 'Subuh' },
@@ -1892,23 +2010,29 @@
               group.appendChild(title);
 
               const availableOptions = adhanOptionsMap[prayerKey];
-              if (!availableOptions) return; // Lewati jika tidak ada mapping
+              if (!availableOptions) return;
               
               availableOptions.forEach(soundKey => {
                   const soundInfo = adhanSoundFiles[soundKey];
                   if (!soundInfo) return;
 
-                  const isSelected = soundKey === currentSetting;
-                  const item = document.createElement('div');
-                  item.className = `selection-item ${isSelected ? 'selected' : ''}`;
-                  item.dataset.prayer = prayerKey;
-                  item.dataset.sound = soundKey;
+                  const isSelected = soundKey === currentSetting.sound;
                   
-                  item.innerHTML = `
-                      <span>${soundInfo.name}</span>
-                      <span class="checkmark">✓</span>
+                  const wrapper = document.createElement('div');
+                  wrapper.className = 'selection-item-wrapper';
+                  
+                  wrapper.innerHTML = `
+                      <div class="selection-item ${isSelected ? 'selected' : ''}" data-prayer="${prayerKey}" data-sound="${soundKey}">
+                          <span>${soundInfo.name}</span>
+                          <span class="checkmark">✓</span>
+                      </div>
+                      <div class="volume-control-container ${isSelected && soundKey !== 'none' ? 'active' : ''}">
+                          <span class="volume-icon">🔉</span>
+                          <input type="range" min="0" max="1" step="0.1" value="${currentSetting.volume}" class="volume-slider" data-prayer="${prayerKey}">
+                          <button class="test-sound-btn" data-sound="${soundKey}" aria-label="Test Sound">🎵</button>
+                      </div>
                   `;
-                  group.appendChild(item);
+                  group.appendChild(wrapper);
               });
               
               body.appendChild(group);
@@ -1920,25 +2044,68 @@
           
           body.addEventListener('click', (e) => {
               const item = e.target.closest('.selection-item');
-              if (!item) return;
+              if (item) {
+                const prayerKey = item.dataset.prayer;
+                const newSoundKey = item.dataset.sound;
+                const currentVolume = prayerAudioSettings[prayerKey].volume;
 
-              const prayerKey = item.dataset.prayer;
-              const soundKey = item.dataset.sound;
+                prayerAudioSettings[prayerKey] = { sound: newSoundKey, volume: currentVolume };
+                localStorage.setItem('prayerAudioSettings', JSON.stringify(prayerAudioSettings));
 
-              prayerAudioSettings[prayerKey] = soundKey;
-              localStorage.setItem('prayerAudioSettings', JSON.stringify(prayerAudioSettings));
+                const group = item.closest('.settings-group');
+                if (group) {
+                    const previouslySelected = group.querySelector('.selection-item.selected');
+                    if (previouslySelected) {
+                        previouslySelected.classList.remove('selected');
+                        const prevSliderContainer = previouslySelected.nextElementSibling;
+                        if(prevSliderContainer && prevSliderContainer.classList.contains('volume-control-container')){
+                            prevSliderContainer.classList.remove('active');
+                        }
+                    }
+                    
+                    item.classList.add('selected');
+                    
+                    const newSliderContainer = item.nextElementSibling;
+                    if (newSoundKey !== 'none' && newSliderContainer && newSliderContainer.classList.contains('volume-control-container')) {
+                        newSliderContainer.classList.add('active');
+                    }
+                }
+              }
 
-              const group = item.closest('.settings-group');
-              if (group) {
-                  const previouslySelected = group.querySelector('.selection-item.selected');
-                  if (previouslySelected) {
-                      previouslySelected.classList.remove('selected');
+              const testBtn = e.target.closest('.test-sound-btn');
+              if (testBtn) {
+                  const soundKey = testBtn.dataset.sound;
+                  const slider = testBtn.previousElementSibling;
+                  const volume = parseFloat(slider.value);
+                  const soundInfo = adhanSoundFiles[soundKey];
+
+                  if (soundInfo && soundInfo.audioId) {
+                      const audioElement = document.getElementById(soundInfo.audioId);
+                      if (audioElement) {
+                          stopAllAdhanAudio();
+                          audioElement.volume = volume;
+                          audioElement.currentTime = 0;
+                          audioElement.play().catch(err => console.error("Test play failed:", err));
+                      }
                   }
               }
-              item.classList.add('selected');
+          });
+          
+          body.addEventListener('input', (e) => {
+              if (e.target.classList.contains('volume-slider')) {
+                  const slider = e.target;
+                  const prayerKey = slider.dataset.prayer;
+                  const newVolume = parseFloat(slider.value);
+                  
+                  if (prayerAudioSettings[prayerKey]) {
+                      prayerAudioSettings[prayerKey].volume = newVolume;
+                      localStorage.setItem('prayerAudioSettings', JSON.stringify(prayerAudioSettings));
+                  }
+              }
           });
 
           document.getElementById('adhan-settings-back-btn').addEventListener('click', () => {
+              stopAllAdhanAudio();
               showView('prayer-times-view');
               document.getElementById('settings-modal').style.display = 'flex';
           });
@@ -1952,21 +2119,20 @@
           const enableNotificationsBtn = document.getElementById('enable-notifications-btn');
           const adhanSettingsContainer = document.getElementById('adhan-settings-trigger-container');
       
-          // TEMA
           const applyTheme = (theme) => { darkModeToggle.checked = theme === 'dark'; document.body.classList.toggle('dark-mode', theme === 'dark'); };
           darkModeToggle.addEventListener('change', () => { const theme = darkModeToggle.checked ? 'dark' : 'light'; localStorage.setItem('theme', theme); applyTheme(theme); });
           applyTheme(localStorage.getItem('theme') || 'light');
       
-          // NOTIFIKASI
-          function updateNotificationButtonState() {
-              if (!("Notification" in window)) {
-                  enableNotificationsBtn.textContent = 'Not Supported';
+          // [DISEMPURNAKAN] Logika Notifikasi diubah
+          window.updateNotificationButtonState = function() {
+              if (!("Notification" in window) || !("serviceWorker" in navigator)) {
+                  enableNotificationsBtn.textContent = 'Tidak Didukung';
                   enableNotificationsBtn.disabled = true;
                   return;
               }
               switch(Notification.permission) {
                   case 'granted':
-                      enableNotificationsBtn.textContent = 'Diizinkan';
+                      enableNotificationsBtn.textContent = 'Telah Diizinkan';
                       enableNotificationsBtn.disabled = true;
                       break;
                   case 'denied':
@@ -1978,32 +2144,28 @@
                       enableNotificationsBtn.disabled = false;
               }
           }
-          function requestNotificationPermission() {
-              if (!("Notification" in window)) {
-                  alert("Browser ini tidak mendukung notifikasi desktop.");
-                  updateNotificationButtonState();
-                  return;
-              }
+          
+          // Fungsi ini sekarang hanya untuk tombol manual jika user menolak izin otomatis
+          function requestManualNotificationPermission() {
               if (Notification.permission !== 'denied') {
                   Notification.requestPermission().then(permission => {
                       if (permission === "granted") {
                           new Notification("Notifikasi Diaktifkan!", {
-                              body: "Anda akan menerima notifikasi waktu sholat.",
+                              body: "Anda akan menerima notifikasi waktu sholat.", icon: 'logo-annur.jpg'
                           });
                       }
                       updateNotificationButtonState();
                   });
               }
           }
-          enableNotificationsBtn.addEventListener('click', requestNotificationPermission);
-          updateNotificationButtonState();
+          enableNotificationsBtn.addEventListener('click', requestManualNotificationPermission);
+          updateNotificationButtonState(); // Tetap panggil untuk set state awal
       
-          // [REVISED] Trigger untuk halaman pengaturan adzan
           function renderAdhanTriggerButton() {
              adhanSettingsContainer.innerHTML = `
                   <h4 data-key="settings_adhan_sound">Pengaturan Suara Adzan</h4>
                   <div class="settings-menu-item" id="open-adhan-settings-btn" style="border-bottom: none; padding-bottom: 0;">
-                      <span>Atur Suara untuk Tiap Waktu</span>
+                      <span>Atur Suara & Volume untuk Tiap Waktu</span>
                       <span class="arrow">&rsaquo;</span>
                   </div>`;
               document.getElementById('open-adhan-settings-btn').addEventListener('click', () => {
@@ -2013,7 +2175,6 @@
               });
           }
           
-          // BAHASA
           const setLanguage = (lang) => {
               currentLanguage = lang;
               localStorage.setItem('language', lang);
@@ -2047,7 +2208,35 @@
           settingsModal.querySelector('.close-button').addEventListener('click', () => settingsModal.style.display = 'none');
       }
 
-      // --- FUNGSI UNTUK HALAMAN DETAIL APLIKASI & KONTENNYA ---
+      // [BARU] Fungsi untuk meminta izin notifikasi saat load
+      function requestInitialNotificationPermission() {
+        if (!("Notification" in window) || !("serviceWorker" in navigator)) {
+            console.log("Notifikasi tidak didukung oleh browser ini.");
+            return;
+        }
+
+        // Hanya minta izin jika statusnya 'default' (belum ditanya sama sekali)
+        if (Notification.permission === 'default') {
+            setTimeout(() => {
+                console.log("Meminta izin notifikasi awal...");
+                Notification.requestPermission().then(permission => {
+                    console.log("Status Izin Notifikasi:", permission);
+                    // Setelah user memilih, update state tombol di pengaturan
+                    if(window.updateNotificationButtonState) {
+                       updateNotificationButtonState(); 
+                    }
+                    if (permission === 'granted') {
+                         new Notification("Notifikasi Telah Diaktifkan!", {
+                             body: "Anda akan menerima notifikasi waktu sholat.",
+                             icon: 'logo-annur.jpg'
+                         });
+                    }
+                });
+            }, 3000); // Tunda 3 detik agar tidak terlalu mengganggu saat awal buka
+        }
+      }
+
+      // --- FUNGSI UNTUK HALAMAN DETAIL APLIKASI ---
       function setupAppDetailPages() {
           const settingsModal = document.getElementById('settings-modal');
           const detailAppBtn = document.getElementById('detail-app-btn');
@@ -2082,10 +2271,12 @@
       setupDzikir();
       setupQiblaFeature();
       setupAppDetailPages();
-      setupAdhanSettingsPage(); // [BARU] Inisialisasi halaman pengaturan adzan
+      setupAdhanSettingsPage();
       setupPrayerTimesWithOfflineCache();
       
       showView('prayer-times-view');
+      requestInitialNotificationPermission(); // Panggil fungsi izin notifikasi otomatis
+
     });
 
     // --- PENDAFTARAN SERVICE WORKER & PENYIMPANAN PERMANEN ---
