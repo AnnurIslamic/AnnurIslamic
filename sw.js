@@ -1,39 +1,39 @@
-// Nama cache unik. Ubah nomor versi jika Anda memperbarui file statis.
-const STATIC_CACHE_NAME = 'annur-islamic-static-v5';
-const DYNAMIC_CACHE_NAME = 'annur-islamic-dynamic-v5';
+// Nama cache yang unik. Ubah nomor versi jika Anda memperbarui file inti aplikasi.
+const STATIC_CACHE_NAME = 'annur-islamic-static-v6';
+const DYNAMIC_CACHE_NAME = 'annur-islamic-dynamic-v6';
 
-// Aset inti aplikasi (App Shell) yang harus selalu ada untuk penggunaan offline.
-// Daftar ini diambil dari gabungan kedua file Anda untuk kelengkapan.
+// Aset inti aplikasi (App Shell) yang harus selalu ada.
+// [PERBAIKAN] Path file disesuaikan untuk GitHub Pages.
 const APP_SHELL_ASSETS = [
-    '/',
-    'index.html',
-    'manifest.json',
-    'logo-annur.jpg',
-    // Tambahkan path ke file CSS dan JS utama Anda di sini jika ada.
-    // Contoh: 'styles/main.css', 'scripts/app.js'
+    '/AnnurIslamic/',
+    '/AnnurIslamic/index.html',
+    '/AnnurIslamic/manifest.json',
+    '/AnnurIslamic/logo-annur.jpg',
+    // Jika punya file CSS atau JS sendiri, tambahkan di sini. Contoh:
+    // '/AnnurIslamic/assets/style.css',
+    // '/AnnurIslamic/assets/app.js'
 ];
 
-// Event 'install': Menyimpan App Shell ke cache saat Service Worker diinstal.
+// Event 'install': Menyimpan App Shell ke cache statis.
 self.addEventListener('install', event => {
-    console.log('[SW] Installing Service Worker...');
+    console.log('[SW] Menginstall Service Worker...');
     event.waitUntil(
         caches.open(STATIC_CACHE_NAME).then(cache => {
-            console.log('[SW] Precaching App Shell...');
-            // Menambahkan semua aset inti ke dalam cache.
+            console.log('[SW] Menyimpan App Shell ke cache...');
             return cache.addAll(APP_SHELL_ASSETS);
         })
     );
 });
 
-// Event 'activate': Membersihkan cache lama agar tidak memakan ruang.
+// Event 'activate': Membersihkan cache lama agar tidak menumpuk.
 self.addEventListener('activate', event => {
-    console.log('[SW] Activating Service Worker...');
+    console.log('[SW] Mengaktifkan Service Worker...');
     event.waitUntil(
         caches.keys().then(keyList => {
             return Promise.all(keyList.map(key => {
                 // Hapus semua cache yang tidak sesuai dengan nama cache saat ini.
                 if (key !== STATIC_CACHE_NAME && key !== DYNAMIC_CACHE_NAME) {
-                    console.log('[SW] Removing old cache:', key);
+                    console.log('[SW] Menghapus cache lama:', key);
                     return caches.delete(key);
                 }
             }));
@@ -42,38 +42,43 @@ self.addEventListener('activate', event => {
     return self.clients.claim();
 });
 
-// Event 'fetch': Menyadap semua permintaan jaringan.
+// Event 'fetch': Menyadap permintaan jaringan dan menerapkan strategi caching.
 self.addEventListener('fetch', event => {
     const requestUrl = new URL(event.request.url);
 
-    // Strategi 1: Cache First, then Network untuk API dan Font
-    // Ini ideal untuk data yang jarang berubah seperti detail surah atau file font.
-    if (requestUrl.hostname === 'api.quran.gading.dev' ||
-        requestUrl.hostname === 'fonts.gstatic.com' ||
-        requestUrl.hostname === 'fonts.googleapis.com') { // Menambahkan googleapis untuk CSS font
+    // Strategi untuk API (Jadwal Sholat, Al-Qur'an) dan Font Web.
+    // Data ini akan disimpan di cache dinamis.
+    const apiHosts = [
+        'api.aladhan.com', // [TAMBAHAN] API Jadwal Sholat
+        'api.quran.gading.dev',
+        'fonts.gstatic.com',
+        'fonts.googleapis.com',
+        'raw.githubusercontent.com' // [TAMBAHAN] Untuk file audio adzan
+    ];
+
+    if (apiHosts.includes(requestUrl.hostname)) {
         event.respondWith(
             caches.open(DYNAMIC_CACHE_NAME).then(cache => {
-                return cache.match(event.request).then(cachedResponse => {
-                    // Jika respons ada di cache, langsung gunakan.
-                    if (cachedResponse) {
+                // 1. Coba ambil dari jaringan dulu untuk data terbaru (Network First)
+                return fetch(event.request).then(networkResponse => {
+                    // Jika berhasil, simpan ke cache dinamis dan kembalikan
+                    cache.put(event.request, networkResponse.clone());
+                    return networkResponse;
+                }).catch(() => {
+                    // 2. Jika gagal (offline), coba cari di cache
+                    return cache.match(event.request).then(cachedResponse => {
+                        // Kembalikan dari cache jika ada
                         return cachedResponse;
-                    }
-                    // Jika tidak, ambil dari jaringan.
-                    return fetch(event.request).then(networkResponse => {
-                        // Simpan respons jaringan ke cache dinamis untuk penggunaan offline berikutnya.
-                        cache.put(event.request, networkResponse.clone());
-                        return networkResponse;
                     });
                 });
             })
         );
     }
-    // Strategi 2: Cache First untuk aset statis lainnya (App Shell)
+    // Strategi untuk aset inti aplikasi (Cache First)
     else {
         event.respondWith(
             caches.match(event.request).then(response => {
-                // Kembalikan dari cache jika ada. Jika tidak ada (misal gambar baru),
-                // ambil dari jaringan. Tidak disimpan di cache dinamis karena dianggap statis.
+                // Kembalikan dari cache jika ada, jika tidak, ambil dari jaringan.
                 return response || fetch(event.request);
             })
         );
