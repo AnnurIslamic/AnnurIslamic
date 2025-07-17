@@ -179,6 +179,39 @@
     .full-modal .modal-header .action-icon.bookmarked { color: var(--bookmark-active); }
     .full-modal .modal-body { padding: 1.5rem; overflow-y: auto; flex-grow: 1; }
 
+    /* --- [BARU] CSS untuk Modal Izin Kustom --- */
+    .permission-modal-content {
+        padding: 1.5rem;
+        text-align: center;
+    }
+    .permission-modal-content h3 {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        color: var(--header-bg);
+    }
+    body.dark-mode .permission-modal-content h3 {
+        color: var(--accent-color);
+    }
+    .permission-modal-content p {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+        color: var(--text-color);
+        opacity: 0.9;
+    }
+    .permission-modal-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+    }
+    .permission-modal-actions .modal-action-btn {
+        flex-grow: 1;
+    }
+    .permission-modal-actions .deny-btn {
+        background-color: var(--tap-area-bg);
+        color: var(--text-color);
+    }
+
     /* STYLE KONTEN MODAL & SURAH VIEW */
     .settings-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid #eee; }
     body.dark-mode .settings-item { border-bottom-color: #333; }
@@ -825,7 +858,7 @@
           <h2>Pengaturan Suara Adzan</h2>
       </div>
       <div class="content-body" id="adhan-settings-body">
-          </div>
+        </div>
   </div>
 
   <div id="app-detail-view" class="main-view" style="display: none; padding-top: 1.5rem;">
@@ -947,6 +980,28 @@
       </div>
   </div>
   
+  <div id="custom-location-modal" class="full-modal">
+    <div class="modal-content permission-modal-content">
+      <h3>Butuh Izin Lokasi Anda</h3>
+      <p>Aplikasi ini memerlukan akses ke lokasi Anda untuk menampilkan jadwal sholat dan arah kiblat yang akurat. Data lokasi Anda tidak disimpan atau dibagikan.</p>
+      <div class="permission-modal-actions">
+        <button id="deny-location-btn" class="modal-action-btn deny-btn" style="margin-top: 0;">Nanti Saja</button>
+        <button id="allow-location-btn" class="modal-action-btn" style="margin-top: 0;">Izinkan</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="custom-notification-modal" class="full-modal">
+    <div class="modal-content permission-modal-content">
+      <h3>Aktifkan Notifikasi Adzan?</h3>
+      <p>Izinkan aplikasi mengirimkan notifikasi agar Anda tidak ketinggalan waktu sholat. Anda dapat mengatur suara dan jadwal notifikasi di menu Pengaturan.</p>
+      <div class="permission-modal-actions">
+        <button id="deny-notification-btn" class="modal-action-btn deny-btn" style="margin-top: 0;">Lain Kali</button>
+        <button id="allow-notification-btn" class="modal-action-btn" style="margin-top: 0;">Aktifkan</button>
+      </div>
+    </div>
+  </div>
+
   <audio id="audio-notification" src="https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/notifikasi.mp3" preload="auto"></audio>
   <audio id="audio-adhan-fajr" src="https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/adzansubuh.mp3" preload="auto"></audio>
   <audio id="audio-adhan-mishary" src="https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/mishary.mp3" preload="auto"></audio>
@@ -1135,7 +1190,7 @@
       const gregorianDateEl = document.getElementById('gregorian-date-display');
       const hijriDateEl = document.getElementById('hijri-date-display');
       
-      // --- CUSTOM PERMISSION HANDLING ---
+      // --- [BARU] CUSTOM PERMISSION HANDLING ---
       function setupCustomPermissions() {
           const locationModal = document.getElementById('custom-location-modal');
           const allowLocationBtn = document.getElementById('allow-location-btn');
@@ -1145,21 +1200,18 @@
           const allowNotificationBtn = document.getElementById('allow-notification-btn');
           const denyNotificationBtn = document.getElementById('deny-notification-btn');
 
-          // Fungsi untuk meminta lokasi
+          // Fungsi untuk meminta lokasi dengan alur kustom
           window.requestLocationPermission = function() {
               return new Promise((resolve, reject) => {
                   if (navigator.geolocation) {
-                      // Gunakan Permissions API untuk memeriksa status izin
                       navigator.permissions.query({ name: 'geolocation' }).then(permissionStatus => {
                           if (permissionStatus.state === 'granted') {
-                              // Izin sudah diberikan, langsung dapatkan lokasi
                               navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
                           } else if (permissionStatus.state === 'prompt') {
-                              // Izin belum ditentukan, tampilkan modal kustom kita
                               locationModal.style.display = 'flex';
                               allowLocationBtn.onclick = () => {
                                   locationModal.style.display = 'none';
-                                  // Setelah user klik "Izinkan" di modal kita, baru tampilkan prompt asli browser
+                                  // Tampilkan prompt asli browser setelah user klik "Izinkan"
                                   navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
                               };
                               denyLocationBtn.onclick = () => {
@@ -1167,7 +1219,6 @@
                                   reject({ code: 1, message: "User denied the request from custom modal." });
                               };
                           } else { // 'denied'
-                              // Izin sudah ditolak sebelumnya
                               reject({ code: 1, message: "User has previously denied location access." });
                           }
                       });
@@ -1177,14 +1228,13 @@
               });
           }
 
-          // Fungsi untuk meminta notifikasi
+          // Fungsi untuk meminta notifikasi dengan alur kustom
           window.requestNotificationPermission = function() {
               return new Promise((resolve, reject) => {
                   if ('Notification' in window) {
                       if (Notification.permission === 'granted') {
                           resolve('granted');
                       } else if (Notification.permission === 'default') {
-                          // Tampilkan modal kustom
                           notificationModal.style.display = 'flex';
                           allowNotificationBtn.onclick = () => {
                               notificationModal.style.display = 'none';
@@ -1327,12 +1377,12 @@
                   const prayerTime = prayerTimes[key];
 
                   const prayerItemHtml = `
-                      <div class="prayer-item">
-                          <div class="prayer-details">
-                              <div class="prayer-name">${prayerName}</div>
-                          </div>
-                          <div class="prayer-time-value">${prayerTime}</div>
-                      </div>`;
+                        <div class="prayer-item">
+                            <div class="prayer-details">
+                                <div class="prayer-name">${prayerName}</div>
+                            </div>
+                            <div class="prayer-time-value">${prayerTime}</div>
+                        </div>`;
                   
                   prayerListContainerEl.innerHTML += prayerItemHtml;
               }
@@ -1671,9 +1721,9 @@
                   const item = document.createElement('div');
                   item.className = 'list-item';
                   item.innerHTML = `
-                                                  <span class="num">${i}</span>
-                                                  <div class="details"><div class="title">Juz ${i}</div></div>
-                                                  <span class="arabic">الجزء ${i}</span>`;
+                                                      <span class="num">${i}</span>
+                                                      <div class="details"><div class="title">Juz ${i}</div></div>
+                                                      <span class="arabic">الجزء ${i}</span>`;
                   item.addEventListener('click', () => showSurahsInJuz(i));
                   quranListContainer.appendChild(item);
               }
@@ -1815,12 +1865,12 @@
                   const item = document.createElement('div'); 
                   item.className = 'list-item';
                   item.innerHTML = `
-                          <span class="num">📿</span>
-                          <div class="details">
-                              <div class="title">${d.title}</div>
-                              <div class="subtitle">${d.subtitle}</div>
-                          </div>
-                          <span class="arabic">${d.arabic}</span>`;
+                        <span class="num">📿</span>
+                        <div class="details">
+                            <div class="title">${d.title}</div>
+                            <div class="subtitle">${d.subtitle}</div>
+                        </div>
+                        <span class="arabic">${d.arabic}</span>`;
                   item.addEventListener('click', () => showDzikirDetailModal(d.id));
                   dzikirListContainer.appendChild(item);
               });
@@ -1837,7 +1887,7 @@
                                               <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
                                               <p class="single-item-arti"><b>Artinya:</b> ${dzikir.arti}</p>
                                               <button id="start-dzikir-btn" class="modal-action-btn">Mulai Dzikir (Target: ${dzikir.target})</button>
-                                                                                              `;
+                                                                                                    `;
               
               modalBody.querySelector('#start-dzikir-btn').addEventListener('click', () => {
                   dzikirDetailModal.style.display = 'none';
@@ -2104,15 +2154,15 @@
                   wrapper.className = 'selection-item-wrapper';
                   
                   wrapper.innerHTML = `
-                      <div class="selection-item ${isSelected ? 'selected' : ''}" data-prayer="${prayerKey}" data-sound="${soundKey}">
-                          <span>${soundInfo.name}</span>
-                          <span class="checkmark">✓</span>
-                      </div>
-                      <div class="volume-control-container ${isSelected && soundKey !== 'none' ? 'active' : ''}">
-                          <span class="volume-icon">🔉</span>
-                          <input type="range" min="0" max="1" step="0.1" value="${currentSetting.volume}" class="volume-slider" data-prayer="${prayerKey}">
-                          <button class="test-sound-btn" data-sound="${soundKey}" aria-label="Test Sound">🎵</button>
-                      </div>
+                        <div class="selection-item ${isSelected ? 'selected' : ''}" data-prayer="${prayerKey}" data-sound="${soundKey}">
+                            <span>${soundInfo.name}</span>
+                            <span class="checkmark">✓</span>
+                        </div>
+                        <div class="volume-control-container ${isSelected && soundKey !== 'none' ? 'active' : ''}">
+                            <span class="volume-icon">🔉</span>
+                            <input type="range" min="0" max="1" step="0.1" value="${currentSetting.volume}" class="volume-slider" data-prayer="${prayerKey}">
+                            <button class="test-sound-btn" data-sound="${soundKey}" aria-label="Test Sound">🎵</button>
+                        </div>
                   `;
                   group.appendChild(wrapper);
               });
