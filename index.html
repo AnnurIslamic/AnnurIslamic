@@ -10,7 +10,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
     <style>
-
+body {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 dan IE 11 */
+    user-select: none; /* Standard syntax */
+}
         
         /* --- Global Reset & Box Sizing --- */
         *,
@@ -1189,7 +1193,7 @@
 
             <div class="featured-zikir-container">
                 <div class="zikir-card pagi">
-                    <audio id="audio-pagi" src="dzikirpagi.mp3"></audio>
+
                     <i class="fas fa-sun" aria-hidden="true"></i>
                     <h4>Dzikir Pagi</h4>
                     <p class="subtitle">Ba'da Subuh</p>
@@ -1201,7 +1205,7 @@
                     </div>
                 </div>
                 <div class="zikir-card petang">
-                    <audio id="audio-petang" src="Dzikirpetang.mp3"></audio>
+
                     <i class="fas fa-moon" aria-hidden="true"></i>
                     <h4>Dzikir Petang</h4>
                     <p class="subtitle">Ba'da Ashar</p>
@@ -1600,11 +1604,31 @@
                     </li>
                 </ul>
 <h4 class="settings-list-title">Notifikasi & Izin</h4>
-                <ul class="settings-list">
-                    <li class="settings-item">
-                        <div class="setting-label">Akses Lokasi</div>
-                        <label class="switch"><input type="checkbox" id="location-access-toggle"><span class="slider"></span></label>
-                    </li>
+<li class="settings-item" style="display: block;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+        <div class="setting-label">Akses Lokasi</div>
+        <label class="switch"><input type="checkbox" id="location-access-toggle"><span class="slider"></span></label>
+    </div>
+    
+    <button id="manual-refresh-loc-btn" class="popup-btn secondary" style="width: 100%; font-size: 0.9rem; padding: 0.6rem; border: 1px dashed var(--icon-color); color: var(--text-color); display: flex; justify-content: center; align-items: center; gap: 8px;">
+        <i class="fas fa-sync-alt"></i> <span>Perbarui Lokasi/Jadwal</span>
+    </button>
+    <small id="refresh-status-text" style="display: block; text-align: center; font-size: 0.75rem; color: var(--primary-color); margin-top: 5px; height: 1rem;"></small>
+</li>
+<li class="settings-item" style="display: block;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; flex-direction: column; gap: 0.2rem;">
+            <div class="setting-label" style="font-weight: 700;">Izinkan Pop Up Alarm</div>
+            <small style="font-size: 0.8rem; color: var(--icon-color); line-height: 1.3;">
+                Layar Azan akan muncul saat alarm berbunyi di atas aplikasi lain.
+            </small>
+        </div>
+        <label class="switch">
+            <input type="checkbox" id="popup-toggle">
+            <span class="slider"></span>
+        </label>
+    </div>
+</li>
                     
                     <li class="settings-item">
                         <div class="setting-label">Notifikasi Adzan</div>
@@ -1616,6 +1640,18 @@
                         <label class="switch"><input type="checkbox" id="motivation-toggle"><span class="slider"></span></label>
                     </li>
                 </ul>
+
+                <h4 class="settings-list-title">Izin Sistem (Wajib Diatur)</h4>
+                <ul class="settings-list">
+                    <li class="settings-item" style="display: block;">
+                        <div style="margin-bottom: 1rem;">
+                            <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">Jika Alarm/Notifikasi tidak bunyi, mohon izinkan <b>"Alarm & Reminders"</b> dan <b>"Notifications"</b> di pengaturan sistem.</p>
+                            
+                            <button id="open-system-settings-btn" class="popup-btn secondary" style="width: 100%; border: 1px solid var(--primary-color); color: var(--primary-color); padding: 0.8rem;">
+                                <i class="fas fa-cog fa-spin" style="animation-duration: 3s;"></i> Buka Pengaturan HP
+                            </button>
+                        </div>
+                    
                 <h4 class="settings-list-title">Informasi</h4>
                 <ul class="settings-list">
                     <li class="settings-item"><a href="#kebijakan-privasi" class="nav-shortcut"><div class="setting-label">Kebijakan Privasi</div><i class="fas fa-chevron-right chevron-icon" aria-hidden="true"></i></a></li>
@@ -1713,6 +1749,172 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
 <script>
+
+// --- LOGIKA TOGGLE POP-UP (SINKRONISASI OTOMATIS) ---
+    
+    // Fungsi untuk mengecek status izin ke Android
+    function syncOverlayPermission() {
+        const popupToggle = document.getElementById('popup-toggle');
+        
+        // Hanya jalan jika ada di dalam Aplikasi Android
+        if (popupToggle && window.Android && typeof window.Android.checkOverlayPermission === 'function') {
+            const isGranted = window.Android.checkOverlayPermission();
+            popupToggle.checked = isGranted; 
+            console.log("Sinkronisasi Izin Pop-Up: " + (isGranted ? "DIIZINKAN" : "DITOLAK"));
+        }
+    }
+
+    // A. Jalankan saat aplikasi pertama kali dibuka
+    document.addEventListener('DOMContentLoaded', syncOverlayPermission);
+
+    // B. Jalankan saat user KEMBALI dari Pengaturan HP (PENTING)
+    document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") {
+            syncOverlayPermission();
+        }
+    });
+    window.addEventListener("focus", syncOverlayPermission);
+
+    // C. Event Listener saat tombol diklik manual oleh user
+    const popupToggleBtn = document.getElementById('popup-toggle');
+    if (popupToggleBtn) {
+        popupToggleBtn.addEventListener('change', (e) => {
+            // KASUS 1: User MENYALAKAN Tombol
+            if (e.target.checked) {
+                if (window.Android && typeof window.Android.requestOverlayPermission === 'function') {
+                    const isGranted = window.Android.checkOverlayPermission();
+                    
+                    if (!isGranted) {
+                        // Buka Pengaturan HP
+                        window.Android.requestOverlayPermission();
+                        // Jangan matikan tombol di sini, biarkan syncOverlayPermission yang mengurusnya saat user kembali
+                    }
+                } else {
+                    // Jika dibuka di Browser biasa (Bukan Android App)
+                    alert("Fitur ini hanya berfungsi di dalam Aplikasi Android.");
+                    e.target.checked = false; // Matikan lagi tombolnya
+                }
+            } 
+            // KASUS 2: User MEMATIKAN Tombol
+            else {
+                if (window.Android && typeof window.Android.requestOverlayPermission === 'function') {
+                      alert("Untuk mematikan fitur ini sepenuhnya, harap matikan izin 'Muncul di atas' di pengaturan HP secara manual.");
+                      // Kita bisa arahkan ke pengaturan lagi jika mau:
+                      // window.Android.requestOverlayPermission();
+                }
+            }
+        });
+    }
+
+    // 1. Mematikan Klik Kanan
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        // Opsi: Tampilkan alert jika mau
+        // alert("Klik kanan dimatikan untuk melindungi konten."); 
+    });
+
+    // 2. Mematikan Tombol Keyboard (Ctrl+C, Ctrl+U, Ctrl+S, F12, dll)
+    document.onkeydown = function(e) {
+        if (event.keyCode == 123) { // F12
+            return false;
+        }
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { // Ctrl+Shift+I
+            return false;
+        }
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) { // Ctrl+Shift+C
+            return false;
+        }
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { // Ctrl+Shift+J
+            return false;
+        }
+        if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { // Ctrl+U
+            return false;
+        }
+        if (e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) { // Ctrl+S
+            return false;
+        }
+        if (e.ctrlKey && e.keyCode == 'C'.charCodeAt(0)) { // Ctrl+C
+            return false;
+        }
+    };
+
+    // =====================================================================
+    // [BARU] LOGIKA SCROLL & AUDIO LANJUTAN (WEBVIEW OPTIMIZED)
+    // =====================================================================
+    
+    // --- 1. FUNGSI SCROLL MANUAL (Bypass scrollIntoView WebView Bug) ---
+    function scrollToActiveVerse(elementId) {
+        const element = document.getElementById(elementId);
+        if (!element) return;
+
+        // Hapus highlight lama (jika ada CSS .active-highlight)
+        const oldActive = document.querySelector('.active-highlight');
+        if (oldActive) oldActive.classList.remove('active-highlight');
+
+        // Tambah highlight baru
+        element.classList.add('active-highlight');
+
+        // HITUNG POSISI TENGAH SECARA MANUAL
+        // Ini lebih kuat daripada scrollIntoView di WebView Android
+        setTimeout(() => {
+            const elementRect = element.getBoundingClientRect();
+            const absoluteElementTop = elementRect.top + window.pageYOffset;
+            const middle = absoluteElementTop - (window.innerHeight / 2) + (elementRect.height / 2);
+
+            window.scrollTo({
+                top: middle,
+                behavior: 'smooth' 
+            });
+        }, 100); // Delay mikro agar UI siap
+    }
+
+    // --- 2. CALLBACK DARI ANDROID (SINYAL AUDIO SELESAI) ---
+    window.onAudioFinished = function() {
+        console.log("Audio selesai dari Android Service");
+        
+        // Matikan animasi loading/playing di tombol sekarang
+        if (window.currentPlayingButton) {
+            window.currentPlayingButton.classList.remove('playing');
+            window.currentPlayingButton.classList.remove('loading');
+        }
+
+        // Logika Autoplay Quran (Lanjut ke ayat berikutnya)
+        if (isQuranAutoplayActive && window.currentPlayingButton) {
+            const currentVerseItem = window.currentPlayingButton.closest('.verse-item');
+            if (currentVerseItem) {
+                let nextVerseItem = currentVerseItem.nextElementSibling;
+                
+                // KASUS A: LANJUT AYAT DI SURAT SAMA
+                if (nextVerseItem && nextVerseItem.classList.contains('verse-item')) {
+                    const nextPlayButton = nextVerseItem.querySelector('.audio-control-btn');
+                    if (nextPlayButton) {
+                        nextPlayButton.click(); // Klik otomatis
+                    }
+                } 
+                // KASUS B: GANTI SURAT (NEXT SURAH)
+                else {
+                    const nextSurahNum = (parseInt(currentSurahNumber) || 0) + 1;
+                    if (nextSurahNum <= 114) {
+                         // Tampilkan Loading
+                         if(window.Android && window.Android.showToast) window.Android.showToast("Memutar Surat Selanjutnya...");
+                         
+                         // Panggil fungsi load surah baru dengan Autoplay = TRUE
+                         loadSurahDetail(nextSurahNum, true); 
+                    } else {
+                        console.log("Khatam Al-Qur'an.");
+                        stopQuranAutoplay();
+                    }
+                }
+            }
+        }
+        
+        // Logika Reset Tombol Dzikir (jika yang selesai adalah dzikir dashboard)
+        if(typeof window.resetDzikirButtons === 'function') {
+            window.resetDzikirButtons();
+        }
+    };
+
+
     // --- Deklarasi Variabel Global ---
     let todayPrayerTimes = {};
     let globalAudioPlayer;
@@ -2057,9 +2259,24 @@
             });
         }
 
+        // --- [BARU] LOGIKA TOMBOL PENGATURAN SISTEM ---
+        const openSettingsBtn = document.getElementById('open-system-settings-btn');
+        
+        if (openSettingsBtn) {
+            openSettingsBtn.addEventListener('click', () => {
+                if (window.Android && typeof window.Android.openAppSettings === 'function') {
+                    // Panggil fungsi Kotlin yang baru kita buat
+                    window.Android.openAppSettings();
+                } else {
+                    // Fallback jika bukan di Android
+                    alert("Fitur ini hanya berfungsi di aplikasi Android untuk membuka pengaturan izin.");
+                }
+            });
+        }
+
+
         // ... (Logika Location Toggle biarkan sama seperti sebelumnya) ...
         if(locationToggle) {
-             // ... copy logika locationToggle yang lama ...
              const locPerm = localStorage.getItem('locationAccess');
              locationToggle.checked = (locPerm === 'granted');
              locationToggle.addEventListener('change', (e) => {
@@ -2206,36 +2423,51 @@
         }
     }
 
-    async function fetchPrayerTimes(lat = null, lon = null) {
+async function fetchPrayerTimes(lat = null, lon = null) {
         const prayerTimeCard = document.querySelector('.prayer-time-card');
         if (!prayerTimeCard) return;
         
         const locationDisplay = document.querySelector('.card-location');
-
-        const today = new Date().toLocaleDateString('id-ID');
-        const locationKey = lat ? `${lat.toFixed(2)}-${lon.toFixed(2)}` : 'default-medan';
-        const cacheKey = 'prayerTimesCache';
-        const cachedData = JSON.parse(localStorage.getItem(cacheKey));
-
-        if (cachedData && cachedData.date === today && cachedData.locationKey === locationKey) {
-            console.log("Memuat jadwal sholat dari cache.");
-            if (lat && lon) {
-                fetchCityName(lat, lon);
-            } else {
-                if(locationDisplay) locationDisplay.textContent = "Medan, Sumatera Utara";
-            }
-            updatePrayerUI(cachedData.data);
-            return;
-        }
+        const todayDate = new Date().toLocaleDateString('en-GB'); // Format DD/MM/YYYY
         
-        console.log("Mengambil jadwal sholat baru dari API...");
-        showPrayerCardLoading(true);
+        // --- [BARU: LOGIKA SATPAM] ---
+        // 1. Tanya Android: "Apakah Satpam sudah punya jadwal terbaru?"
+        if (window.Android && typeof window.Android.getOfflineJadwal === 'function') {
+            const androidData = window.Android.getOfflineJadwal();
+            
+            // Jika Satpam punya data
+            if (androidData) {
+                try {
+                    const parsed = JSON.parse(androidData);
+                    
+                    console.log("✅ Memakai Data dari Satpam Android (Instan & Offline)");
+                    
+                    // Update nama kota jika ada koordinat
+                    if (lat && lon) fetchCityName(lat, lon);
+                    else if(locationDisplay) locationDisplay.textContent = "Lokasi Tersimpan";
 
-        const ADJUSTMENT = 2;
+                    // Tampilkan jadwal langsung tanpa loading
+                    updatePrayerUI(parsed.data);
+                    
+                    // STOP DI SINI. Tidak perlu buang kuota internet lagi.
+                    return; 
+                } catch (e) {
+                    console.error("Data Satpam rusak, mencoba fetch manual...");
+                }
+            }
+        }
+
+        // 2. [FALLBACK] Jika Satpam belum punya data (misal baru install), baru kita download sendiri
+        showPrayerCardLoading(true);
+        
+        // [PENTING] Simpan lokasi ke Android agar Satpam tau harus patroli di daerah mana besok
+        if (lat && lon && window.Android && typeof window.Android.saveUserLocation === 'function') {
+            window.Android.saveUserLocation(lat.toString(), lon.toString());
+        }
+
+        const adhanApiBase = 'https://api.aladhan.com/v1';
         let apiUrl;
         
-        const adhanApiBase = 'https://api.aladhan.com/v1';
-
         if (lat && lon) {
             apiUrl = `${adhanApiBase}/timings?latitude=${lat}&longitude=${lon}&method=11`;
             fetchCityName(lat, lon);
@@ -2243,27 +2475,98 @@
             apiUrl = `${adhanApiBase}/timingsByCity?city=Medan&country=Indonesia&method=11`;
             if(locationDisplay) locationDisplay.textContent = "Medan, Sumatera Utara";
         }
-        
+
         try {
             const response = await fetch(apiUrl);
-            if (!response.ok) { throw new Error(`HTTP error! status: ${response.status}`); }
+            if (!response.ok) throw new Error('HTTP error');
             const data = await response.json();
             
             if (data.code === 200) {
-                localStorage.setItem(cacheKey, JSON.stringify({
-                    date: today,
-                    locationKey: locationKey,
-                    data: data.data
-                }));
+                // Update Tampilan
                 updatePrayerUI(data.data);
             }
         } catch (error) {
-            console.error("Gagal mengambil data waktu sholat (CORS error - ini wajar tanpa proxy):", error);
+            console.error("Gagal fetch manual:", error);
             const prayerGrid = document.getElementById('prayerTimesGrid');
-            if (prayerGrid) { prayerGrid.innerHTML = `<p style="color: white; grid-column: 1 / -1; text-align: center;">Gagal memuat waktu sholat.</p>`; }
+            if (prayerGrid) prayerGrid.innerHTML = `<p style="color: white; grid-column: 1 / -1; text-align: center;">Gagal memuat waktu sholat (Offline).</p>`;
             showPrayerCardLoading(false);
         }
     }
+
+    // --- TAMBAHKAN LOGIKA INI DI DALAM initAppSettingsAndData ATAU DOMContentLoaded ---
+
+const manualRefreshBtn = document.getElementById('manual-refresh-loc-btn');
+const refreshStatusText = document.getElementById('refresh-status-text');
+
+if (manualRefreshBtn) {
+    manualRefreshBtn.addEventListener('click', () => {
+        const icon = manualRefreshBtn.querySelector('i');
+        const label = manualRefreshBtn.querySelector('span');
+        
+        // 1. Cek status izin yang tersimpan
+        const permissionState = localStorage.getItem('locationAccess');
+
+        if (permissionState !== 'granted') {
+            // Jika belum diizinkan, beri tahu user harus nyalakan tombol di atasnya dulu
+            refreshStatusText.textContent = "Aktifkan tombol Akses Lokasi terlebih dahulu.";
+            refreshStatusText.style.color = "red";
+            setTimeout(() => refreshStatusText.textContent = "", 3000);
+            return;
+        }
+
+        // 2. Mulai Proses Refresh (Visual Loading)
+        icon.classList.add('fa-spin'); // Animasi muter
+        label.textContent = "Mencari koordinat...";
+        manualRefreshBtn.disabled = true;
+        refreshStatusText.textContent = "";
+
+        // 3. LANGSUNG PANGGIL GEOLOCATION (Tanpa Pop-up Izin Ulang)
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                // --- SUKSES ---
+                const { latitude, longitude } = position.coords;
+                
+                // Simpan data baru
+                localStorage.setItem('userLocation', JSON.stringify({ latitude, longitude }));
+                
+                // Update UI (Jadwal Sholat & Nama Kota)
+                // Hapus cache lama agar fetchPrayerTimes mengambil data baru
+                localStorage.removeItem('prayerTimesCache'); 
+                fetchPrayerTimes(latitude, longitude);
+
+                // Feedback Visual Sukses
+                icon.classList.remove('fa-spin');
+                label.textContent = "Perbarui Titik Lokasi";
+                manualRefreshBtn.disabled = false;
+                refreshStatusText.textContent = "Lokasi berhasil diperbarui!";
+                refreshStatusText.style.color = "var(--primary-color)";
+                
+                // Hilangkan pesan sukses setelah 3 detik
+                setTimeout(() => refreshStatusText.textContent = "", 3000);
+            },
+            (error) => {
+                // --- GAGAL ---
+                console.error("Gagal refresh lokasi:", error);
+                
+                icon.classList.remove('fa-spin');
+                label.textContent = "Perbarui Titik Lokasi";
+                manualRefreshBtn.disabled = false;
+                
+                let errorMsg = "Gagal. Pastikan GPS aktif.";
+                if(error.code === 1) errorMsg = "Izin ditolak oleh sistem.";
+                if(error.code === 3) errorMsg = "Waktu habis (Timeout).";
+
+                refreshStatusText.textContent = errorMsg;
+                refreshStatusText.style.color = "red";
+            },
+            {
+                enableHighAccuracy: true, // Coba paksa akurasi tinggi (GPS)
+                timeout: 10000,           // Batas waktu 10 detik
+                maximumAge: 0             // Jangan pakai cache lama, cari yang baru
+            }
+        );
+    });
+}
 
     // === DIPERBARUI: HANYA JADWALKAN ALARM JIKA TOMBOL ADZAN ON ===
     function updatePrayerUI(data) {
@@ -2352,91 +2655,58 @@
         }
     }
 
-    // --- Logika Audio Player Dashboard ---
-
+// --- Logika Audio Player Dashboard (VERSI NATIVE / OFFLINE) ---
     function initDashboardAudio(elements) {
-        const allAudios = document.querySelectorAll('audio#audio-pagi, audio#audio-petang');
         const audioContainer = document.querySelector('.featured-zikir-container');
-        
-        function stopAllAudios(exceptAudio){
-            allAudios.forEach(audio => {
-                if(audio !== exceptAudio){
-                    audio.pause();
-                    audio.currentTime = 0;
-                }
-            });
-            if (globalAudioPlayer && !globalAudioPlayer.paused && exceptAudio !== globalAudioPlayer) {
-                globalAudioPlayer.pause();
-                if(window.currentPlayingButton) {
-                    window.currentPlayingButton.classList.remove('playing');
-                    window.currentPlayingButton = null;
-                }
-            }
-        }
-        
-        function resetAllPlayersUI(exceptContainer){
+
+        // Fungsi Global untuk dipanggil Android jika audio selesai sendiri
+        window.resetDzikirButtons = function() {
             document.querySelectorAll('.audio-controls-container').forEach(container => {
-                if(container !== exceptContainer){
-                    container.querySelector('.play-btn').classList.remove('hidden');
-                    container.querySelector('.pause-btn').classList.add('hidden');
-                    container.querySelector('.stop-btn').classList.add('hidden');
-                }
+                container.querySelector('.play-btn').classList.remove('hidden');
+                container.querySelector('.pause-btn').classList.add('hidden');
+                container.querySelector('.stop-btn').classList.add('hidden');
             });
-        }
-        
-        if(audioContainer) {
+        };
+
+        if (audioContainer) {
             audioContainer.addEventListener('click', (e) => {
                 const playBtn = e.target.closest('.play-btn');
-                const pauseBtn = e.target.closest('.pause-btn');
                 const stopBtn = e.target.closest('.stop-btn');
                 
-                if(playBtn){
-                    const targetId = playBtn.dataset.target;
-                    const audio = document.getElementById(targetId);
-                    if(!audio) return;
+                // === TOMBOL PLAY ===
+                if (playBtn) {
+                    // Ambil tipe: 'pagi' atau 'petang' dari data-target="audio-pagi"
+                    const targetType = playBtn.dataset.target.replace('audio-', ''); 
                     const container = playBtn.parentElement;
-                    
-                    stopAllAudios(audio);
-                    resetAllPlayersUI(container);
-                    
-                    audio.play();
+
+                    // 1. Reset tampilan tombol lain (biar gak tabrakan)
+                    window.resetDzikirButtons();
+
+                    // 2. Panggil Android (Native Player)
+                    if (window.Android && typeof window.Android.playDzikir === 'function') {
+                        window.Android.playDzikir(targetType);
+                    } else {
+                        alert("Fitur Audio ini butuh aplikasi Android.");
+                    }
+
+                    // 3. Ubah tombol ini jadi STOP (Pause kita hilangkan agar simpel)
                     playBtn.classList.add('hidden');
-                    container.querySelector('.pause-btn').classList.remove('hidden');
-                    container.querySelector('.stop-btn').classList.remove('hidden');
+                    container.querySelector('.stop-btn').classList.remove('hidden'); 
                 }
-                
-                if(pauseBtn){
-                    const targetId = pauseBtn.dataset.target;
-                    const audio = document.getElementById(targetId);
-                    if(!audio) return;
-                    const container = pauseBtn.parentElement;
-                    
-                    audio.pause();
-                    pauseBtn.classList.add('hidden');
-                    container.querySelector('.play-btn').classList.remove('hidden');
-                }
-                
-                if(stopBtn){
-                    const targetId = stopBtn.dataset.target;
-                    const audio = document.getElementById(targetId);
-                    if(!audio) return;
+
+                // === TOMBOL STOP ===
+                if (stopBtn) {
                     const container = stopBtn.parentElement;
-                    
-                    audio.pause();
-                    audio.currentTime = 0;
+
+                    // 1. Panggil Android untuk matikan suara
+                    if (window.Android && typeof window.Android.stopDzikir === 'function') {
+                        window.Android.stopDzikir();
+                    }
+
+                    // 2. Kembalikan tombol jadi PLAY
                     stopBtn.classList.add('hidden');
-                    container.querySelector('.pause-btn').classList.add('hidden');
                     container.querySelector('.play-btn').classList.remove('hidden');
                 }
-            });
-            
-            allAudios.forEach(audio => {
-                audio.addEventListener ('ended', () => {
-                    const container = document.querySelector(`.play-btn[data-target="${audio.id}"]`).parentElement;
-                    container.querySelector('.play-btn').classList.remove('hidden');
-                    container.querySelector('.pause-btn').classList.add('hidden');
-                    container.querySelector('.stop-btn').classList.add('hidden');
-                   });
             });
         }
     }
@@ -2920,39 +3190,61 @@
             });
         }
         
-        function playVerseAudio(button, audioUrl) {
+        // --- [DIPERBARUI] LOGIKA PEMUTAR AUDIO UTAMA (BRIDGE SUPPORT) ---
+        function playVerseAudio(button, audioUrl, verseNumber, verseId) { 
+            // 1. Matikan Audio Dashboard (Pagi/Petang) jika sedang jalan
             document.querySelectorAll('audio#audio-pagi, audio#audio-petang').forEach(audio => {
                 audio.pause();
                 audio.currentTime = 0;
             });
-            document.querySelectorAll('.featured-zikir-container .audio-controls-container').forEach(container => {
-                container.querySelector('.play-btn').classList.remove('hidden');
-                container.querySelector('.pause-btn').classList.add('hidden');
-                container.querySelector('.stop-btn').classList.add('hidden');
-            });
+            // Reset tombol dashboard
+            if(typeof window.resetDzikirButtons === 'function') window.resetDzikirButtons();
 
+            // 2. Reset tombol ayat lain yang mungkin sedang "playing"
             if (window.currentPlayingButton && window.currentPlayingButton !== button) {
                 window.currentPlayingButton.classList.remove('playing');
+                window.currentPlayingButton.classList.remove('loading');
             }
 
-            const verseItemToScroll = button.closest('.verse-item');
+            // 3. SCROLL OTOMATIS (PENTING)
+            // Panggil fungsi scroll manual yang kita buat di atas
+            scrollToActiveVerse(verseId);
 
-            if (window.currentPlayingButton === button && !globalAudioPlayer.paused) {
-                globalAudioPlayer.pause();
-            } else if (window.currentPlayingButton === button && globalAudioPlayer.paused) {
-                globalAudioPlayer.play();
-                if (verseItemToScroll) verseItemToScroll.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            // 4. Cek apakah Android Bridge tersedia?
+            if (window.Android && typeof window.Android.playAudio === 'function') {
+                 // --- JALUR ANDROID SERVICE (NATIVE) ---
+                 
+                 // Ambil Judul Surat
+                 const surahTitle = document.getElementById('surah-detail-title').textContent;
+                 
+                 // Panggil Service Android
+                 // Parameter: URL, Judul (misal: Al-Fatihah), Deskripsi (Ayat 1)
+                 window.Android.playAudio(audioUrl, surahTitle, "Ayat " + verseNumber); 
+                 
+                 // Set state button jadi loading (sampai service merespon playing/selesai)
+                 window.currentPlayingButton = button;
+                 button.classList.add('loading'); 
+                 
             } else {
-                globalAudioPlayer.src = audioUrl; 
-                globalAudioPlayer.play().catch(e => console.error("Gagal memutar audio:", e));
-                currentAudioSrc = audioUrl;
-                window.currentPlayingButton = button;
-                if (verseItemToScroll) verseItemToScroll.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // --- JALUR BROWSER BIASA (FALLBACK) ---
+                
+                const verseItemToScroll = button.closest('.verse-item');
+
+                if (window.currentPlayingButton === button && !globalAudioPlayer.paused) {
+                    globalAudioPlayer.pause();
+                } else if (window.currentPlayingButton === button && globalAudioPlayer.paused) {
+                    globalAudioPlayer.play();
+                } else {
+                    globalAudioPlayer.src = audioUrl; 
+                    globalAudioPlayer.play().catch(e => console.error("Gagal memutar audio:", e));
+                    currentAudioSrc = audioUrl;
+                    window.currentPlayingButton = button;
+                }
+                
+                document.querySelectorAll('#surah-detail-content .audio-control-btn.loading').forEach(btn => {
+                    if(btn !== button) btn.classList.remove('loading');
+                });
             }
-            
-            document.querySelectorAll('#surah-detail-content .audio-control-btn.loading').forEach(btn => {
-                if(btn !== button) btn.classList.remove('loading');
-            });
         }
 
         // --- Logika Render (Membuat Tampilan) ---
@@ -3100,8 +3392,12 @@
                         audio: audioEdition[i].audio 
                     };
 
+                    // [PENTING] Generate ID Unik untuk Scroll (verse-1-1, verse-1-2, dst)
+                    const uniqueId = `verse-${surahNumber}-${i+1}`;
+                    
                     const verseItem = document.createElement('div');
                     verseItem.className = 'verse-item';
+                    verseItem.id = uniqueId; // Pasang ID di sini
                     
                     const verseNumber = document.createElement('div');
                     verseNumber.className = 'verse-number';
@@ -3148,7 +3444,8 @@
 
                     if (audioUrl) {
                         playButton.addEventListener('click', () => {
-                            playVerseAudio(playButton, audioUrl); 
+                            // --- DIPERBARUI: Kirim ID unik untuk scroll ---
+                            playVerseAudio(playButton, audioUrl, verseData.nomor, uniqueId); 
                         });
                     } else {
                         playButton.disabled = true;
@@ -3166,13 +3463,16 @@
                         if (span) span.textContent = 'Autoplay: Aktif';
                     }
 
-                    const firstVerse = surahDetailContent.querySelector('.verse-item');
-                    if (firstVerse) {
-                        const firstPlayButton = firstVerse.querySelector('.audio-control-btn');
-                        if (firstPlayButton && !firstPlayButton.disabled) {
-                            setTimeout(() => firstPlayButton.click(), 100); 
+                    // [DELAY LEBIH LAMA] Beri waktu 1.5 detik agar UI selesai render sebelum auto-play
+                    setTimeout(() => {
+                        const firstVerse = surahDetailContent.querySelector('.verse-item');
+                        if (firstVerse) {
+                            const firstPlayButton = firstVerse.querySelector('.audio-control-btn');
+                            if (firstPlayButton && !firstPlayButton.disabled) {
+                                firstPlayButton.click(); 
+                            }
                         }
-                    }
+                    }, 1500);
                 }
                 
             } catch (error) {
@@ -3219,20 +3519,20 @@
      */
     function checkAndPlayAdzan() {
         // Biarkan kosong atau hapus logika interval lama.
-        // Karena sekarang kita menggunakan AlarmManager Android,
-        // kita tidak perlu mengecek setiap menit di JavaScript.
-        
-        // Namun, kita tetap bisa membiarkan ini untuk update UI jika perlu.
-        // Tapi fungsi utamanya sudah digantikan oleh schedulePrayerAlarm di updatePrayerUI.
     }
     
-    // Kita tidak perlu interval ini lagi untuk memutar suara,
-    // tapi mungkin berguna untuk me-refresh tampilan waktu sholat (jika hari berganti).
-    // Jadi biarkan saja atau ubah intervalnya menjadi lebih lama (misal 1 jam).
     setInterval(() => {
        // Cek apakah hari sudah berganti, jika ya, fetch ulang jadwal
-       // Tapi untuk sekarang, biarkan saja.
     }, 3600000);
+    
+    // --- DAFTARKAN SERVICE WORKER (OFFLINE MODE) ---
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('Service Worker terdaftar!', reg))
+                .catch(err => console.log('Gagal daftar SW:', err));
+        });
+    }
 </script>
 </body>
-    </html>
+</html> 
